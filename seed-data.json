@@ -1,0 +1,3175 @@
+{
+  "topics": [
+    "Topic 1",
+    "Topic 2",
+    "Topic 3",
+    "Topic 4",
+    "Topic 5",
+    "Topic 6",
+    "Topic 7"
+  ],
+  "badges": [
+    "Badge 1",
+    "Badge 2",
+    "Badge 3",
+    "Badge 4",
+    "Badge 5",
+    "Badge 6",
+    "Badge 7",
+    "Badge 8"
+  ],
+  "partners": [
+    {
+      "name": "ONA",
+      "manages_trainees": true,
+      "trainers": [
+        {
+          "id": 1,
+          "first_name": "Ben",
+          "last_name": "Cremer"
+        },
+        {
+          "id": 2,
+          "first_name": "Marc",
+          "last_name": "Pankert"
+        },
+        {
+          "id": 3,
+          "first_name": "Max",
+          "last_name": "Bertrand"
+        },
+        {
+          "id": 4,
+          "first_name": "Patrick",
+          "last_name": "Brüll"
+        },
+        {
+          "id": 5,
+          "first_name": "Valérie",
+          "last_name": "Servais"
+        }
+      ],
+      "courses": [
+        {
+          "id": 1,
+          "title": "DAPA1",
+          "description": "DAPA1 – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "COMPLETED",
+          "population": "POP2",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7,
+            4
+          ],
+          "badge_ids": [
+            1,
+            5
+          ],
+          "sessions": [
+            {
+              "id": 1,
+              "course_id": 1,
+              "sequence": 1,
+              "date": "2026-10-21",
+              "start_time": "10:00",
+              "end_time": "11:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_sg2a5unzqwwy%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 2
+            },
+            {
+              "id": 2,
+              "course_id": 1,
+              "sequence": 2,
+              "date": "2026-10-28",
+              "start_time": "18:00",
+              "end_time": "19:30",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 5
+            },
+            {
+              "id": 3,
+              "course_id": 1,
+              "sequence": 3,
+              "date": "2026-11-04",
+              "start_time": "13:00",
+              "end_time": "15:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_bxx31fz95h16%40thread.v2/0",
+              "places_available": 25,
+              "trainer_id": 3
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "DAPA2",
+          "description": "DAPA2 – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            5,
+            6
+          ],
+          "badge_ids": [
+            7,
+            4
+          ],
+          "sessions": [
+            {
+              "id": 4,
+              "course_id": 2,
+              "sequence": 1,
+              "date": "2026-08-03",
+              "start_time": "10:00",
+              "end_time": "13:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 1
+            },
+            {
+              "id": 5,
+              "course_id": 2,
+              "sequence": 2,
+              "date": "2026-08-10",
+              "start_time": "10:00",
+              "end_time": "13:00",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 4
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "DAPA3",
+          "description": "DAPA3 – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "COMPLETED",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            1
+          ],
+          "badge_ids": [
+            8
+          ],
+          "sessions": [
+            {
+              "id": 6,
+              "course_id": 3,
+              "sequence": 1,
+              "date": "2026-09-14",
+              "start_time": "13:00",
+              "end_time": "16:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_75xmq536519c%40thread.v2/0",
+              "places_available": 25,
+              "trainer_id": 3
+            },
+            {
+              "id": 7,
+              "course_id": 3,
+              "sequence": 2,
+              "date": "2026-09-21",
+              "start_time": "10:00",
+              "end_time": "13:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_6q2l14er5xgm%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "DAPA4",
+          "description": "DAPA4 – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "COMPLETED",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            4
+          ],
+          "badge_ids": [
+            2
+          ],
+          "sessions": [
+            {
+              "id": 8,
+              "course_id": 4,
+              "sequence": 1,
+              "date": "2026-12-04",
+              "start_time": "09:00",
+              "end_time": "11:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_wjau5i8o4i6s%40thread.v2/0",
+              "places_available": 8,
+              "trainer_id": 2
+            },
+            {
+              "id": 9,
+              "course_id": 4,
+              "sequence": 2,
+              "date": "2026-12-11",
+              "start_time": "13:00",
+              "end_time": "15:30",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 4
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "title": "DAPA5",
+          "description": "DAPA5 – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "DRAFT",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            4
+          ],
+          "badge_ids": [
+            3
+          ],
+          "sessions": [
+            {
+              "id": 10,
+              "course_id": 5,
+              "sequence": 1,
+              "date": "2026-07-19",
+              "start_time": "18:00",
+              "end_time": "19:30",
+              "is_online": false,
+              "location": "Rathausplatz 1, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 1
+            },
+            {
+              "id": 11,
+              "course_id": 5,
+              "sequence": 2,
+              "date": "2026-07-26",
+              "start_time": "17:30",
+              "end_time": "20:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_uh53kj7n1v3o%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 4
+            },
+            {
+              "id": 12,
+              "course_id": 5,
+              "sequence": 3,
+              "date": "2026-08-02",
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 1
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "title": "WELCOME",
+          "description": "WELCOME – Pflichtmodul des ONA-Programms. Die Teilnehmer durchlaufen alle Sitzungen.",
+          "type": "MULTI",
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            1
+          ],
+          "badge_ids": [
+            3,
+            8
+          ],
+          "sessions": [
+            {
+              "id": 13,
+              "course_id": 6,
+              "sequence": 1,
+              "date": "2026-11-10",
+              "start_time": "13:00",
+              "end_time": "16:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_r180fytlwlq3%40thread.v2/0",
+              "places_available": 15,
+              "trainer_id": 2
+            },
+            {
+              "id": 14,
+              "course_id": 6,
+              "sequence": 2,
+              "date": "2026-11-17",
+              "start_time": "13:00",
+              "end_time": "15:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_742h77rgnoaf%40thread.v2/0",
+              "places_available": 15,
+              "trainer_id": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Akademie Eupen",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 6,
+          "first_name": "Valérie",
+          "last_name": "Gérard"
+        },
+        {
+          "id": 7,
+          "first_name": "Caroline",
+          "last_name": "Lentz"
+        },
+        {
+          "id": 8,
+          "first_name": "Arthur",
+          "last_name": "Klein"
+        },
+        {
+          "id": 9,
+          "first_name": "Katrin",
+          "last_name": "Delvaux"
+        },
+        {
+          "id": 10,
+          "first_name": "Lina",
+          "last_name": "Hick"
+        }
+      ],
+      "courses": [
+        {
+          "id": 7,
+          "title": "Gestion du stress",
+          "description": "Gestion du stress: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": "POP1",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            6,
+            2
+          ],
+          "badge_ids": [
+            2,
+            5
+          ],
+          "sessions": [
+            {
+              "id": 15,
+              "course_id": 7,
+              "sequence": 1,
+              "date": "2026-09-07",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            },
+            {
+              "id": 16,
+              "course_id": 7,
+              "sequence": 2,
+              "date": "2026-09-14",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            },
+            {
+              "id": 17,
+              "course_id": 7,
+              "sequence": 3,
+              "date": "2026-09-21",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            },
+            {
+              "id": 18,
+              "course_id": 7,
+              "sequence": 4,
+              "date": "2026-09-28",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            },
+            {
+              "id": 19,
+              "course_id": 7,
+              "sequence": 5,
+              "date": "2026-10-05",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            },
+            {
+              "id": 20,
+              "course_id": 7,
+              "sequence": 6,
+              "date": "2026-10-12",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Hauptstraße 22, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 10
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "Leadership & Teamführung",
+          "description": "Leadership & Teamführung: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            6
+          ],
+          "badge_ids": [
+            5
+          ],
+          "sessions": [
+            {
+              "id": 21,
+              "course_id": 8,
+              "sequence": 1,
+              "date": "2026-09-21",
+              "start_time": "10:00",
+              "end_time": "11:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_0q0adgpbthg9%40thread.v2/0",
+              "places_available": 16,
+              "trainer_id": 7
+            },
+            {
+              "id": 22,
+              "course_id": 8,
+              "sequence": 2,
+              "date": "2026-09-29",
+              "start_time": "09:00",
+              "end_time": "12:00",
+              "is_online": false,
+              "location": "Bahnhofstraße 45, 4730 Raeren",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 8
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "title": "Français professionnel",
+          "description": "Français professionnel: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "DRAFT",
+          "population": null,
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            5
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 23,
+              "course_id": 9,
+              "sequence": 1,
+              "date": "2026-10-23",
+              "start_time": "17:30",
+              "end_time": "19:00",
+              "is_online": false,
+              "location": "Kirchstraße 8, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 25,
+              "trainer_id": 8
+            },
+            {
+              "id": 24,
+              "course_id": 9,
+              "sequence": 2,
+              "date": "2026-11-07",
+              "start_time": "09:00",
+              "end_time": "11:30",
+              "is_online": false,
+              "location": "Rue Xhavée 14, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 8
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "title": "Communication interpersonnelle",
+          "description": "Communication interpersonnelle: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "CANCELLED",
+          "population": null,
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            3,
+            2
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 25,
+              "course_id": 10,
+              "sequence": 1,
+              "date": "2026-11-11",
+              "start_time": "17:30",
+              "end_time": "19:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_1iw0yyp0oil8%40thread.v2/0",
+              "places_available": 8,
+              "trainer_id": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Centre de Formation Malmedy",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 11,
+          "first_name": "Jonas",
+          "last_name": "Schmitz"
+        },
+        {
+          "id": 12,
+          "first_name": "Lina",
+          "last_name": "Lentz"
+        },
+        {
+          "id": 13,
+          "first_name": "Céline",
+          "last_name": "Servais"
+        },
+        {
+          "id": 14,
+          "first_name": "Alice",
+          "last_name": "Cremer"
+        },
+        {
+          "id": 15,
+          "first_name": "Leon",
+          "last_name": "Lecoq"
+        }
+      ],
+      "courses": [
+        {
+          "id": 11,
+          "title": "Digitale Grundkompetenzen",
+          "description": "Digitale Grundkompetenzen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "CANCELLED",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            6
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 26,
+              "course_id": 11,
+              "sequence": 1,
+              "date": "2026-07-10",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 15
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "title": "Communication interpersonnelle",
+          "description": "Communication interpersonnelle: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "CANCELLED",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3
+          ],
+          "badge_ids": [
+            7,
+            8
+          ],
+          "sessions": [
+            {
+              "id": 27,
+              "course_id": 12,
+              "sequence": 1,
+              "date": "2026-10-19",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Rue Xhavée 14, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 28,
+              "course_id": 12,
+              "sequence": 2,
+              "date": "2026-10-27",
+              "start_time": "19:00",
+              "end_time": "21:30",
+              "is_online": false,
+              "location": "Rue Xhavée 14, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 14
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "title": "Digitale Grundkompetenzen",
+          "description": "Digitale Grundkompetenzen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "DRAFT",
+          "population": "POP1",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            5,
+            3
+          ],
+          "badge_ids": [
+            1
+          ],
+          "sessions": [
+            {
+              "id": 29,
+              "course_id": 13,
+              "sequence": 1,
+              "date": "2026-09-15",
+              "start_time": "17:30",
+              "end_time": "19:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_gb8ntczy87k6%40thread.v2/0",
+              "places_available": 8,
+              "trainer_id": 11
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "title": "Gestion du stress",
+          "description": "Gestion du stress: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": "POP1",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7
+          ],
+          "badge_ids": [
+            2
+          ],
+          "sessions": [
+            {
+              "id": 30,
+              "course_id": 14,
+              "sequence": 1,
+              "date": "2026-09-14",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 31,
+              "course_id": 14,
+              "sequence": 2,
+              "date": "2026-09-21",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 32,
+              "course_id": 14,
+              "sequence": 3,
+              "date": "2026-09-28",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 33,
+              "course_id": 14,
+              "sequence": 4,
+              "date": "2026-10-05",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 34,
+              "course_id": 14,
+              "sequence": 5,
+              "date": "2026-10-12",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            },
+            {
+              "id": 35,
+              "course_id": 14,
+              "sequence": 6,
+              "date": "2026-10-19",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_yma41w8k7blu%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BildungsWerk Sankt Vith",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 16,
+          "first_name": "Nina",
+          "last_name": "Heinen"
+        },
+        {
+          "id": 17,
+          "first_name": "Arthur",
+          "last_name": "Lentz"
+        },
+        {
+          "id": 18,
+          "first_name": "Finn",
+          "last_name": "Reuter"
+        },
+        {
+          "id": 19,
+          "first_name": "Robert",
+          "last_name": "Goffin"
+        },
+        {
+          "id": 20,
+          "first_name": "Hannah",
+          "last_name": "Hennen"
+        }
+      ],
+      "courses": [
+        {
+          "id": 15,
+          "title": "Projektmanagement Grundlagen",
+          "description": "Projektmanagement Grundlagen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "DRAFT",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3,
+            2
+          ],
+          "badge_ids": [
+            5,
+            2
+          ],
+          "sessions": [
+            {
+              "id": 36,
+              "course_id": 15,
+              "sequence": 1,
+              "date": "2026-09-13",
+              "start_time": "19:00",
+              "end_time": "20:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_97pw3wfef5tq%40thread.v2/0",
+              "places_available": 25,
+              "trainer_id": 16
+            },
+            {
+              "id": 37,
+              "course_id": 15,
+              "sequence": 2,
+              "date": "2026-09-18",
+              "start_time": "18:00",
+              "end_time": "20:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_5zulm3oww0yn%40thread.v2/0",
+              "places_available": 10,
+              "trainer_id": 17
+            },
+            {
+              "id": 38,
+              "course_id": 15,
+              "sequence": 3,
+              "date": "2026-10-06",
+              "start_time": "13:00",
+              "end_time": "16:00",
+              "is_online": false,
+              "location": "Kirchstraße 8, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 20
+            }
+          ]
+        },
+        {
+          "id": 16,
+          "title": "Sécurité incendie",
+          "description": "Sécurité incendie: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "CANCELLED",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            7,
+            4
+          ],
+          "badge_ids": [
+            1
+          ],
+          "sessions": [
+            {
+              "id": 39,
+              "course_id": 16,
+              "sequence": 1,
+              "date": "2026-09-14",
+              "start_time": "18:30",
+              "end_time": "21:30",
+              "is_online": false,
+              "location": "Rathausplatz 1, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 20
+            },
+            {
+              "id": 40,
+              "course_id": 16,
+              "sequence": 2,
+              "date": "2026-09-23",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_1wvdzlar9qiv%40thread.v2/0",
+              "places_available": 16,
+              "trainer_id": 19
+            }
+          ]
+        },
+        {
+          "id": 17,
+          "title": "Buchhaltung kompakt",
+          "description": "Buchhaltung kompakt: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            1,
+            5
+          ],
+          "badge_ids": [
+            4,
+            5
+          ],
+          "sessions": [
+            {
+              "id": 41,
+              "course_id": 17,
+              "sequence": 1,
+              "date": "2026-12-17",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Rathausplatz 1, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 25,
+              "trainer_id": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ProFormation Verviers",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 21,
+          "first_name": "Marie",
+          "last_name": "Hennen"
+        },
+        {
+          "id": 22,
+          "first_name": "Finn",
+          "last_name": "Dethier"
+        },
+        {
+          "id": 23,
+          "first_name": "Jade",
+          "last_name": "Theissen"
+        },
+        {
+          "id": 24,
+          "first_name": "Manon",
+          "last_name": "Reuter"
+        },
+        {
+          "id": 25,
+          "first_name": "Louis",
+          "last_name": "Delvaux"
+        }
+      ],
+      "courses": [
+        {
+          "id": 18,
+          "title": "Initiation à la programmation",
+          "description": "Initiation à la programmation: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "DRAFT",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            4
+          ],
+          "badge_ids": [
+            6,
+            3
+          ],
+          "sessions": [
+            {
+              "id": 42,
+              "course_id": 18,
+              "sequence": 1,
+              "date": "2026-11-28",
+              "start_time": "10:00",
+              "end_time": "11:30",
+              "is_online": false,
+              "location": "Kirchstraße 8, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 25
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "title": "Kundenservice Exzellenz",
+          "description": "Kundenservice Exzellenz: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            7
+          ],
+          "badge_ids": [
+            7
+          ],
+          "sessions": [
+            {
+              "id": 43,
+              "course_id": 19,
+              "sequence": 1,
+              "date": "2026-09-14",
+              "start_time": "09:00",
+              "end_time": "12:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 8,
+              "trainer_id": 23
+            },
+            {
+              "id": 44,
+              "course_id": 19,
+              "sequence": 2,
+              "date": "2026-09-24",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_xr6ztnd0e68t%40thread.v2/0",
+              "places_available": 15,
+              "trainer_id": 23
+            },
+            {
+              "id": 45,
+              "course_id": 19,
+              "sequence": 3,
+              "date": "2026-09-16",
+              "start_time": "18:00",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Bahnhofstraße 45, 4730 Raeren",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 25
+            }
+          ]
+        },
+        {
+          "id": 20,
+          "title": "Projektmanagement Grundlagen",
+          "description": "Projektmanagement Grundlagen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            6
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 46,
+              "course_id": 20,
+              "sequence": 1,
+              "date": "2026-07-08",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_67i6nr5i9uxz%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 25
+            },
+            {
+              "id": 47,
+              "course_id": 20,
+              "sequence": 2,
+              "date": "2026-07-15",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_67i6nr5i9uxz%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 25
+            },
+            {
+              "id": 48,
+              "course_id": 20,
+              "sequence": 3,
+              "date": "2026-07-22",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_67i6nr5i9uxz%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 25
+            },
+            {
+              "id": 49,
+              "course_id": 20,
+              "sequence": 4,
+              "date": "2026-07-29",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_67i6nr5i9uxz%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 25
+            },
+            {
+              "id": 50,
+              "course_id": 20,
+              "sequence": 5,
+              "date": "2026-08-05",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_67i6nr5i9uxz%40thread.v2/0",
+              "places_available": 12,
+              "trainer_id": 25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kompetenz Zentrum Kelmis",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 26,
+          "first_name": "Hannah",
+          "last_name": "Collard"
+        },
+        {
+          "id": 27,
+          "first_name": "Caroline",
+          "last_name": "Lambert"
+        },
+        {
+          "id": 28,
+          "first_name": "Lena",
+          "last_name": "Lousberg"
+        },
+        {
+          "id": 29,
+          "first_name": "Liam",
+          "last_name": "Jansen"
+        },
+        {
+          "id": 30,
+          "first_name": "Leon",
+          "last_name": "Lousberg"
+        }
+      ],
+      "courses": [
+        {
+          "id": 21,
+          "title": "Hygiène alimentaire (HACCP)",
+          "description": "Hygiène alimentaire (HACCP): Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            3
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 51,
+              "course_id": 21,
+              "sequence": 1,
+              "date": "2026-08-13",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 52,
+              "course_id": 21,
+              "sequence": 2,
+              "date": "2026-08-20",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 53,
+              "course_id": 21,
+              "sequence": 3,
+              "date": "2026-08-27",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 54,
+              "course_id": 21,
+              "sequence": 4,
+              "date": "2026-09-03",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 55,
+              "course_id": 21,
+              "sequence": 5,
+              "date": "2026-09-10",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 56,
+              "course_id": 21,
+              "sequence": 6,
+              "date": "2026-09-17",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            },
+            {
+              "id": 57,
+              "course_id": 21,
+              "sequence": 7,
+              "date": "2026-09-24",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 27
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "title": "Hygiène alimentaire (HACCP)",
+          "description": "Hygiène alimentaire (HACCP): Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            5,
+            6
+          ],
+          "badge_ids": [
+            5,
+            3
+          ],
+          "sessions": [
+            {
+              "id": 58,
+              "course_id": 22,
+              "sequence": 1,
+              "date": "2026-10-28",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 30
+            },
+            {
+              "id": 59,
+              "course_id": 22,
+              "sequence": 2,
+              "date": "2026-11-04",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 30
+            },
+            {
+              "id": 60,
+              "course_id": 22,
+              "sequence": 3,
+              "date": "2026-11-11",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 30
+            },
+            {
+              "id": 61,
+              "course_id": 22,
+              "sequence": 4,
+              "date": "2026-11-18",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 30
+            }
+          ]
+        },
+        {
+          "id": 23,
+          "title": "Digitale Grundkompetenzen",
+          "description": "Digitale Grundkompetenzen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "OPEN",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            2,
+            3
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 62,
+              "course_id": 23,
+              "sequence": 1,
+              "date": "2026-08-18",
+              "start_time": "10:00",
+              "end_time": "13:00",
+              "is_online": false,
+              "location": "Aachener Straße 60, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 30
+            }
+          ]
+        },
+        {
+          "id": 24,
+          "title": "Initiation à la programmation",
+          "description": "Initiation à la programmation: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "DRAFT",
+          "population": "POP1",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 63,
+              "course_id": 24,
+              "sequence": 1,
+              "date": "2026-10-01",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 64,
+              "course_id": 24,
+              "sequence": 2,
+              "date": "2026-10-08",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 65,
+              "course_id": 24,
+              "sequence": 3,
+              "date": "2026-10-15",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 66,
+              "course_id": 24,
+              "sequence": 4,
+              "date": "2026-10-22",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 67,
+              "course_id": 24,
+              "sequence": 5,
+              "date": "2026-10-29",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 68,
+              "course_id": 24,
+              "sequence": 6,
+              "date": "2026-11-05",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            },
+            {
+              "id": 69,
+              "course_id": 24,
+              "sequence": 7,
+              "date": "2026-11-12",
+              "start_time": "14:00",
+              "end_time": "16:30",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 29
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Institut Formapro Liège",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 31,
+          "first_name": "Romy",
+          "last_name": "Delvaux"
+        },
+        {
+          "id": 32,
+          "first_name": "Katrin",
+          "last_name": "Henrard"
+        },
+        {
+          "id": 33,
+          "first_name": "Camille",
+          "last_name": "Klein"
+        },
+        {
+          "id": 34,
+          "first_name": "Chloé",
+          "last_name": "Martin"
+        },
+        {
+          "id": 35,
+          "first_name": "Julia",
+          "last_name": "Renard"
+        }
+      ],
+      "courses": [
+        {
+          "id": 25,
+          "title": "Premiers secours",
+          "description": "Premiers secours: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "OPEN",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3,
+            7
+          ],
+          "badge_ids": [
+            3
+          ],
+          "sessions": [
+            {
+              "id": 70,
+              "course_id": 25,
+              "sequence": 1,
+              "date": "2026-12-13",
+              "start_time": "17:30",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Rue Spintay 7, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 32
+            }
+          ]
+        },
+        {
+          "id": 26,
+          "title": "Sécurité incendie",
+          "description": "Sécurité incendie: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "COMPLETED",
+          "population": "POP1",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7,
+            3
+          ],
+          "badge_ids": [
+            2,
+            4
+          ],
+          "sessions": [
+            {
+              "id": 71,
+              "course_id": 26,
+              "sequence": 1,
+              "date": "2026-08-26",
+              "start_time": "19:00",
+              "end_time": "22:00",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 35
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "title": "Hygiène alimentaire (HACCP)",
+          "description": "Hygiène alimentaire (HACCP): Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            4,
+            1
+          ],
+          "badge_ids": [
+            4
+          ],
+          "sessions": [
+            {
+              "id": 72,
+              "course_id": 27,
+              "sequence": 1,
+              "date": "2026-09-16",
+              "start_time": "09:00",
+              "end_time": "10:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_72gy348bjuib%40thread.v2/0",
+              "places_available": 8,
+              "trainer_id": 31
+            },
+            {
+              "id": 73,
+              "course_id": 27,
+              "sequence": 2,
+              "date": "2026-09-27",
+              "start_time": "17:30",
+              "end_time": "19:00",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_ce7hvjt4pu3p%40thread.v2/0",
+              "places_available": 15,
+              "trainer_id": 31
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WeiterBildung Raeren",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 36,
+          "first_name": "Patrick",
+          "last_name": "Jansen"
+        },
+        {
+          "id": 37,
+          "first_name": "Thomas",
+          "last_name": "Renard"
+        },
+        {
+          "id": 38,
+          "first_name": "Laura",
+          "last_name": "Vliegen"
+        },
+        {
+          "id": 39,
+          "first_name": "Pascal",
+          "last_name": "Vliegen"
+        },
+        {
+          "id": 40,
+          "first_name": "Aaron",
+          "last_name": "Faymonville"
+        }
+      ],
+      "courses": [
+        {
+          "id": 28,
+          "title": "Marketing digital",
+          "description": "Marketing digital: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "COMPLETED",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            7,
+            6
+          ],
+          "badge_ids": [
+            1,
+            3
+          ],
+          "sessions": [
+            {
+              "id": 74,
+              "course_id": 28,
+              "sequence": 1,
+              "date": "2026-10-07",
+              "start_time": "19:00",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Kirchstraße 8, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 37
+            }
+          ]
+        },
+        {
+          "id": 29,
+          "title": "Zeitmanagement",
+          "description": "Zeitmanagement: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7
+          ],
+          "badge_ids": [
+            7
+          ],
+          "sessions": [
+            {
+              "id": 75,
+              "course_id": 29,
+              "sequence": 1,
+              "date": "2026-07-16",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 76,
+              "course_id": 29,
+              "sequence": 2,
+              "date": "2026-07-23",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 77,
+              "course_id": 29,
+              "sequence": 3,
+              "date": "2026-07-30",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 78,
+              "course_id": 29,
+              "sequence": 4,
+              "date": "2026-08-06",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 79,
+              "course_id": 29,
+              "sequence": 5,
+              "date": "2026-08-13",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 80,
+              "course_id": 29,
+              "sequence": 6,
+              "date": "2026-08-20",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 81,
+              "course_id": 29,
+              "sequence": 7,
+              "date": "2026-08-27",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            },
+            {
+              "id": 82,
+              "course_id": 29,
+              "sequence": 8,
+              "date": "2026-09-03",
+              "start_time": "18:00",
+              "end_time": "20:00",
+              "is_online": false,
+              "location": "Vennbahnstraße 12, 4780 Sankt Vith",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 37
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "title": "Buchhaltung kompakt",
+          "description": "Buchhaltung kompakt: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 83,
+              "course_id": 30,
+              "sequence": 1,
+              "date": "2026-07-14",
+              "start_time": "13:00",
+              "end_time": "15:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_xfqkcn9h29cw%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 37
+            }
+          ]
+        },
+        {
+          "id": 31,
+          "title": "Marketing digital",
+          "description": "Marketing digital: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "DRAFT",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            4,
+            1
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 84,
+              "course_id": 31,
+              "sequence": 1,
+              "date": "2026-07-24",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            },
+            {
+              "id": 85,
+              "course_id": 31,
+              "sequence": 2,
+              "date": "2026-07-31",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            },
+            {
+              "id": 86,
+              "course_id": 31,
+              "sequence": 3,
+              "date": "2026-08-07",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            },
+            {
+              "id": 87,
+              "course_id": 31,
+              "sequence": 4,
+              "date": "2026-08-14",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            },
+            {
+              "id": 88,
+              "course_id": 31,
+              "sequence": 5,
+              "date": "2026-08-21",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            },
+            {
+              "id": 89,
+              "course_id": 31,
+              "sequence": 6,
+              "date": "2026-08-28",
+              "start_time": "13:00",
+              "end_time": "14:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_asc4qe8k978p%40thread.v2/0",
+              "places_available": 20,
+              "trainer_id": 36
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Centre Éducatif Stavelot",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 41,
+          "first_name": "Lena",
+          "last_name": "Müller"
+        },
+        {
+          "id": 42,
+          "first_name": "Daniel",
+          "last_name": "Velz"
+        },
+        {
+          "id": 43,
+          "first_name": "Valérie",
+          "last_name": "Lejeune"
+        },
+        {
+          "id": 44,
+          "first_name": "Thomas",
+          "last_name": "Gérard"
+        },
+        {
+          "id": 45,
+          "first_name": "Katrin",
+          "last_name": "Jansen"
+        }
+      ],
+      "courses": [
+        {
+          "id": 32,
+          "title": "Digitale Grundkompetenzen",
+          "description": "Digitale Grundkompetenzen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "SINGLE",
+          "recurring": false,
+          "status": "CANCELLED",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 90,
+              "course_id": 32,
+              "sequence": 1,
+              "date": "2026-08-21",
+              "start_time": "18:00",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Kirchstraße 8, 4720 Kelmis",
+              "teams_link": null,
+              "places_available": 20,
+              "trainer_id": 45
+            }
+          ]
+        },
+        {
+          "id": 33,
+          "title": "Sécurité incendie",
+          "description": "Sécurité incendie: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            1
+          ],
+          "badge_ids": [
+            2
+          ],
+          "sessions": [
+            {
+              "id": 91,
+              "course_id": 33,
+              "sequence": 1,
+              "date": "2026-10-08",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 92,
+              "course_id": 33,
+              "sequence": 2,
+              "date": "2026-10-15",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 93,
+              "course_id": 33,
+              "sequence": 3,
+              "date": "2026-10-22",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 94,
+              "course_id": 33,
+              "sequence": 4,
+              "date": "2026-10-29",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 95,
+              "course_id": 33,
+              "sequence": 5,
+              "date": "2026-11-05",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 96,
+              "course_id": 33,
+              "sequence": 6,
+              "date": "2026-11-12",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 97,
+              "course_id": 33,
+              "sequence": 7,
+              "date": "2026-11-19",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            },
+            {
+              "id": 98,
+              "course_id": 33,
+              "sequence": 8,
+              "date": "2026-11-26",
+              "start_time": "14:00",
+              "end_time": "17:00",
+              "is_online": false,
+              "location": "Place Albert 1er 5, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 15,
+              "trainer_id": 45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SkillForge Ostbelgien",
+      "manages_trainees": false,
+      "trainers": [
+        {
+          "id": 46,
+          "first_name": "Aurélie",
+          "last_name": "Lecoq"
+        },
+        {
+          "id": 47,
+          "first_name": "Lisa",
+          "last_name": "Collard"
+        },
+        {
+          "id": 48,
+          "first_name": "Bruno",
+          "last_name": "Dethier"
+        },
+        {
+          "id": 49,
+          "first_name": "Nathalie",
+          "last_name": "Bodarwé"
+        },
+        {
+          "id": 50,
+          "first_name": "Clara",
+          "last_name": "Leroy"
+        }
+      ],
+      "courses": [
+        {
+          "id": 34,
+          "title": "Erste Hilfe am Arbeitsplatz",
+          "description": "Erste Hilfe am Arbeitsplatz: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3
+          ],
+          "badge_ids": [
+            3,
+            6
+          ],
+          "sessions": [
+            {
+              "id": 99,
+              "course_id": 34,
+              "sequence": 1,
+              "date": "2026-07-30",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 100,
+              "course_id": 34,
+              "sequence": 2,
+              "date": "2026-08-06",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 101,
+              "course_id": 34,
+              "sequence": 3,
+              "date": "2026-08-13",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 102,
+              "course_id": 34,
+              "sequence": 4,
+              "date": "2026-08-20",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 103,
+              "course_id": 34,
+              "sequence": 5,
+              "date": "2026-08-27",
+              "start_time": "18:30",
+              "end_time": "20:30",
+              "is_online": false,
+              "location": "Avenue des Alliés 18, 4960 Malmedy",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            }
+          ]
+        },
+        {
+          "id": 35,
+          "title": "Projektmanagement Grundlagen",
+          "description": "Projektmanagement Grundlagen: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "DRAFT",
+          "population": "POP1",
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            6,
+            5
+          ],
+          "badge_ids": [
+            4
+          ],
+          "sessions": [
+            {
+              "id": 104,
+              "course_id": 35,
+              "sequence": 1,
+              "date": "2026-08-20",
+              "start_time": "09:00",
+              "end_time": "11:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_j0qb2sjya2hg%40thread.v2/0",
+              "places_available": 10,
+              "trainer_id": 46
+            },
+            {
+              "id": 105,
+              "course_id": 35,
+              "sequence": 2,
+              "date": "2026-08-26",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 25,
+              "trainer_id": 49
+            },
+            {
+              "id": 106,
+              "course_id": 35,
+              "sequence": 3,
+              "date": "2026-09-09",
+              "start_time": "18:30",
+              "end_time": "21:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_sukg9bnnszou%40thread.v2/0",
+              "places_available": 10,
+              "trainer_id": 48
+            }
+          ]
+        },
+        {
+          "id": 36,
+          "title": "Premiers secours",
+          "description": "Premiers secours: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": true,
+          "status": "OPEN",
+          "population": null,
+          "visible_in_catalogue": true,
+          "topic_ids": [
+            3
+          ],
+          "badge_ids": [],
+          "sessions": [
+            {
+              "id": 107,
+              "course_id": 36,
+              "sequence": 1,
+              "date": "2026-09-07",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 108,
+              "course_id": 36,
+              "sequence": 2,
+              "date": "2026-09-14",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 109,
+              "course_id": 36,
+              "sequence": 3,
+              "date": "2026-09-21",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 110,
+              "course_id": 36,
+              "sequence": 4,
+              "date": "2026-09-28",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 111,
+              "course_id": 36,
+              "sequence": 5,
+              "date": "2026-10-05",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 112,
+              "course_id": 36,
+              "sequence": 6,
+              "date": "2026-10-12",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 113,
+              "course_id": 36,
+              "sequence": 7,
+              "date": "2026-10-19",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            },
+            {
+              "id": 114,
+              "course_id": 36,
+              "sequence": 8,
+              "date": "2026-10-26",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Klötzerbahn 30, 4700 Eupen",
+              "teams_link": null,
+              "places_available": 12,
+              "trainer_id": 48
+            }
+          ]
+        },
+        {
+          "id": 37,
+          "title": "Sécurité incendie",
+          "description": "Sécurité incendie: Praxisorientierte Weiterbildung für Berufstätige.",
+          "type": "MULTI",
+          "recurring": false,
+          "status": "OPEN",
+          "population": "POP2",
+          "visible_in_catalogue": false,
+          "topic_ids": [
+            7,
+            2
+          ],
+          "badge_ids": [
+            4
+          ],
+          "sessions": [
+            {
+              "id": 115,
+              "course_id": 37,
+              "sequence": 1,
+              "date": "2026-11-08",
+              "start_time": "09:00",
+              "end_time": "11:30",
+              "is_online": true,
+              "location": null,
+              "teams_link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_9t0o86s6wwy7%40thread.v2/0",
+              "places_available": 10,
+              "trainer_id": 50
+            },
+            {
+              "id": 116,
+              "course_id": 37,
+              "sequence": 2,
+              "date": "2026-11-11",
+              "start_time": "18:30",
+              "end_time": "21:00",
+              "is_online": false,
+              "location": "Rue Xhavée 14, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 16,
+              "trainer_id": 49
+            },
+            {
+              "id": 117,
+              "course_id": 37,
+              "sequence": 3,
+              "date": "2026-12-02",
+              "start_time": "09:00",
+              "end_time": "10:30",
+              "is_online": false,
+              "location": "Rue Xhavée 14, 4800 Verviers",
+              "teams_link": null,
+              "places_available": 10,
+              "trainer_id": 48
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "trainees": [
+    {
+      "id": 1,
+      "first_name": "Nina",
+      "last_name": "Schmitz",
+      "national_number": "94.02.04-120.28"
+    },
+    {
+      "id": 2,
+      "first_name": "David",
+      "last_name": "Klein",
+      "national_number": "89.10.12-652.67"
+    },
+    {
+      "id": 3,
+      "first_name": "Julie",
+      "last_name": "Servais",
+      "national_number": "75.06.10-920.01"
+    },
+    {
+      "id": 4,
+      "first_name": "Julie",
+      "last_name": "Dubois",
+      "national_number": "81.11.05-472.81"
+    },
+    {
+      "id": 5,
+      "first_name": "Daniel",
+      "last_name": "Hennen",
+      "national_number": "66.04.28-817.71"
+    },
+    {
+      "id": 6,
+      "first_name": "Stefan",
+      "last_name": "Dethier",
+      "national_number": "98.03.04-089.45"
+    },
+    {
+      "id": 7,
+      "first_name": "Mathis",
+      "last_name": "Becker",
+      "national_number": "88.08.28-938.13"
+    },
+    {
+      "id": 8,
+      "first_name": "Olivier",
+      "last_name": "Counet",
+      "national_number": "68.02.01-703.60"
+    },
+    {
+      "id": 9,
+      "first_name": "Michael",
+      "last_name": "Dubois",
+      "national_number": "88.08.02-460.61"
+    },
+    {
+      "id": 10,
+      "first_name": "Oscar",
+      "last_name": "Leroy",
+      "national_number": "66.01.14-186.55"
+    },
+    {
+      "id": 11,
+      "first_name": "Emma",
+      "last_name": "Pirenne",
+      "national_number": "94.09.08-435.14"
+    },
+    {
+      "id": 12,
+      "first_name": "Oscar",
+      "last_name": "Peters",
+      "national_number": "60.03.20-621.40"
+    },
+    {
+      "id": 13,
+      "first_name": "Alice",
+      "last_name": "Lefèvre",
+      "national_number": "87.02.23-232.47"
+    },
+    {
+      "id": 14,
+      "first_name": "Paul",
+      "last_name": "Servais",
+      "national_number": "65.10.25-633.34"
+    },
+    {
+      "id": 15,
+      "first_name": "Elias",
+      "last_name": "Counet",
+      "national_number": "99.10.10-240.95"
+    },
+    {
+      "id": 16,
+      "first_name": "Sabine",
+      "last_name": "Schmetz",
+      "national_number": "71.09.14-260.05"
+    },
+    {
+      "id": 17,
+      "first_name": "Valérie",
+      "last_name": "Brüll",
+      "national_number": "76.09.15-298.53"
+    },
+    {
+      "id": 18,
+      "first_name": "Alice",
+      "last_name": "Martin",
+      "national_number": "97.08.06-367.67"
+    },
+    {
+      "id": 19,
+      "first_name": "Zoé",
+      "last_name": "Pirenne",
+      "national_number": "79.02.28-621.32"
+    },
+    {
+      "id": 20,
+      "first_name": "Lukas",
+      "last_name": "Renard",
+      "national_number": "98.10.11-714.41"
+    },
+    {
+      "id": 21,
+      "first_name": "Ben",
+      "last_name": "Collard",
+      "national_number": "81.07.21-435.79"
+    },
+    {
+      "id": 22,
+      "first_name": "Greta",
+      "last_name": "Reuter",
+      "national_number": "84.11.04-382.56"
+    },
+    {
+      "id": 23,
+      "first_name": "Nora",
+      "last_name": "Vliegen",
+      "national_number": "80.10.13-367.02"
+    },
+    {
+      "id": 24,
+      "first_name": "Romy",
+      "last_name": "Velz",
+      "national_number": "82.05.26-492.02"
+    },
+    {
+      "id": 25,
+      "first_name": "Jules",
+      "last_name": "Servais",
+      "national_number": "89.01.20-024.91"
+    },
+    {
+      "id": 26,
+      "first_name": "Mila",
+      "last_name": "Lentz",
+      "national_number": "94.01.04-789.43"
+    },
+    {
+      "id": 27,
+      "first_name": "Julia",
+      "last_name": "Pirenne",
+      "national_number": "84.05.28-976.91"
+    },
+    {
+      "id": 28,
+      "first_name": "Gabriel",
+      "last_name": "Müller",
+      "national_number": "73.04.02-080.30"
+    },
+    {
+      "id": 29,
+      "first_name": "Chloé",
+      "last_name": "Lambert",
+      "national_number": "83.10.18-468.14"
+    },
+    {
+      "id": 30,
+      "first_name": "Robert",
+      "last_name": "Lentz",
+      "national_number": "93.11.20-056.38"
+    },
+    {
+      "id": 31,
+      "first_name": "Hannah",
+      "last_name": "Hennen",
+      "national_number": "86.04.04-712.09"
+    },
+    {
+      "id": 32,
+      "first_name": "Max",
+      "last_name": "Dubois",
+      "national_number": "97.12.24-398.05"
+    },
+    {
+      "id": 33,
+      "first_name": "Leon",
+      "last_name": "Maraite",
+      "national_number": "95.12.01-775.99"
+    },
+    {
+      "id": 34,
+      "first_name": "Adam",
+      "last_name": "Servais",
+      "national_number": "83.09.22-855.57"
+    },
+    {
+      "id": 35,
+      "first_name": "Inès",
+      "last_name": "Lambert",
+      "national_number": "86.05.05-274.82"
+    },
+    {
+      "id": 36,
+      "first_name": "Frank",
+      "last_name": "Peters",
+      "national_number": "98.07.23-050.09"
+    },
+    {
+      "id": 37,
+      "first_name": "Simon",
+      "last_name": "Genten",
+      "national_number": "86.08.15-651.82"
+    },
+    {
+      "id": 38,
+      "first_name": "Lea",
+      "last_name": "Müller",
+      "national_number": "78.02.26-132.56"
+    },
+    {
+      "id": 39,
+      "first_name": "Inès",
+      "last_name": "Lousberg",
+      "national_number": "89.09.20-155.27"
+    },
+    {
+      "id": 40,
+      "first_name": "Charlotte",
+      "last_name": "Peters",
+      "national_number": "78.01.04-198.60"
+    },
+    {
+      "id": 41,
+      "first_name": "Maya",
+      "last_name": "Dubois",
+      "national_number": "83.07.03-879.02"
+    },
+    {
+      "id": 42,
+      "first_name": "Jules",
+      "last_name": "Genten",
+      "national_number": "65.05.18-225.25"
+    },
+    {
+      "id": 43,
+      "first_name": "Eva",
+      "last_name": "Pirenne",
+      "national_number": "65.05.18-576.15"
+    },
+    {
+      "id": 44,
+      "first_name": "Sandra",
+      "last_name": "Dubois",
+      "national_number": "74.08.18-357.18"
+    },
+    {
+      "id": 45,
+      "first_name": "Louis",
+      "last_name": "Becker",
+      "national_number": "72.09.09-700.16"
+    },
+    {
+      "id": 46,
+      "first_name": "Maya",
+      "last_name": "Pirenne",
+      "national_number": "97.11.16-372.25"
+    },
+    {
+      "id": 47,
+      "first_name": "Inès",
+      "last_name": "Moreau",
+      "national_number": "71.06.16-067.82"
+    },
+    {
+      "id": 48,
+      "first_name": "Patrick",
+      "last_name": "Wagner",
+      "national_number": "99.05.26-818.69"
+    },
+    {
+      "id": 49,
+      "first_name": "Anna",
+      "last_name": "Hick",
+      "national_number": "82.04.24-283.61"
+    },
+    {
+      "id": 50,
+      "first_name": "Lena",
+      "last_name": "Heinen",
+      "national_number": "69.05.15-403.92"
+    },
+    {
+      "id": 51,
+      "first_name": "Max",
+      "last_name": "Martin",
+      "national_number": "79.02.09-991.87"
+    },
+    {
+      "id": 52,
+      "first_name": "Lisa",
+      "last_name": "Dubois",
+      "national_number": "90.06.10-306.17"
+    },
+    {
+      "id": 53,
+      "first_name": "Anna",
+      "last_name": "Dubois",
+      "national_number": "78.07.03-898.26"
+    },
+    {
+      "id": 54,
+      "first_name": "Théo",
+      "last_name": "Lentz",
+      "national_number": "60.01.11-207.04"
+    },
+    {
+      "id": 55,
+      "first_name": "Elias",
+      "last_name": "Hennen",
+      "national_number": "76.08.17-859.53"
+    },
+    {
+      "id": 56,
+      "first_name": "Henri",
+      "last_name": "Lentz",
+      "national_number": "99.04.02-367.87"
+    },
+    {
+      "id": 57,
+      "first_name": "Caroline",
+      "last_name": "Delvaux",
+      "national_number": "91.11.16-707.55"
+    },
+    {
+      "id": 58,
+      "first_name": "Noah",
+      "last_name": "Lecoq",
+      "national_number": "81.06.07-555.33"
+    },
+    {
+      "id": 59,
+      "first_name": "Valérie",
+      "last_name": "Lecoq",
+      "national_number": "93.06.26-413.69"
+    },
+    {
+      "id": 60,
+      "first_name": "Clara",
+      "last_name": "Lecoq",
+      "national_number": "61.07.15-956.88"
+    },
+    {
+      "id": 61,
+      "first_name": "Anna",
+      "last_name": "Hubert",
+      "national_number": "98.01.16-150.85"
+    },
+    {
+      "id": 62,
+      "first_name": "Pascal",
+      "last_name": "Pip",
+      "national_number": "67.12.21-883.46"
+    },
+    {
+      "id": 63,
+      "first_name": "Ben",
+      "last_name": "Pirenne",
+      "national_number": "67.04.14-231.83"
+    },
+    {
+      "id": 64,
+      "first_name": "Manon",
+      "last_name": "Lousberg",
+      "national_number": "73.08.22-010.16"
+    },
+    {
+      "id": 65,
+      "first_name": "Lena",
+      "last_name": "Leroy",
+      "national_number": "93.08.12-177.51"
+    },
+    {
+      "id": 66,
+      "first_name": "Hannah",
+      "last_name": "Renard",
+      "national_number": "98.05.06-316.97"
+    },
+    {
+      "id": 67,
+      "first_name": "Julia",
+      "last_name": "Schröder",
+      "national_number": "87.07.18-443.26"
+    },
+    {
+      "id": 68,
+      "first_name": "Tom",
+      "last_name": "Pip",
+      "national_number": "84.06.28-221.78"
+    },
+    {
+      "id": 69,
+      "first_name": "Sandra",
+      "last_name": "Leroy",
+      "national_number": "98.10.25-722.63"
+    },
+    {
+      "id": 70,
+      "first_name": "Alice",
+      "last_name": "Lefèvre",
+      "national_number": "80.12.08-750.95"
+    },
+    {
+      "id": 71,
+      "first_name": "Henri",
+      "last_name": "Hick",
+      "national_number": "65.04.24-275.24"
+    },
+    {
+      "id": 72,
+      "first_name": "Clara",
+      "last_name": "Theissen",
+      "national_number": "71.04.24-793.29"
+    },
+    {
+      "id": 73,
+      "first_name": "Zoé",
+      "last_name": "Brüll",
+      "national_number": "86.08.27-466.06"
+    },
+    {
+      "id": 74,
+      "first_name": "Lina",
+      "last_name": "Simon",
+      "national_number": "78.12.03-646.06"
+    },
+    {
+      "id": 75,
+      "first_name": "Lina",
+      "last_name": "Lefèvre",
+      "national_number": "89.06.23-829.09"
+    },
+    {
+      "id": 76,
+      "first_name": "Maya",
+      "last_name": "Schmetz",
+      "national_number": "92.07.24-322.54"
+    },
+    {
+      "id": 77,
+      "first_name": "Tom",
+      "last_name": "Klein",
+      "national_number": "77.02.23-057.67"
+    },
+    {
+      "id": 78,
+      "first_name": "Hannah",
+      "last_name": "Goffin",
+      "national_number": "80.10.11-972.29"
+    },
+    {
+      "id": 79,
+      "first_name": "Alice",
+      "last_name": "Brüll",
+      "national_number": "77.01.22-291.22"
+    },
+    {
+      "id": 80,
+      "first_name": "Bruno",
+      "last_name": "Lousberg",
+      "national_number": "90.05.15-531.97"
+    },
+    {
+      "id": 81,
+      "first_name": "Paul",
+      "last_name": "Lefèvre",
+      "national_number": "95.03.09-824.35"
+    },
+    {
+      "id": 82,
+      "first_name": "David",
+      "last_name": "Müller",
+      "national_number": "71.07.03-633.48"
+    },
+    {
+      "id": 83,
+      "first_name": "Sarah",
+      "last_name": "Moreau",
+      "national_number": "95.12.01-757.72"
+    },
+    {
+      "id": 84,
+      "first_name": "Lukas",
+      "last_name": "Dubois",
+      "national_number": "63.01.23-044.81"
+    },
+    {
+      "id": 85,
+      "first_name": "Elias",
+      "last_name": "Lecoq",
+      "national_number": "68.01.01-502.07"
+    },
+    {
+      "id": 86,
+      "first_name": "Jonas",
+      "last_name": "Vliegen",
+      "national_number": "66.08.25-053.26"
+    },
+    {
+      "id": 87,
+      "first_name": "Patrick",
+      "last_name": "Becker",
+      "national_number": "91.04.08-040.48"
+    },
+    {
+      "id": 88,
+      "first_name": "Nora",
+      "last_name": "Mertens",
+      "national_number": "72.01.10-538.65"
+    },
+    {
+      "id": 89,
+      "first_name": "Céline",
+      "last_name": "Maraite",
+      "national_number": "93.12.25-099.54"
+    },
+    {
+      "id": 90,
+      "first_name": "Sarah",
+      "last_name": "Dubois",
+      "national_number": "66.05.13-245.46"
+    },
+    {
+      "id": 91,
+      "first_name": "Clara",
+      "last_name": "Lejeune",
+      "national_number": "60.03.01-252.66"
+    },
+    {
+      "id": 92,
+      "first_name": "Mathis",
+      "last_name": "Mertens",
+      "national_number": "63.05.01-645.27"
+    },
+    {
+      "id": 93,
+      "first_name": "Lukas",
+      "last_name": "Müller",
+      "national_number": "79.03.13-202.97"
+    },
+    {
+      "id": 94,
+      "first_name": "Thomas",
+      "last_name": "Lejeune",
+      "national_number": "87.08.04-346.45"
+    },
+    {
+      "id": 95,
+      "first_name": "Chloé",
+      "last_name": "Vliegen",
+      "national_number": "75.01.03-911.18"
+    },
+    {
+      "id": 96,
+      "first_name": "Lisa",
+      "last_name": "Maraite",
+      "national_number": "62.09.23-096.20"
+    },
+    {
+      "id": 97,
+      "first_name": "Sabine",
+      "last_name": "Maraite",
+      "national_number": "90.01.28-348.64"
+    },
+    {
+      "id": 98,
+      "first_name": "Sabine",
+      "last_name": "Simon",
+      "national_number": "71.10.23-634.22"
+    },
+    {
+      "id": 99,
+      "first_name": "Manon",
+      "last_name": "Reuter",
+      "national_number": "92.02.24-899.25"
+    },
+    {
+      "id": 100,
+      "first_name": "Théo",
+      "last_name": "Keutgen",
+      "national_number": "63.03.16-701.13"
+    }
+  ],
+  "trainee_assignments": [
+    {
+      "trainee_id": 1,
+      "course_id": 1,
+      "course_title": "DAPA1",
+      "assigned_date": "2026-10-21"
+    },
+    {
+      "trainee_id": 2,
+      "course_id": 1,
+      "course_title": "DAPA1",
+      "assigned_date": "2026-10-21"
+    },
+    {
+      "trainee_id": 3,
+      "course_id": 1,
+      "course_title": "DAPA1",
+      "assigned_date": "2026-10-21"
+    },
+    {
+      "trainee_id": 4,
+      "course_id": 1,
+      "course_title": "DAPA1",
+      "assigned_date": "2026-10-21"
+    },
+    {
+      "trainee_id": 5,
+      "course_id": 1,
+      "course_title": "DAPA1",
+      "assigned_date": "2026-10-21"
+    }
+  ]
+}

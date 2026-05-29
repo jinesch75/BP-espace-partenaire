@@ -1,0 +1,157 @@
+// Espace partenaire — training course management
+// Railway-native: PostgreSQL provided by Railway, no external services.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CourseType {
+  SINGLE
+  MULTI
+}
+
+enum CourseStatus {
+  DRAFT
+  OPEN
+  COMPLETED
+  CANCELLED
+}
+
+enum Population {
+  POP1
+  POP2
+}
+
+model Partner {
+  id              Int      @id @default(autoincrement())
+  name            String
+  managesTrainees Boolean  @default(false) // true only for ONA
+  // login fields are filled in a later phase; demo mode does not use them
+  email           String?  @unique
+  passwordHash    String?
+  createdAt       DateTime @default(now())
+
+  trainers Trainer[]
+  courses  Course[]
+}
+
+model Trainer {
+  id           Int      @id @default(autoincrement())
+  partnerId    Int
+  firstName    String
+  lastName     String
+  email        String?
+  passwordHash String?
+  createdAt    DateTime @default(now())
+
+  partner  Partner   @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  sessions Session[]
+
+  @@index([partnerId])
+}
+
+model Manager {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actorRole  String
+  actorLabel String
+  action     String
+  entity     String
+  entityId   Int?
+  detail     String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Course {
+  id                 Int          @id @default(autoincrement())
+  partnerId          Int
+  title              String
+  description        String?
+  type               CourseType   @default(SINGLE)
+  status             CourseStatus @default(DRAFT)
+  recurring          Boolean      @default(false)
+  // admin-only fields, set by the manager:
+  population         Population?
+  visibleInCatalogue Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+
+  partner     Partner             @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  sessions    Session[]
+  topics      Topic[]             @relation("CourseTopics")
+  badges      Badge[]             @relation("CourseBadges")
+  assignments TraineeAssignment[]
+
+  @@index([partnerId])
+}
+
+model Session {
+  id              Int      @id @default(autoincrement())
+  courseId        Int
+  sequence        Int
+  date            DateTime
+  startTime       String
+  endTime         String
+  isOnline        Boolean  @default(false)
+  location        String?
+  teamsLink       String?
+  placesAvailable Int      @default(0)
+  trainerId       Int?
+
+  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  trainer Trainer? @relation(fields: [trainerId], references: [id], onDelete: SetNull)
+
+  @@index([courseId])
+  @@index([trainerId])
+}
+
+model Topic {
+  id      Int      @id @default(autoincrement())
+  name    String
+  courses Course[] @relation("CourseTopics")
+}
+
+model Badge {
+  id      Int      @id @default(autoincrement())
+  name    String
+  courses Course[] @relation("CourseBadges")
+}
+
+model Trainee {
+  id             Int      @id @default(autoincrement())
+  lastName       String
+  firstName      String
+  // Sensitive (GDPR). Stored plain in demo with fictional data;
+  // encrypt at rest before using real data.
+  nationalNumber String
+  createdAt      DateTime @default(now())
+
+  assignments TraineeAssignment[]
+}
+
+model TraineeAssignment {
+  id           Int      @id @default(autoincrement())
+  traineeId    Int
+  courseId     Int
+  assignedDate DateTime
+  createdAt    DateTime @default(now())
+
+  trainee Trainee @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([traineeId, courseId])
+  @@index([courseId])
+}

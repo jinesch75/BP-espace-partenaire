@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #faf9f9;
+}
+
+body {
+  background: var(--bg);
+  color: #1a1a1a;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading), ui-sans-serif, sans-serif;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-[10px] border-2 px-4 py-2 text-sm font-semibold transition-colors;
+  }
+  /* Solid coral that inverts to an outline on hover — matches Biergerpakt */
+  .btn-primary {
+    @apply btn border-brand bg-brand text-white hover:bg-white hover:text-brand;
+  }
+  .btn-secondary {
+    @apply btn border-slate-300 bg-white text-slate-700 hover:border-brand hover:text-brand;
+  }
+  .btn-danger {
+    @apply btn border-red-300 bg-white text-red-600 hover:border-red-500 hover:bg-red-50;
+  }
+  .card {
+    @apply rounded-2xl border border-slate-100 bg-white shadow-card;
+  }
+  .input {
+    @apply w-full rounded-[12px] border-2 border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-brand focus:outline-none;
+  }
+  .label {
+    @apply mb-1 block text-sm font-semibold text-slate-700;
+  }
+  .badge-pill {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .th {
+    @apply px-3 py-2 text-left text-xs font-bold uppercase tracking-wide text-slate-500;
+  }
+  .td {
+    @apply px-3 py-2 align-top text-sm text-slate-700;
+  }
+  .section-title {
+    @apply font-heading text-2xl font-bold tracking-tight text-ink;
+  }
+}
