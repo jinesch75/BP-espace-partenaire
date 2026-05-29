@@ -8,11 +8,7 @@ import {
   populationLabel,
   statusClasses,
 } from "@/lib/format";
-import {
-  setCourseStatus,
-  duplicateCourse,
-  deleteCourse,
-} from "@/app/partner/_actions";
+import { setCourseStatus, deleteCourse } from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
 
 export const dynamic = "force-dynamic";
@@ -197,11 +193,6 @@ export default async function CourseDetail({
             </select>
           </div>
           <button className="btn-primary">Update status</button>
-        </form>
-
-        <form action={duplicateCourse}>
-          <input type="hidden" name="courseId" value={course.id} />
-          <button className="btn-secondary">Duplicate</button>
         </form>
 
         <form action={deleteCourse} className="ml-auto">

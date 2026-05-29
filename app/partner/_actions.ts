@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requirePartner } from "@/lib/session";
-import { logAudit } from "@/lib/audit";
 
 type SessionInput = {
   sequence: number;
@@ -144,7 +143,6 @@ export async function createCourse(formData: FormData) {
     },
   });
 
-  await logAudit("CREATE", "Course", created.id, title);
   revalidatePath("/partner");
   redirect("/partner");
 }
@@ -203,7 +201,6 @@ export async function updateCourse(formData: FormData) {
     where: { courseId, id: { notIn: keptIds.length ? keptIds : [-1] } },
   });
 
-  await logAudit("UPDATE", "Course", courseId, title);
   revalidatePath("/partner");
   revalidatePath(`/partner/courses/${courseId}`);
   redirect(`/partner/courses/${courseId}`);
@@ -217,49 +214,8 @@ export async function setCourseStatus(formData: FormData) {
     where: { id: courseId, partnerId: partner.id },
     data: { status: status as any },
   });
-  await logAudit("STATUS", "Course", courseId, status);
   revalidatePath("/partner");
   revalidatePath(`/partner/courses/${courseId}`);
-}
-
-export async function duplicateCourse(formData: FormData) {
-  const partner = await requirePartner();
-  const courseId = Number(formData.get("courseId"));
-  const src = await prisma.course.findFirst({
-    where: { id: courseId, partnerId: partner.id },
-    include: { sessions: true, topics: true, badges: true },
-  });
-  if (!src) redirect("/partner");
-
-  const copy = await prisma.course.create({
-    data: {
-      partnerId: partner.id,
-      title: `${src.title} (copy)`,
-      description: src.description,
-      type: src.type,
-      recurring: src.recurring,
-      status: "DRAFT",
-      // admin fields (population/visibility) intentionally NOT copied
-      topics: { connect: src.topics.map((t) => ({ id: t.id })) },
-      badges: { connect: src.badges.map((b) => ({ id: b.id })) },
-      sessions: {
-        create: src.sessions.map((s) => ({
-          sequence: s.sequence,
-          date: s.date,
-          startTime: s.startTime,
-          endTime: s.endTime,
-          isOnline: s.isOnline,
-          location: s.location,
-          teamsLink: s.teamsLink,
-          placesAvailable: s.placesAvailable,
-          trainerId: s.trainerId,
-        })),
-      },
-    },
-  });
-  await logAudit("DUPLICATE", "Course", copy.id, `from #${courseId}`);
-  revalidatePath("/partner");
-  redirect(`/partner/courses/${copy.id}`);
 }
 
 export async function deleteCourse(formData: FormData) {
@@ -268,7 +224,6 @@ export async function deleteCourse(formData: FormData) {
   await prisma.course.deleteMany({
     where: { id: courseId, partnerId: partner.id },
   });
-  await logAudit("DELETE", "Course", courseId);
   revalidatePath("/partner");
   redirect("/partner");
 }
@@ -293,7 +248,6 @@ export async function assignTrainee(formData: FormData) {
     update: { assignedDate },
     create: { traineeId, courseId, assignedDate },
   });
-  await logAudit("ASSIGN", "Trainee", traineeId, `course #${courseId}`);
   revalidatePath("/partner/assign");
 }
 
@@ -308,7 +262,6 @@ export async function removeAssignment(formData: FormData) {
   });
   if (a && a.course.partnerId === partner.id) {
     await prisma.traineeAssignment.delete({ where: { id } });
-    await logAudit("UNASSIGN", "Trainee", a.traineeId, `course #${a.courseId}`);
   }
   revalidatePath("/partner/assign");
 }
@@ -318,9 +271,8 @@ export async function addTrainer(formData: FormData) {
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
   if (!firstName && !lastName) return;
-  const t = await prisma.trainer.create({
+  await prisma.trainer.create({
     data: { partnerId: partner.id, firstName, lastName },
   });
-  await logAudit("CREATE", "Trainer", t.id, `${firstName} ${lastName}`);
   revalidatePath("/partner/trainers");
 }

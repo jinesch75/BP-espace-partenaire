@@ -7,8 +7,6 @@ import {
   populationLabel,
   statusClasses,
 } from "@/lib/format";
-import { duplicateCourse } from "@/app/partner/_actions";
-
 export const dynamic = "force-dynamic";
 
 export default async function PartnerHome() {
@@ -23,12 +21,44 @@ export default async function PartnerHome() {
     },
   });
 
+  const hasInfo =
+    partner.description || partner.contactEmail || partner.phone || partner.address;
+
   return (
     <div className="space-y-6">
+      {/* Partner general information (managed by the training centre) */}
+      <div className="card p-5">
+        <h1 className="section-title">{partner.name}</h1>
+        {partner.description && (
+          <p className="mt-2 text-sm text-slate-600">{partner.description}</p>
+        )}
+        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600">
+          {partner.contactEmail && (
+            <span>
+              <span className="font-semibold">Email:</span> {partner.contactEmail}
+            </span>
+          )}
+          {partner.phone && (
+            <span>
+              <span className="font-semibold">Phone:</span> {partner.phone}
+            </span>
+          )}
+          {partner.address && (
+            <span>
+              <span className="font-semibold">Address:</span> {partner.address}
+            </span>
+          )}
+        </div>
+        {!hasInfo && (
+          <p className="mt-2 text-sm text-slate-400">
+            No contact details yet — the training centre manager can add them.
+          </p>
+        )}
+      </div>
+
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">My courses</h1>
-          <p className="text-sm text-slate-500">{partner.name}</p>
+          <h2 className="text-xl font-bold text-slate-800">My courses</h2>
         </div>
         <Link href="/partner/courses/new" className="btn-primary">
           + New course
@@ -65,10 +95,6 @@ export default async function PartnerHome() {
                 <Link href={`/partner/courses/${c.id}`} className="btn-secondary">
                   Open
                 </Link>
-                <form action={duplicateCourse}>
-                  <input type="hidden" name="courseId" value={c.id} />
-                  <button className="btn-secondary">Duplicate</button>
-                </form>
               </div>
             </div>
 

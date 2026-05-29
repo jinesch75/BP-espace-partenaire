@@ -35,9 +35,9 @@ async function TopBar() {
     label = "Manager";
     links = [
       { href: "/manager", text: "Dashboard" },
+      { href: "/manager/partners", text: "Partners" },
       { href: "/manager/courses", text: "All courses" },
       { href: "/manager/trainees", text: "Trainees" },
-      { href: "/manager/audit", text: "Audit log" },
     ];
   } else if (session.role === "PARTNER" && session.partnerId) {
     const partner = await prisma.partner.findUnique({

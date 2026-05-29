@@ -61,14 +61,14 @@ export default async function ManagerHome() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/manager/courses" className="btn-primary">
+        <Link href="/manager/partners" className="btn-primary">
+          Manage partners
+        </Link>
+        <Link href="/manager/courses" className="btn-secondary">
           Manage all courses
         </Link>
         <Link href="/manager/trainees" className="btn-secondary">
           Trainee database
-        </Link>
-        <Link href="/manager/audit" className="btn-secondary">
-          Audit log
         </Link>
         <a href="/manager/export" className="btn-secondary">
           Export to Excel
