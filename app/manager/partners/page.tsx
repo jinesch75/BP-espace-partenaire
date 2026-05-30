@@ -9,8 +9,29 @@ export default async function ManagerPartners() {
   requireManager();
   const partners = await prisma.partner.findMany({
     orderBy: [{ managesTrainees: "desc" }, { name: "asc" }],
-    include: { _count: { select: { courses: true, trainers: true } } },
+    include: {
+      _count: { select: { courses: true, trainers: true } },
+      trainers: { orderBy: [{ lastName: "asc" }, { firstName: "asc" }] },
+      courses: {
+        include: { sessions: { select: { date: true } } },
+        orderBy: { title: "asc" },
+      },
+    },
   });
+
+  const now = Date.now();
+  function splitCourses(courses: (typeof partners)[number]["courses"]) {
+    const upcoming: string[] = [];
+    const past: string[] = [];
+    for (const c of courses) {
+      const last = c.sessions.length
+        ? Math.max(...c.sessions.map((s) => new Date(s.date).getTime()))
+        : 0;
+      if (last >= now || c.sessions.length === 0) upcoming.push(c.title);
+      else past.push(c.title);
+    }
+    return { upcoming, past };
+  }
 
   return (
     <div className="space-y-6">
@@ -29,7 +50,9 @@ export default async function ManagerPartners() {
       </div>
 
       <div className="space-y-4">
-        {partners.map((p) => (
+        {partners.map((p) => {
+          const { upcoming, past } = splitCourses(p.courses);
+          return (
           <div key={p.id} className="card p-5">
             <form action={updatePartner} className="space-y-4">
               <input type="hidden" name="partnerId" value={p.id} />
@@ -81,6 +104,54 @@ export default async function ManagerPartners() {
               <button className="btn-primary">Enregistrer les modifications</button>
             </form>
 
+            <div className="mt-4 grid gap-4 border-t border-slate-100 pt-3 sm:grid-cols-2">
+              <div>
+                <p className="label mb-1">Formateurs ({p.trainers.length})</p>
+                {p.trainers.length === 0 ? (
+                  <p className="text-xs text-slate-400">Aucun formateur.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.trainers.map((t) => (
+                      <span
+                        key={t.id}
+                        className="badge-pill bg-slate-100 text-slate-600"
+                      >
+                        {t.firstName} {t.lastName}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <p className="label mb-1">Cours ({p._count.courses})</p>
+                <p className="text-xs font-semibold text-slate-500">À venir</p>
+                {upcoming.length === 0 ? (
+                  <p className="text-xs text-slate-400">Aucun.</p>
+                ) : (
+                  <div className="mb-2 flex flex-wrap gap-1.5">
+                    {upcoming.map((title, i) => (
+                      <span key={i} className="badge-pill bg-green-100 text-green-700">
+                        {title}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs font-semibold text-slate-500">Passés</p>
+                {past.length === 0 ? (
+                  <p className="text-xs text-slate-400">Aucun.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {past.map((title, i) => (
+                      <span key={i} className="badge-pill bg-slate-100 text-slate-500">
+                        {title}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             <form
               action={deletePartner}
               className="mt-4 border-t border-slate-100 pt-3"
@@ -92,7 +163,8 @@ export default async function ManagerPartners() {
               </span>
             </form>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
