@@ -146,6 +146,18 @@ export default async function ManagerCourseDetail({
         <button className="btn-primary">Enregistrer les champs administrateur</button>
       </form>
 
+      {/* Détails du cours */}
+      <div>
+        <h2 className="section-title mb-3 text-xl">Détails du cours</h2>
+        <EditCourseForm
+          course={{ id: course.id, title: course.title, description: course.description }}
+          sessions={sessions}
+          trainers={trainers}
+          action={updateCourseDetails}
+          cancelHref="/manager/courses"
+        />
+      </div>
+
       {/* Participants et présence */}
       <div className="card overflow-hidden">
         <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
@@ -179,18 +191,6 @@ export default async function ManagerCourseDetail({
             </tbody>
           </table>
         )}
-      </div>
-
-      {/* Détails du cours */}
-      <div>
-        <h2 className="section-title mb-3 text-xl">Détails du cours</h2>
-        <EditCourseForm
-          course={{ id: course.id, title: course.title, description: course.description }}
-          sessions={sessions}
-          trainers={trainers}
-          action={updateCourseDetails}
-          cancelHref="/manager/courses"
-        />
       </div>
 
       {/* Supprimer le cours */}
