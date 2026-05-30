@@ -249,6 +249,7 @@ export async function assignTrainee(formData: FormData) {
     create: { traineeId, courseId, assignedDate },
   });
   revalidatePath("/partner/assign");
+  revalidatePath(`/partner/courses/${courseId}`);
 }
 
 export async function removeAssignment(formData: FormData) {
@@ -262,6 +263,7 @@ export async function removeAssignment(formData: FormData) {
   });
   if (a && a.course.partnerId === partner.id) {
     await prisma.traineeAssignment.delete({ where: { id } });
+    revalidatePath(`/partner/courses/${a.courseId}`);
   }
   revalidatePath("/partner/assign");
 }

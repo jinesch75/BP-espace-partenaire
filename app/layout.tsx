@@ -48,9 +48,6 @@ async function TopBar() {
       { href: "/partner", text: "Mes cours" },
       { href: "/partner/trainers", text: "Formateurs" },
     ];
-    if (partner?.managesTrainees) {
-      links.push({ href: "/partner/assign", text: "Affecter des participants" });
-    }
   } else if (session.role === "TRAINER" && session.trainerId) {
     const trainer = await prisma.trainer.findUnique({
       where: { id: session.trainerId },

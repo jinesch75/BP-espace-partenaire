@@ -10,9 +10,15 @@ import {
   statusLabel,
   STATUS_LABELS,
 } from "@/lib/format";
-import { setCourseStatus, deleteCourse } from "@/app/partner/_actions";
+import {
+  setCourseStatus,
+  deleteCourse,
+  assignTrainee,
+  removeAssignment,
+} from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
 import { PresenceControls } from "@/app/_components/PresenceControls";
+import { decryptSensitive } from "@/lib/crypto";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +42,13 @@ export default async function CourseDetail({
   if (!course) notFound();
 
   const conflicts = await getTrainerConflicts(course.id);
+
+  // ONA (and any partner that can assign participants) gets the add control
+  const trainees = partner.managesTrainees
+    ? await prisma.trainee.findMany({
+        orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+      })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -166,6 +179,28 @@ export default async function CourseDetail({
         <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
           Participants ({course.assignments.length}) — présence
         </div>
+
+        {partner.managesTrainees && (
+          <form
+            action={assignTrainee}
+            className="flex flex-wrap items-end gap-2 border-b border-slate-100 px-5 py-4"
+          >
+            <input type="hidden" name="courseId" value={course.id} />
+            <div className="min-w-[280px]">
+              <label className="label">Ajouter un participant</label>
+              <select name="traineeId" className="input" required>
+                <option value="">— choisir un participant —</option>
+                {trainees.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.lastName} {t.firstName} ({decryptSensitive(t.nationalNumber)})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className="btn-primary">Ajouter des participants</button>
+          </form>
+        )}
+
         {course.assignments.length === 0 ? (
           <p className="px-5 py-4 text-sm text-slate-500">
             Aucun participant pour l&apos;instant.
@@ -177,6 +212,7 @@ export default async function CourseDetail({
                 <th className="th">Participant</th>
                 <th className="th">Date</th>
                 <th className="th">Présence</th>
+                {partner.managesTrainees && <th className="th"></th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -189,6 +225,16 @@ export default async function CourseDetail({
                   <td className="td">
                     <PresenceControls assignmentId={a.id} presence={a.presence} />
                   </td>
+                  {partner.managesTrainees && (
+                    <td className="td text-right">
+                      <form action={removeAssignment}>
+                        <input type="hidden" name="assignmentId" value={a.id} />
+                        <button className="text-xs text-red-600 hover:underline">
+                          Retirer
+                        </button>
+                      </form>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
