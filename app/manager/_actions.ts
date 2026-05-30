@@ -56,20 +56,32 @@ export async function cycleDpiStatus(formData: FormData) {
   const now = Date.now();
 
   if (!a) {
-    // no affectation yet → create one (présent / green check) on the first matching activity
     const courses = await prisma.course.findMany({
       include: { sessions: { orderBy: { sequence: "asc" }, take: 1 } },
     });
     const target = courses.find((c) => dpiKeyOf(c.title) === key);
-    if (!target) return; // no activity of this step exists to affect
-    await prisma.traineeAssignment.create({
-      data: {
-        traineeId,
-        courseId: target.id,
-        assignedDate: target.sessions[0]?.date ?? new Date(),
-        presence: "PRESENT",
-      },
-    });
+    if (target) {
+      // an activity exists for this step → affect it (présent / green check)
+      await prisma.traineeAssignment.create({
+        data: {
+          traineeId,
+          courseId: target.id,
+          assignedDate: target.sessions[0]?.date ?? new Date(),
+          presence: "PRESENT",
+        },
+      });
+    } else {
+      // no activity of this step exists → manual mark, toggle ✓ / ✗
+      const existing = await prisma.traineeDpiStatus.findUnique({
+        where: { traineeId_dpiKey: { traineeId, dpiKey: key } },
+      });
+      const next = existing?.status === "PRESENT" ? "ABSENT" : "PRESENT";
+      await prisma.traineeDpiStatus.upsert({
+        where: { traineeId_dpiKey: { traineeId, dpiKey: key } },
+        update: { status: next },
+        create: { traineeId, dpiKey: key, status: next },
+      });
+    }
   } else {
     const future = new Date(a.assignedDate).getTime() > now;
     let next: "PRESENT" | "ABSENT" | null;

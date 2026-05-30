@@ -50,6 +50,7 @@ async function resetSequences() {
     "Category",
     "Trainee",
     "TraineeAssignment",
+    "TraineeDpiStatus",
   ];
   for (const t of tables) {
     await prisma.$executeRawUnsafe(

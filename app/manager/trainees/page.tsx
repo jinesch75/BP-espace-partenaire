@@ -40,6 +40,7 @@ export default async function ManagerTrainees() {
         include: { course: { select: { title: true } } },
         orderBy: { assignedDate: "asc" },
       },
+      dpiStatuses: true,
     },
   });
 
@@ -91,31 +92,43 @@ export default async function ManagerTrainees() {
                 </td>
                 {COLUMNS.map((c) => {
                   const a = t.assignments.find((x) => c.match(x.course.title));
+                  const s = t.dpiStatuses.find((x) => x.dpiKey === c.key);
+                  const check = (
+                    <span title="A participé">
+                      <CheckIcon />
+                    </span>
+                  );
+                  const cross = (
+                    <span title="N'a pas participé">
+                      <CrossIcon />
+                    </span>
+                  );
                   let cell: React.ReactNode;
-                  if (!a || a.presence === "ABSENT") {
-                    cell = (
-                      <span title="N'a pas participé">
-                        <CrossIcon />
-                      </span>
-                    );
-                  } else if (
-                    a.presence === "PRESENT" ||
-                    new Date(a.assignedDate).getTime() <= now
-                  ) {
-                    cell = (
-                      <span title={`A participé — ${formatDate(a.assignedDate)}`}>
-                        <CheckIcon />
-                      </span>
-                    );
+                  if (a) {
+                    if (a.presence === "ABSENT") cell = cross;
+                    else if (
+                      a.presence === "PRESENT" ||
+                      new Date(a.assignedDate).getTime() <= now
+                    ) {
+                      cell = (
+                        <span title={`A participé — ${formatDate(a.assignedDate)}`}>
+                          <CheckIcon />
+                        </span>
+                      );
+                    } else {
+                      cell = (
+                        <span
+                          className="whitespace-nowrap text-xs font-semibold text-amber-600"
+                          title={`Programmé le ${formatDate(a.assignedDate)}`}
+                        >
+                          {shortDate(a.assignedDate)}
+                        </span>
+                      );
+                    }
+                  } else if (s) {
+                    cell = s.status === "PRESENT" ? check : cross;
                   } else {
-                    cell = (
-                      <span
-                        className="whitespace-nowrap text-xs font-semibold text-amber-600"
-                        title={`Programmé le ${formatDate(a.assignedDate)}`}
-                      >
-                        {shortDate(a.assignedDate)}
-                      </span>
-                    );
+                    cell = cross;
                   }
                   return (
                     <td key={c.key} className="td text-center">

@@ -163,6 +163,22 @@ model Trainee {
   createdAt      DateTime @default(now())
 
   assignments TraineeAssignment[]
+  dpiStatuses TraineeDpiStatus[]
+}
+
+// Manual participation mark for a DPI step that has no concrete activity to
+// affect (e.g. a past course no longer in the system). dpiKey is one of
+// DAPA1..DAPA5 / BIENV.
+model TraineeDpiStatus {
+  id        Int      @id @default(autoincrement())
+  traineeId Int
+  dpiKey    String
+  status    Presence
+  createdAt DateTime @default(now())
+
+  trainee Trainee @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+
+  @@unique([traineeId, dpiKey])
 }
 
 model TraineeAssignment {
