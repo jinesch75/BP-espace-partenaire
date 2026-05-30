@@ -21,7 +21,7 @@ export default async function NewCoursePage({
     <div className="space-y-6">
       <div>
         <Link href="/partner" className="text-sm text-brand hover:underline">
-          ← Retour à mes activités
+          ← Retour aux activités du {partner.name}
         </Link>
         <h1 className="section-title mt-2">Nouvelle activité</h1>
       </div>

@@ -67,7 +67,7 @@ export default async function CourseDetail({
       )}
       <div>
         <Link href="/partner" className="text-sm text-brand hover:underline">
-          ← Retour à mes activités
+          ← Retour aux activités du {partner.name}
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-bold text-slate-800">{course.title}</h1>

@@ -45,7 +45,7 @@ async function TopBar() {
     });
     label = `Partenaire · ${partner?.name ?? "?"}`;
     links = [
-      { href: "/partner", text: "Mes activités" },
+      { href: "/partner", text: `Les activités du ${partner?.name ?? ""}` },
       { href: "/partner/trainers", text: "Intervenants" },
     ];
   } else if (session.role === "TRAINER" && session.trainerId) {
