@@ -46,13 +46,13 @@ async function TopBar() {
     label = `Partenaire · ${partner?.name ?? "?"}`;
     links = [
       { href: "/partner", text: `Les activités du ${partner?.name ?? ""}` },
-      { href: "/partner/trainers", text: "Intervenants" },
+      { href: "/partner/trainers", text: "Intervenants/Formateurs" },
     ];
   } else if (session.role === "TRAINER" && session.trainerId) {
     const trainer = await prisma.trainer.findUnique({
       where: { id: session.trainerId },
     });
-    label = `Intervenant · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
+    label = `Intervenant/Formateur · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
     links = [{ href: "/trainer", text: "Mes activités" }];
   }
 

@@ -16,15 +16,15 @@ export default async function TrainersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="section-title">Intervenants</h1>
+        <h1 className="section-title">Intervenants/Formateurs</h1>
         <p className="text-sm text-slate-500">
-          {partner.name} · ces intervenants apparaissent dans la liste déroulante
+          {partner.name} · ces intervenants/formateurs apparaissent dans la liste déroulante
           lorsque vous créez une activité.
         </p>
       </div>
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Ajouter un intervenant</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">Ajouter un intervenant/formateur</h2>
         <form action={addTrainer} className="flex flex-wrap items-end gap-3">
           <div>
             <label className="label" htmlFor="firstName">
@@ -68,7 +68,7 @@ export default async function TrainersPage() {
         ))}
         {trainers.length === 0 && (
           <div className="card p-6 text-center text-sm text-slate-500">
-            Aucun intervenant pour l&apos;instant.
+            Aucun intervenant/formateur pour l&apos;instant.
           </div>
         )}
       </div>

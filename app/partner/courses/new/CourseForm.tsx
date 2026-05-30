@@ -16,7 +16,7 @@ function TrainerPicker({
   const [value, setValue] = useState("");
   return (
     <div>
-      <label className="label">Intervenant</label>
+      <label className="label">Intervenant/Formateur</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
@@ -29,7 +29,7 @@ function TrainerPicker({
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Ajouter un nouvel intervenant…</option>
+        <option value="new">+ Ajouter un nouvel intervenant/formateur…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">
@@ -181,7 +181,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
           <h3 className="font-semibold text-slate-700">Modèle hebdomadaire</h3>
           <p className="text-xs text-slate-500">
             Toutes les sessions partagent le même jour, la même heure, le même
-            lieu et le même intervenant. Nous générons une activité à sessions multiples
+            lieu et le même intervenant/formateur. Nous générons une activité à sessions multiples
             que vous pourrez affiner ensuite.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">

@@ -44,6 +44,7 @@ export async function updatePartner(formData: FormData) {
     where: { id },
     data: {
       name: name || undefined,
+      managesTrainees: formData.get("managesTrainees") === "on",
       description: String(formData.get("description") ?? "").trim() || null,
       contactEmail: String(formData.get("contactEmail") ?? "").trim() || null,
       phone: String(formData.get("phone") ?? "").trim() || null,

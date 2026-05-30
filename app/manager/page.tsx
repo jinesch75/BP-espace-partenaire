@@ -35,7 +35,7 @@ function Stat({
 export default async function ManagerHome() {
   requireManager();
 
-  const [partners, courses, trainers, trainees, pop1, pop2, hidden, byTopic] =
+  const [partners, courses, trainers, trainees, pop1, pop2, hidden, byTopic, todo] =
     await Promise.all([
       prisma.partner.count(),
       prisma.course.count(),
@@ -48,16 +48,31 @@ export default async function ManagerHome() {
         include: { _count: { select: { courses: true } } },
         orderBy: { id: "asc" },
       }),
+      prisma.course.count({
+        where: { OR: [{ population: null }, { topics: { none: {} } }] },
+      }),
     ]);
 
   return (
     <div className="space-y-8">
       <h1 className="section-title">Tableau de bord</h1>
 
+      {todo > 0 && (
+        <Link
+          href="/manager/courses?todo=1"
+          className="block rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 transition-colors hover:bg-amber-100"
+        >
+          <span className="font-semibold">
+            ⚠ {todo} activité{todo > 1 ? "s" : ""} à compléter
+          </span>{" "}
+          — catalogue, thèmes ou badges à définir. Cliquez pour les voir.
+        </Link>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Partenaires" value={partners} href="/manager/partners" />
         <Stat label="Activités" value={courses} href="/manager/courses" />
-        <Stat label="Intervenants" value={trainers} href="/manager/trainers" />
+        <Stat label="Intervenants/Formateurs" value={trainers} href="/manager/trainers" />
         <Stat label="Participants" value={trainees} href="/manager/trainees" />
         <Stat
           label="Activités Catalogue principal"

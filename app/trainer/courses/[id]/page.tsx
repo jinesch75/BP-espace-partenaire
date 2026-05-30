@@ -76,7 +76,7 @@ export default async function TrainerCourseDetail({
               <th className="th">Heure</th>
               <th className="th">Lieu</th>
               <th className="th">Inscrits / max</th>
-              <th className="th">Intervenant</th>
+              <th className="th">Intervenant/Formateur</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

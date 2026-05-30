@@ -55,7 +55,7 @@ export default async function CourseDetail({
     <div className="space-y-6">
       {conflicts.length > 0 && (
         <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          <p className="font-semibold">Avertissement : double réservation d&apos;un intervenant</p>
+          <p className="font-semibold">Avertissement : double réservation d&apos;un intervenant/formateur</p>
           <ul className="mt-1 list-disc pl-5">
             {conflicts.map((c, i) => (
               <li key={i}>
@@ -135,7 +135,7 @@ export default async function CourseDetail({
               <th className="th">Heure</th>
               <th className="th">Lieu</th>
               <th className="th">Places</th>
-              <th className="th">Intervenant</th>
+              <th className="th">Intervenant/Formateur</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

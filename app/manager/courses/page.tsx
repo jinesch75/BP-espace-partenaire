@@ -21,6 +21,7 @@ export default async function ManagerCourses({
     status?: string;
     visible?: string;
     topicId?: string;
+    todo?: string;
   };
 }) {
   requireManager();
@@ -34,6 +35,8 @@ export default async function ManagerCourses({
   else if (searchParams.visible === "0") where.visibleInCatalogue = false;
   if (searchParams.topicId)
     where.topics = { some: { id: Number(searchParams.topicId) } };
+  if (searchParams.todo === "1")
+    where.OR = [{ population: null }, { topics: { none: {} } }];
 
   const [partners, topics, badges, courses] = await Promise.all([
     prisma.partner.findMany({ orderBy: { name: "asc" } }),
@@ -54,6 +57,13 @@ export default async function ManagerCourses({
   return (
     <div className="space-y-6">
       <h1 className="section-title">Toutes les activités</h1>
+
+      {searchParams.todo === "1" && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Activités à compléter : il manque le catalogue et/ou un thème. Définissez
+          le catalogue, les thèmes et les badges, puis enregistrez.
+        </div>
+      )}
 
       {/* Filtres */}
       <form className="card flex flex-wrap items-end gap-3 p-4" method="get">
@@ -123,11 +133,16 @@ export default async function ManagerCourses({
               <input type="hidden" name="courseId" value={c.id} />
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <h2 className="font-semibold text-slate-800">{c.title}</h2>
                     <span className={`badge-pill ${statusClasses(c.status)}`}>
                       {statusLabel(c.status)}
                     </span>
+                    {(!c.population || c.topics.length === 0) && (
+                      <span className="badge-pill bg-amber-100 text-amber-700">
+                        À compléter
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-slate-500">
                     {c.partner.name} · {courseTypeLabel(c.type, c.recurring)} ·{" "}

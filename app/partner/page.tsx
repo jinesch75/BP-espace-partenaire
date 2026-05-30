@@ -144,7 +144,7 @@ export default async function PartnerHome() {
                     <th className="th">Heure</th>
                     <th className="th">Lieu</th>
                     <th className="th">Places</th>
-                    <th className="th">Intervenant</th>
+                    <th className="th">Intervenant/Formateur</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">

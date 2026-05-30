@@ -47,7 +47,7 @@ export default async function Home() {
       <section className="card p-5">
         <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Chaque partenaire gère ses propres activités et intervenants. ONA et MIFA
+          Chaque partenaire gère ses propres activités et intervenants/formateurs. ONA et MIFA
           (rôle DPI) peuvent aussi affecter des participants.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,7 +65,7 @@ export default async function Home() {
                     )}
                   </span>
                   <span className="text-xs text-slate-500">
-                    {p._count.courses} activités · {p.trainers.length} intervenants
+                    {p._count.courses} activités · {p.trainers.length} intervenants/formateurs
                   </span>
                 </span>
                 <span className="text-brand">→</span>
@@ -75,16 +75,16 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Intervenant */}
+      {/* Intervenant/Formateur */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Accès intervenant</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Accès intervenant/formateur</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Un intervenant voit les activités auxquelles il est affecté et qui y est inscrit.
+          Un intervenant/formateur voit les activités auxquelles il est affecté et qui y est inscrit.
         </p>
         <form action={enterAsTrainer} className="mt-3 flex flex-wrap items-end gap-3">
           <div className="min-w-[260px]">
             <label className="label" htmlFor="trainerId">
-              Choisir un intervenant
+              Choisir un intervenant/formateur
             </label>
             <select id="trainerId" name="trainerId" className="input" required>
               <option value="">— sélectionner —</option>
@@ -99,7 +99,7 @@ export default async function Home() {
               ))}
             </select>
           </div>
-          <button className="btn-primary">Entrer comme intervenant</button>
+          <button className="btn-primary">Entrer comme intervenant/formateur</button>
         </form>
       </section>
     </div>

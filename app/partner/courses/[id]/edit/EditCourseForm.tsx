@@ -41,7 +41,7 @@ function TrainerPicker({
   const [value, setValue] = useState(initial ? String(initial) : "");
   return (
     <div>
-      <label className="label">Intervenant</label>
+      <label className="label">Intervenant/Formateur</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
@@ -54,7 +54,7 @@ function TrainerPicker({
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Ajouter un nouvel intervenant…</option>
+        <option value="new">+ Ajouter un nouvel intervenant/formateur…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">

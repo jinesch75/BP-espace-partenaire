@@ -25,9 +25,9 @@ export default async function ManagerTrainers() {
         <Link href="/manager" className="text-sm text-brand hover:underline">
           ← Retour au tableau de bord
         </Link>
-        <h1 className="section-title mt-2">Intervenants</h1>
+        <h1 className="section-title mt-2">Intervenants/Formateurs</h1>
         <p className="text-sm text-slate-500">
-          {trainers.length} intervenants au total, tous partenaires confondus.
+          {trainers.length} intervenants/formateurs au total, tous partenaires confondus.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ export default async function ManagerTrainers() {
         ))}
         {trainers.length === 0 && (
           <div className="card p-6 text-center text-sm text-slate-500">
-            Aucun intervenant pour l&apos;instant.
+            Aucun intervenant/formateur pour l&apos;instant.
           </div>
         )}
       </div>

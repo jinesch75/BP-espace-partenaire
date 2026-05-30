@@ -65,7 +65,7 @@ export default async function ManagerPartners() {
                   )}
                 </div>
                 <span className="text-xs text-slate-500">
-                  {p._count.courses} activités · {p._count.trainers} intervenants
+                  {p._count.courses} activités · {p._count.trainers} intervenants/formateurs
                 </span>
               </div>
 
@@ -102,14 +102,23 @@ export default async function ManagerPartners() {
                 </div>
               </div>
 
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  name="managesTrainees"
+                  defaultChecked={p.managesTrainees}
+                />
+                Rôle DPI — peut affecter des participants aux activités
+              </label>
+
               <SaveButton>Enregistrer les modifications</SaveButton>
             </form>
 
             <div className="mt-4 grid gap-4 border-t border-slate-100 pt-3 sm:grid-cols-2">
               <div>
-                <p className="label mb-1">Intervenants ({p.trainers.length})</p>
+                <p className="label mb-1">Intervenants/Formateurs ({p.trainers.length})</p>
                 {p.trainers.length === 0 ? (
-                  <p className="text-xs text-slate-400">Aucun intervenant.</p>
+                  <p className="text-xs text-slate-400">Aucun intervenant/formateur.</p>
                 ) : (
                   <div className="flex flex-wrap gap-1.5">
                     {p.trainers.map((t) => (
@@ -160,7 +169,7 @@ export default async function ManagerPartners() {
               <input type="hidden" name="partnerId" value={p.id} />
               <button className="btn-danger">Supprimer ce partenaire</button>
               <span className="ml-2 text-xs text-slate-400">
-                Supprime aussi les activités, sessions et intervenants de ce partenaire.
+                Supprime aussi les activités, sessions et intervenants/formateurs de ce partenaire.
               </span>
             </form>
           </div>
