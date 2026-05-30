@@ -37,13 +37,12 @@ function CrossIcon() {
     </svg>
   );
 }
-function ScheduleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="3" y="4.5" width="18" height="16" rx="2" />
-      <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
-    </svg>
-  );
+function shortDate(d: Date | string): string {
+  return new Date(d).toLocaleDateString("fr-BE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
 }
 
 export default async function ManagerTrainees() {
@@ -75,7 +74,9 @@ export default async function ManagerTrainees() {
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
         <span className="inline-flex items-center gap-1"><CheckIcon /> A participé</span>
-        <span className="inline-flex items-center gap-1"><ScheduleIcon /> Programmé (survol = date)</span>
+        <span className="inline-flex items-center gap-1">
+          <span className="font-semibold text-amber-600">jj/mm/aa</span> Programmé (date prévue)
+        </span>
         <span className="inline-flex items-center gap-1"><CrossIcon /> N&apos;a pas participé</span>
       </div>
 
@@ -119,10 +120,10 @@ export default async function ManagerTrainees() {
                   } else {
                     cell = (
                       <span
-                        className="cursor-help"
+                        className="whitespace-nowrap text-xs font-semibold text-amber-600"
                         title={`Programmé le ${formatDate(a.assignedDate)}`}
                       >
-                        <ScheduleIcon />
+                        {shortDate(a.assignedDate)}
                       </span>
                     );
                   }

@@ -117,11 +117,60 @@ async function applyCatalogueRules() {
   }
 }
 
+// Illustration data: give some participants a varied participation pattern
+// across the six DPI courses (some past = "participé", some future =
+// "programmé"). Applied on every run, idempotent.
+function dpiKey(title) {
+  const n = title.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (["DAPA1", "DAPA2", "DAPA3", "DAPA4", "DAPA5"].includes(n)) return n;
+  if (n.includes("BIENVENUE") || n === "WELCOME") return "BIENV";
+  return null;
+}
+
+async function applyDemoParticipation() {
+  const order = ["DAPA1", "DAPA2", "DAPA3", "DAPA4", "DAPA5", "BIENV"];
+  const courses = await prisma.course.findMany({ select: { id: true, title: true } });
+  const map = {};
+  for (const c of courses) {
+    const k = dpiKey(c.title);
+    if (k && map[k] === undefined) map[k] = c.id;
+  }
+  if (Object.keys(map).length === 0) return; // no DPI courses present
+
+  const trainees = await prisma.trainee.findMany({
+    orderBy: { id: "asc" },
+    take: 18,
+    select: { id: true },
+  });
+
+  const past = new Date(Date.now() - 30 * 86400000); // 30 days ago -> "participé"
+  const future = new Date(Date.now() + 60 * 86400000); // in 60 days -> "programmé"
+
+  for (let i = 0; i < trainees.length; i++) {
+    const traineeId = trainees[i].id;
+    const done = i % 5; // 0..4 courses already attended
+    for (let j = 0; j < order.length; j++) {
+      const courseId = map[order[j]];
+      if (courseId === undefined) continue;
+      let assignedDate = null;
+      if (j < done) assignedDate = past;
+      else if (j === done) assignedDate = future;
+      if (!assignedDate) continue;
+      await prisma.traineeAssignment.upsert({
+        where: { traineeId_courseId: { traineeId, courseId } },
+        update: { assignedDate },
+        create: { traineeId, courseId, assignedDate },
+      });
+    }
+  }
+}
+
 async function main() {
-  // always enforce theme/badge names and the catalogue rule,
-  // even on an already-seeded database
+  // always enforce theme/badge names, the catalogue rule and the
+  // illustration participation data, even on an already-seeded database
   await applyTaxonomy();
   await applyCatalogueRules();
+  await applyDemoParticipation();
 
   const existing = await prisma.partner.count();
   if (existing > 0) {
