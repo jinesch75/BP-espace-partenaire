@@ -5,6 +5,47 @@ import { decryptSensitive } from "@/lib/crypto";
 
 export const dynamic = "force-dynamic";
 
+function norm(s: string): string {
+  return s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+// The six courses tracked as columns.
+const COLUMNS: { key: string; label: string; match: (title: string) => boolean }[] = [
+  { key: "DAPA1", label: "DAPA 1", match: (t) => norm(t) === "DAPA1" },
+  { key: "DAPA2", label: "DAPA 2", match: (t) => norm(t) === "DAPA2" },
+  { key: "DAPA3", label: "DAPA 3", match: (t) => norm(t) === "DAPA3" },
+  { key: "DAPA4", label: "DAPA 4", match: (t) => norm(t) === "DAPA4" },
+  { key: "DAPA5", label: "DAPA 5", match: (t) => norm(t) === "DAPA5" },
+  {
+    key: "BIENV",
+    label: "Bienvenue",
+    match: (t) => /bienvenue/i.test(t) || norm(t) === "WELCOME",
+  },
+];
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="#16a34a" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4.5 10.5l3.5 3.5L15.5 6" />
+    </svg>
+  );
+}
+function CrossIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="#dc2626" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
+      <path d="M6 6l8 8M14 6l-8 8" />
+    </svg>
+  );
+}
+function ScheduleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4.5" width="18" height="16" rx="2" />
+      <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+    </svg>
+  );
+}
+
 export default async function ManagerTrainees() {
   requireManager();
 
@@ -12,31 +53,44 @@ export default async function ManagerTrainees() {
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
     include: {
       assignments: {
-        include: { course: { include: { partner: true } } },
+        include: { course: { select: { title: true } } },
         orderBy: { assignedDate: "asc" },
       },
     },
   });
 
+  const now = Date.now();
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="section-title">Base des participants</h1>
+        <h1 className="section-title">
+          Demandeurs de protection internationale (DPI)
+        </h1>
         <p className="text-sm text-slate-500">
-          {trainees.length} participants. Le numéro national est sensible —
-          chiffrez-le avant toute donnée réelle. Les affectations sont faites par
-          ONA.
+          {trainees.length} participants. Le numéro national est sensible et
+          chiffré. Suivi de participation aux six cours du parcours.
         </p>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
+        <span className="inline-flex items-center gap-1"><CheckIcon /> A participé</span>
+        <span className="inline-flex items-center gap-1"><ScheduleIcon /> Programmé (survol = date)</span>
+        <span className="inline-flex items-center gap-1"><CrossIcon /> N&apos;a pas participé</span>
+      </div>
+
+      <div className="card overflow-x-auto">
         <table className="w-full">
           <thead className="bg-surface">
             <tr>
               <th className="th">Nom de famille</th>
               <th className="th">Prénom</th>
               <th className="th">Numéro national</th>
-              <th className="th">Cours affectés (date)</th>
+              {COLUMNS.map((c) => (
+                <th key={c.key} className="th text-center">
+                  {c.label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -47,22 +101,37 @@ export default async function ManagerTrainees() {
                 <td className="td whitespace-nowrap">
                   {decryptSensitive(t.nationalNumber)}
                 </td>
-                <td className="td">
-                  {t.assignments.length === 0 ? (
-                    <span className="text-slate-400">—</span>
-                  ) : (
-                    <ul className="space-y-0.5">
-                      {t.assignments.map((a) => (
-                        <li key={a.id}>
-                          <span className="font-medium">{a.course.title}</span>{" "}
-                          <span className="text-slate-500">
-                            ({formatDate(a.assignedDate)})
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </td>
+                {COLUMNS.map((c) => {
+                  const a = t.assignments.find((x) => c.match(x.course.title));
+                  let cell: React.ReactNode;
+                  if (!a) {
+                    cell = (
+                      <span title="N'a pas participé">
+                        <CrossIcon />
+                      </span>
+                    );
+                  } else if (new Date(a.assignedDate).getTime() <= now) {
+                    cell = (
+                      <span title={`A participé — ${formatDate(a.assignedDate)}`}>
+                        <CheckIcon />
+                      </span>
+                    );
+                  } else {
+                    cell = (
+                      <span
+                        className="cursor-help"
+                        title={`Programmé le ${formatDate(a.assignedDate)}`}
+                      >
+                        <ScheduleIcon />
+                      </span>
+                    );
+                  }
+                  return (
+                    <td key={c.key} className="td text-center">
+                      <span className="inline-flex justify-center">{cell}</span>
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
