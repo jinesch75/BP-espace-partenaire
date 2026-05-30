@@ -110,6 +110,14 @@ export default async function ManagerCourseDetail({
               />
               Visible dans le catalogue
             </label>
+
+            <label className="label mt-3">Statut</label>
+            <select name="status" defaultValue={course.status} className="input">
+              <option value="DRAFT">Brouillon</option>
+              <option value="OPEN">Ouvert</option>
+              <option value="COMPLETED">Terminé</option>
+              <option value="CANCELLED">Annulé</option>
+            </select>
           </div>
           <div>
             <span className="label">Thèmes</span>

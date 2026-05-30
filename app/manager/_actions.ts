@@ -189,16 +189,22 @@ export async function updateCourseAdmin(formData: FormData) {
   const visible = formData.get("visibleInCatalogue") === "on";
   const topicIds = formData.getAll("topicIds").map((v) => Number(v));
   const badgeIds = formData.getAll("badgeIds").map((v) => Number(v));
+  const statusRaw = String(formData.get("status") ?? "");
+  const status = ["DRAFT", "OPEN", "COMPLETED", "CANCELLED"].includes(statusRaw)
+    ? statusRaw
+    : undefined;
 
   await prisma.course.update({
     where: { id: courseId },
     data: {
       population: population as any,
       visibleInCatalogue: visible,
+      status: status as any,
       topics: { set: topicIds.map((id) => ({ id })) },
       badges: { set: badgeIds.map((id) => ({ id })) },
     },
   });
 
   revalidatePath("/manager/courses");
+  revalidatePath(`/manager/courses/${courseId}`);
 }

@@ -58,12 +58,21 @@ export default async function ManagerCourses({
     <div className="space-y-6">
       <h1 className="section-title">Toutes les activités</h1>
 
-      {searchParams.todo === "1" && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Activités à compléter : il manque le catalogue et/ou un thème. Définissez
-          le catalogue, les thèmes et les badges, puis enregistrez.
-        </div>
-      )}
+      {searchParams.todo === "1" &&
+        (courses.length > 0 ? (
+          <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            {courses.length} activité{courses.length > 1 ? "s" : ""} à compléter :
+            il manque le catalogue et/ou un thème. Définissez le catalogue, les
+            thèmes et les badges, puis enregistrez.
+          </div>
+        ) : (
+          <div className="rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-800">
+            ✓ Toutes les activités sont complètes — rien à compléter.{" "}
+            <a href="/manager/courses" className="font-semibold underline">
+              Voir toutes les activités
+            </a>
+          </div>
+        ))}
 
       {/* Filtres */}
       <form className="card flex flex-wrap items-end gap-3 p-4" method="get">
@@ -175,6 +184,14 @@ export default async function ManagerCourses({
                     />
                     Visible dans le catalogue
                   </label>
+
+                  <label className="label mt-3">Statut</label>
+                  <select name="status" defaultValue={c.status} className="input">
+                    <option value="DRAFT">Brouillon</option>
+                    <option value="OPEN">Ouvert</option>
+                    <option value="COMPLETED">Terminé</option>
+                    <option value="CANCELLED">Annulé</option>
+                  </select>
                 </div>
 
                 <div>
