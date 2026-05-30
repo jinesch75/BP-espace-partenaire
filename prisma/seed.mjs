@@ -180,33 +180,60 @@ async function applyDemoParticipation() {
   }
 }
 
-// Illustration: give every course a handful of random participants, with
-// some marked present/absent. Only seeds a course that has none yet, so it
-// is idempotent and never overrides real data.
+// Illustration: give every (non-DPI) course a handful of random participants.
+// Rules, enforced idempotently on each run:
+//  - fewer participants than the course capacity (min places across sessions)
+//  - upcoming courses have NO presence (neither present nor absent)
+//  - past courses get a present/absent mix
 async function applyDemoCourseParticipants() {
   const trainees = await prisma.trainee.findMany({ select: { id: true } });
   if (trainees.length === 0) return;
+  const now = Date.now();
   const courses = await prisma.course.findMany({
     include: {
-      sessions: { orderBy: { sequence: "asc" }, take: 1 },
-      _count: { select: { assignments: true } },
+      sessions: { orderBy: { sequence: "asc" } },
+      assignments: { select: { id: true } },
     },
   });
-  const presences = ["PRESENT", "ABSENT", null];
+
   for (const c of courses) {
-    if (c._count.assignments > 0) continue;
-    const date = c.sessions[0]?.date ?? new Date();
-    const shuffled = [...trainees].sort(() => Math.random() - 0.5);
-    const pick = shuffled.slice(0, 3 + Math.floor(Math.random() * 4)); // 3-6
-    for (let i = 0; i < pick.length; i++) {
-      await prisma.traineeAssignment.create({
-        data: {
-          traineeId: pick[i].id,
-          courseId: c.id,
-          assignedDate: date,
-          presence: presences[i % presences.length],
-        },
-      });
+    if (dpiKey(c.title)) continue; // DPI courses handled by applyDemoParticipation
+    if (c.sessions.length === 0) continue;
+
+    const date = c.sessions[0].date;
+    const lastTime = Math.max(...c.sessions.map((s) => new Date(s.date).getTime()));
+    const upcoming = lastTime >= now;
+    const capacity = Math.min(...c.sessions.map((s) => s.placesAvailable || 0));
+    const maxAllowed = capacity > 1 ? capacity - 1 : capacity; // strictly fewer than capacity
+
+    let ids = c.assignments.map((a) => a.id);
+
+    if (ids.length === 0) {
+      const target = Math.max(
+        1,
+        Math.min(3 + Math.floor(Math.random() * 4), maxAllowed, trainees.length)
+      );
+      const pick = [...trainees].sort(() => Math.random() - 0.5).slice(0, target);
+      for (let i = 0; i < pick.length; i++) {
+        const presence = upcoming ? null : i % 2 === 0 ? "PRESENT" : "ABSENT";
+        await prisma.traineeAssignment.create({
+          data: { traineeId: pick[i].id, courseId: c.id, assignedDate: date, presence },
+        });
+      }
+    } else {
+      // keep the participant count below the course capacity
+      if (maxAllowed >= 1 && ids.length > maxAllowed) {
+        await prisma.traineeAssignment.deleteMany({
+          where: { id: { in: ids.slice(maxAllowed) } },
+        });
+      }
+      // upcoming course: clear any present/absent marking
+      if (upcoming) {
+        await prisma.traineeAssignment.updateMany({
+          where: { courseId: c.id },
+          data: { presence: null },
+        });
+      }
     }
   }
 }
