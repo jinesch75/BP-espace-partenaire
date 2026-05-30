@@ -175,20 +175,15 @@ export default function EditCourseForm({
       <input type="hidden" name="courseId" value={course.id} />
       <input type="hidden" name="sessionCount" value={rows.length} />
 
-      <div className="card space-y-4 p-5">
-        <div>
-          <label className="label">Titre de l'activité</label>
-          <input name="title" className="input" defaultValue={course.title} required />
-        </div>
-        <div>
-          <label className="label">Description</label>
-          <textarea
-            name="description"
-            rows={3}
-            className="input"
-            defaultValue={course.description ?? ""}
-          />
-        </div>
+      <div className="card p-5">
+        <h2 className="font-semibold text-slate-800">{course.title}</h2>
+        {course.description && (
+          <p className="mt-1 text-sm text-slate-600">{course.description}</p>
+        )}
+        <p className="mt-2 text-xs text-slate-400">
+          Le titre et la description proviennent du programme et se modifient au
+          niveau du programme.
+        </p>
       </div>
 
       <div className="space-y-4">

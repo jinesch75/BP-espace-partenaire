@@ -66,11 +66,7 @@ function readSession(
 
 export async function createCourse(formData: FormData) {
   const partner = await requirePartner();
-  const title = String(formData.get("title") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim() || null;
   const type = String(formData.get("type") ?? "SINGLE");
-
-  if (!title) redirect("/partner/courses/new?error=title");
 
   const sessions: SessionInput[] = [];
 
@@ -131,47 +127,49 @@ export async function createCourse(formData: FormData) {
 
   if (sessions.length === 0) redirect("/partner/courses/new?error=session");
 
-  // Programme (regroupement). Pick an existing programme of this partner, or
-  // create a new one. A new édition inherits the programme's shared info.
+  // Programme (regroupement). Either an existing programme of this partner, or
+  // a new one. The activité (édition) inherits the programme's title,
+  // description and shared admin info.
   let programmeId = Number(formData.get("programmeId")) || null;
   const newProgrammeName = String(formData.get("newProgrammeName") ?? "").trim();
-  if (!programmeId) {
-    const prog = await prisma.programme.create({
-      data: { name: newProgrammeName || title, partnerId: partner.id },
-    });
-    programmeId = prog.id;
-  } else {
-    // ensure the chosen programme belongs to this partner
+
+  if (programmeId) {
     const owned = await prisma.programme.findFirst({
       where: { id: programmeId, partnerId: partner.id },
     });
     if (!owned) programmeId = null;
   }
+  if (!programmeId) {
+    if (!newProgrammeName) redirect("/partner/courses/new?error=programme");
+    const prog = await prisma.programme.create({
+      data: { name: newProgrammeName, partnerId: partner.id },
+    });
+    programmeId = prog.id;
+  }
 
-  const prog = programmeId
-    ? await prisma.programme.findUnique({ where: { id: programmeId } })
-    : null;
+  const prog = await prisma.programme.findUnique({ where: { id: programmeId } });
+  if (!prog) redirect("/partner/courses/new?error=programme");
 
-  const created = await prisma.course.create({
+  await prisma.course.create({
     data: {
       partnerId: partner.id,
       programmeId,
-      title,
-      description,
+      title: prog.name,
+      description: prog.description,
       type: type === "SINGLE" ? "SINGLE" : "MULTI",
       recurring: type === "RECURRING",
       status: "DRAFT",
       // inherit the programme's shared admin info
-      dpiStep: prog?.dpiStep ?? null,
-      population: prog?.population ?? null,
-      visibleInCatalogue: prog?.visibleInCatalogue ?? false,
-      topicPrimaryId: prog?.topicPrimaryId ?? null,
-      topicSecondaryId: prog?.topicSecondaryId ?? null,
-      topicTertiaryId: prog?.topicTertiaryId ?? null,
-      categoryPrimaryId: prog?.categoryPrimaryId ?? null,
-      categorySecondaryId: prog?.categorySecondaryId ?? null,
-      categoryTertiaryId: prog?.categoryTertiaryId ?? null,
-      badges: prog ? { connect: prog.badgeIds.map((id) => ({ id })) } : undefined,
+      dpiStep: prog.dpiStep ?? null,
+      population: prog.population ?? null,
+      visibleInCatalogue: prog.visibleInCatalogue ?? false,
+      topicPrimaryId: prog.topicPrimaryId ?? null,
+      topicSecondaryId: prog.topicSecondaryId ?? null,
+      topicTertiaryId: prog.topicTertiaryId ?? null,
+      categoryPrimaryId: prog.categoryPrimaryId ?? null,
+      categorySecondaryId: prog.categorySecondaryId ?? null,
+      categoryTertiaryId: prog.categoryTertiaryId ?? null,
+      badges: { connect: prog.badgeIds.map((id) => ({ id })) },
       sessions: { create: sessions },
     },
   });
@@ -189,15 +187,7 @@ export async function updateCourse(formData: FormData) {
   });
   if (!course) redirect("/partner");
 
-  const title = String(formData.get("title") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim() || null;
-  if (!title) redirect(`/partner/courses/${courseId}/edit?error=title`);
-
-  await prisma.course.update({
-    where: { id: courseId },
-    data: { title, description },
-  });
-
+  // title/description are inherited from the programme — not edited here.
   const count = Number(formData.get("sessionCount") ?? 0);
   const keptIds: number[] = [];
 

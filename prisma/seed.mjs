@@ -226,6 +226,7 @@ async function ensureProgrammes() {
       prog = await prisma.programme.create({
         data: {
           name: step ? DPI_LABEL[step] : c.title,
+          description: c.description ?? null,
           partnerId: c.partnerId,
           dpiStep: step ?? null,
           population: c.population ?? null,
@@ -242,7 +243,12 @@ async function ensureProgrammes() {
     }
     await prisma.course.update({
       where: { id: c.id },
-      data: { programmeId: prog.id, dpiStep: step ?? null },
+      data: {
+        programmeId: prog.id,
+        dpiStep: step ?? null,
+        title: prog.name,
+        description: prog.description,
+      },
     });
   }
 }

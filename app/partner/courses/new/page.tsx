@@ -33,9 +33,9 @@ export default async function NewCoursePage({
         <h1 className="section-title mt-2">Nouvelle activité</h1>
       </div>
 
-      {searchParams.error === "title" && (
+      {searchParams.error === "programme" && (
         <div className="rounded-md bg-red-50 px-4 py-2 text-sm text-red-700">
-          Veuillez saisir un titre d'activité.
+          Veuillez choisir un programme (ou en créer un nouveau).
         </div>
       )}
       {searchParams.error === "session" && (

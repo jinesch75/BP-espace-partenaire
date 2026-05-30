@@ -198,15 +198,7 @@ export async function updateCourseDetails(formData: FormData) {
   });
   if (!course) redirect("/manager/courses");
 
-  const title = String(formData.get("title") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim() || null;
-  if (!title) redirect(`/manager/courses/${courseId}?error=title`);
-
-  await prisma.course.update({
-    where: { id: courseId },
-    data: { title, description },
-  });
-
+  // title/description are inherited from the programme — not edited here.
   const count = Number(formData.get("sessionCount") ?? 0);
   const keptIds: number[] = [];
 
@@ -298,6 +290,8 @@ export async function propagateProgramme(programmeId: number) {
     await prisma.course.update({
       where: { id: c.id },
       data: {
+        title: p.name,
+        description: p.description,
         population: p.population,
         visibleInCatalogue: p.visibleInCatalogue,
         dpiStep: p.dpiStep,
@@ -319,6 +313,8 @@ export async function updateProgramme(formData: FormData) {
   requireManager();
   const id = Number(formData.get("programmeId"));
   if (!id) return;
+  const name = String(formData.get("name") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim() || null;
   const populationRaw = String(formData.get("population") ?? "");
   const population =
     populationRaw === "POP1" || populationRaw === "POP2" ? populationRaw : null;
@@ -331,6 +327,8 @@ export async function updateProgramme(formData: FormData) {
   await prisma.programme.update({
     where: { id },
     data: {
+      name: name || undefined,
+      description,
       population: population as any,
       visibleInCatalogue: visible,
       dpiStep,

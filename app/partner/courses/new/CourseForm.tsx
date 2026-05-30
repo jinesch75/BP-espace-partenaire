@@ -145,7 +145,7 @@ export default function CourseForm({
   const [keys, setKeys] = useState<number[]>([0]);
   const [recOnline, setRecOnline] = useState(false);
   const [endMode, setEndMode] = useState<"count" | "date">("count");
-  const [programme, setProgramme] = useState("new");
+  const [programme, setProgramme] = useState("");
 
   const multiKeys = type === "MULTI" ? keys : [0];
 
@@ -153,40 +153,36 @@ export default function CourseForm({
     <form action={createCourse} className="space-y-6">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Titre de l'activité</label>
-          <input name="title" className="input" required />
-        </div>
-        <div>
-          <label className="label">Description</label>
-          <textarea name="description" rows={3} className="input" />
-        </div>
-        <div>
-          <label className="label">Programme (regroupement)</label>
+          <label className="label">Programme</label>
           <select
             className="input"
             value={programme}
             onChange={(e) => setProgramme(e.target.value)}
+            required
           >
-            <option value="new">+ Nouveau programme</option>
+            <option value="">— choisir un programme —</option>
             {programmes.map((p) => (
               <option key={p.id} value={String(p.id)}>
                 {p.name}
               </option>
             ))}
+            <option value="new">+ Nouveau programme…</option>
           </select>
-          {programme === "new" ? (
+          {programme === "new" && (
             <input
               name="newProgrammeName"
-              placeholder="Nom du programme (ex. DAPA 1)"
+              placeholder="Nom du nouveau programme (ex. DAPA 1)"
               className="input mt-2"
+              required
             />
-          ) : (
+          )}
+          {programme !== "new" && programme !== "" && (
             <input type="hidden" name="programmeId" value={programme} />
           )}
           <p className="mt-1 text-xs text-slate-500">
-            Une activité est une <strong>édition</strong> d&apos;un programme. Les
-            éditions d&apos;un même programme partagent ses informations (catalogue,
-            type, domaine, badges), définies par l&apos;administrateur.
+            L&apos;activité reprend le titre et la description du programme. Les
+            informations (catalogue, type, domaine, badges) sont définies sur le
+            programme par l&apos;administrateur.
           </p>
         </div>
         <div>

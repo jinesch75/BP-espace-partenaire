@@ -59,6 +59,22 @@ export default async function ManagerProgrammes() {
                 </span>
               </div>
 
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <label className="label">Nom du programme</label>
+                  <input name="name" className="input" defaultValue={p.name} />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="label">Description (commune à toutes les éditions)</label>
+                  <textarea
+                    name="description"
+                    rows={2}
+                    className="input"
+                    defaultValue={p.description ?? ""}
+                  />
+                </div>
+              </div>
+
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="space-y-2">
                   <div>
