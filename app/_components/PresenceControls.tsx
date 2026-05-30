@@ -3,9 +3,13 @@ import { setPresence } from "@/app/_actions/presence";
 export function PresenceControls({
   assignmentId,
   presence,
+  presentLabel = "Présent",
+  absentLabel = "Absent",
 }: {
   assignmentId: number;
   presence: string | null;
+  presentLabel?: string;
+  absentLabel?: string;
 }) {
   const base =
     "rounded-md border px-2 py-0.5 text-xs font-semibold transition-colors";
@@ -25,7 +29,7 @@ export function PresenceControls({
               : "border-slate-300 text-slate-500 hover:border-green-500 hover:text-green-600"
           }`}
         >
-          Présent
+          {presentLabel}
         </button>
       </form>
       <form action={setPresence}>
@@ -42,7 +46,7 @@ export function PresenceControls({
               : "border-slate-300 text-slate-500 hover:border-red-500 hover:text-red-600"
           }`}
         >
-          Absent
+          {absentLabel}
         </button>
       </form>
     </div>

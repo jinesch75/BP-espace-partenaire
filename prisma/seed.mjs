@@ -47,6 +47,7 @@ async function resetSequences() {
     "Session",
     "Topic",
     "Badge",
+    "Category",
     "Trainee",
     "TraineeAssignment",
   ];
@@ -79,6 +80,16 @@ const BADGES = [
   "Echange culturel",
   "Administratif",
 ];
+// The 7 legal categories (short labels).
+const CATEGORIES = [
+  "Langues",
+  "Démarches administratives",
+  "Histoire & patrimoine",
+  "Diversité & interculturalité",
+  "Lutte anti-discrimination",
+  "Valeurs & société",
+  "Engagement citoyen",
+];
 
 async function applyTaxonomy() {
   for (let i = 0; i < TOPICS.length; i++) {
@@ -93,6 +104,13 @@ async function applyTaxonomy() {
       where: { id: i + 1 },
       update: { name: BADGES[i] },
       create: { id: i + 1, name: BADGES[i] },
+    });
+  }
+  for (let i = 0; i < CATEGORIES.length; i++) {
+    await prisma.category.upsert({
+      where: { id: i + 1 },
+      update: { name: CATEGORIES[i] },
+      create: { id: i + 1, name: CATEGORIES[i] },
     });
   }
 }
@@ -304,7 +322,10 @@ async function main() {
           recurring: !!c.recurring,
           population: c.population ?? null,
           visibleInCatalogue: !!c.visible_in_catalogue,
-          topics: { connect: (c.topic_ids ?? []).map((id) => ({ id })) },
+          topicPrimaryId: (c.topic_ids ?? [])[0] ?? null,
+          topicSecondaryId: (c.topic_ids ?? [])[1] ?? null,
+          topicTertiaryId: (c.topic_ids ?? [])[2] ?? null,
+          categoryPrimaryId: 1 + (c.id % 7),
           badges: { connect: (c.badge_ids ?? []).map((id) => ({ id })) },
           sessions: {
             create: c.sessions.map((s) => ({

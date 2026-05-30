@@ -9,6 +9,7 @@ import {
 } from "@/lib/format";
 import { updateCourseAdmin } from "@/app/manager/_actions";
 import { SaveButton } from "@/app/_components/SaveButton";
+import { TaxonomySelectors } from "@/app/_components/TaxonomySelectors";
 
 export const dynamic = "force-dynamic";
 
@@ -34,13 +35,14 @@ export default async function ManagerCourses({
   if (searchParams.visible === "1") where.visibleInCatalogue = true;
   else if (searchParams.visible === "0") where.visibleInCatalogue = false;
   if (searchParams.topicId)
-    where.topics = { some: { id: Number(searchParams.topicId) } };
+    where.topicPrimaryId = Number(searchParams.topicId);
   if (searchParams.todo === "1")
-    where.OR = [{ population: null }, { topics: { none: {} } }];
+    where.OR = [{ population: null }, { topicPrimaryId: null }];
 
-  const [partners, topics, badges, courses] = await Promise.all([
+  const [partners, topics, categories, badges, courses] = await Promise.all([
     prisma.partner.findMany({ orderBy: { name: "asc" } }),
     prisma.topic.findMany({ orderBy: { id: "asc" } }),
+    prisma.category.findMany({ orderBy: { id: "asc" } }),
     prisma.badge.findMany({ orderBy: { id: "asc" } }),
     prisma.course.findMany({
       where,
@@ -48,7 +50,6 @@ export default async function ManagerCourses({
       include: {
         partner: true,
         sessions: { orderBy: { sequence: "asc" } },
-        topics: true,
         badges: true,
       },
     }),
@@ -115,7 +116,7 @@ export default async function ManagerCourses({
           </select>
         </div>
         <div>
-          <label className="label">Thème</label>
+          <label className="label">Type d&apos;activité</label>
           <select name="topicId" defaultValue={searchParams.topicId ?? ""} className="input">
             <option value="">Tous</option>
             {topics.map((t) => (
@@ -131,7 +132,6 @@ export default async function ManagerCourses({
 
       <div className="space-y-4">
         {courses.map((c) => {
-          const topicIds = new Set(c.topics.map((t) => t.id));
           const badgeIds = new Set(c.badges.map((b) => b.id));
           return (
             <form
@@ -147,7 +147,7 @@ export default async function ManagerCourses({
                     <span className={`badge-pill ${statusClasses(c.status)}`}>
                       {statusLabel(c.status)}
                     </span>
-                    {(!c.population || c.topics.length === 0) && (
+                    {(!c.population || !c.topicPrimaryId) && (
                       <span className="badge-pill bg-amber-100 text-amber-700">
                         À compléter
                       </span>
@@ -164,7 +164,7 @@ export default async function ManagerCourses({
                 </Link>
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div>
                   <label className="label">Catalogue</label>
                   <select
@@ -194,22 +194,7 @@ export default async function ManagerCourses({
                   </select>
                 </div>
 
-                <div>
-                  <span className="label">Thèmes</span>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    {topics.map((t) => (
-                      <label key={t.id} className="flex items-center gap-1 text-sm">
-                        <input
-                          type="checkbox"
-                          name="topicIds"
-                          value={t.id}
-                          defaultChecked={topicIds.has(t.id)}
-                        />
-                        {t.name}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                <TaxonomySelectors topics={topics} categories={categories} course={c} />
 
                 <div>
                   <span className="label">Badges</span>

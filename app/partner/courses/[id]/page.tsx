@@ -19,6 +19,7 @@ import {
 import { getTrainerConflicts } from "@/lib/conflicts";
 import { PresenceControls } from "@/app/_components/PresenceControls";
 import { SaveButton } from "@/app/_components/SaveButton";
+import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 import { decryptSensitive } from "@/lib/crypto";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +36,7 @@ export default async function CourseDetail({
     where: { id: Number(params.id), partnerId: partner.id },
     include: {
       sessions: { orderBy: { sequence: "asc" }, include: { trainer: true } },
-      topics: true,
+      ...taxonomyInclude,
       badges: true,
       assignments: { include: { trainee: true } },
     },
@@ -110,11 +111,7 @@ export default async function CourseDetail({
           >
             {course.visibleInCatalogue ? "Visible dans le catalogue" : "Masqué"}
           </span>
-          {course.topics.map((t) => (
-            <span key={t.id} className="badge-pill bg-indigo-100 text-indigo-700">
-              {t.name}
-            </span>
-          ))}
+          <TaxonomyPills course={course} />
           {course.badges.map((b) => (
             <span key={b.id} className="badge-pill bg-amber-100 text-amber-700">
               {b.name}

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireTrainer } from "@/lib/session";
 import { courseTypeLabel, formatDate } from "@/lib/format";
 import { PresenceControls } from "@/app/_components/PresenceControls";
+import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ export default async function TrainerCourseDetail({
     include: {
       partner: true,
       sessions: { orderBy: { sequence: "asc" }, include: { trainer: true } },
-      topics: true,
+      ...taxonomyInclude,
       badges: true,
       assignments: { include: { trainee: true } },
     },
@@ -52,11 +53,7 @@ export default async function TrainerCourseDetail({
       )}
 
       <div className="flex flex-wrap gap-2 text-xs">
-        {course.topics.map((t) => (
-          <span key={t.id} className="badge-pill bg-indigo-100 text-indigo-700">
-            {t.name}
-          </span>
-        ))}
+        <TaxonomyPills course={course} />
         {course.badges.map((b) => (
           <span key={b.id} className="badge-pill bg-amber-100 text-amber-700">
             {b.name}

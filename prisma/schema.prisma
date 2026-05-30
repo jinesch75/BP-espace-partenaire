@@ -86,11 +86,27 @@ model Course {
   visibleInCatalogue Boolean      @default(false)
   createdAt          DateTime     @default(now())
 
+  // Type d'activité (themes), ranked
+  topicPrimaryId   Int?
+  topicSecondaryId Int?
+  topicTertiaryId  Int?
+  // Catégories (legal objectives), ranked
+  categoryPrimaryId   Int?
+  categorySecondaryId Int?
+  categoryTertiaryId  Int?
+
   partner     Partner             @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   sessions    Session[]
-  topics      Topic[]             @relation("CourseTopics")
   badges      Badge[]             @relation("CourseBadges")
   assignments TraineeAssignment[]
+
+  topicPrimary   Topic? @relation("TopicPrimary", fields: [topicPrimaryId], references: [id], onDelete: SetNull)
+  topicSecondary Topic? @relation("TopicSecondary", fields: [topicSecondaryId], references: [id], onDelete: SetNull)
+  topicTertiary  Topic? @relation("TopicTertiary", fields: [topicTertiaryId], references: [id], onDelete: SetNull)
+
+  categoryPrimary   Category? @relation("CatPrimary", fields: [categoryPrimaryId], references: [id], onDelete: SetNull)
+  categorySecondary Category? @relation("CatSecondary", fields: [categorySecondaryId], references: [id], onDelete: SetNull)
+  categoryTertiary  Category? @relation("CatTertiary", fields: [categoryTertiaryId], references: [id], onDelete: SetNull)
 
   @@index([partnerId])
 }
@@ -116,9 +132,19 @@ model Session {
 }
 
 model Topic {
-  id      Int      @id @default(autoincrement())
-  name    String
-  courses Course[] @relation("CourseTopics")
+  id          Int      @id @default(autoincrement())
+  name        String
+  primaryOf   Course[] @relation("TopicPrimary")
+  secondaryOf Course[] @relation("TopicSecondary")
+  tertiaryOf  Course[] @relation("TopicTertiary")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  primaryOf   Course[] @relation("CatPrimary")
+  secondaryOf Course[] @relation("CatSecondary")
+  tertiaryOf  Course[] @relation("CatTertiary")
 }
 
 model Badge {

@@ -90,13 +90,16 @@ export default async function ManagerTrainees() {
                 {COLUMNS.map((c) => {
                   const a = t.assignments.find((x) => c.match(x.course.title));
                   let cell: React.ReactNode;
-                  if (!a) {
+                  if (!a || a.presence === "ABSENT") {
                     cell = (
                       <span title="N'a pas participé">
                         <CrossIcon />
                       </span>
                     );
-                  } else if (new Date(a.assignedDate).getTime() <= now) {
+                  } else if (
+                    a.presence === "PRESENT" ||
+                    new Date(a.assignedDate).getTime() <= now
+                  ) {
                     cell = (
                       <span title={`A participé — ${formatDate(a.assignedDate)}`}>
                         <CheckIcon />

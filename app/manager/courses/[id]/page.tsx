@@ -11,6 +11,7 @@ import {
 import EditCourseForm from "@/app/partner/courses/[id]/edit/EditCourseForm";
 import { PresenceControls } from "@/app/_components/PresenceControls";
 import { SaveButton } from "@/app/_components/SaveButton";
+import { TaxonomySelectors } from "@/app/_components/TaxonomySelectors";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,6 @@ export default async function ManagerCourseDetail({
     include: {
       partner: true,
       sessions: { orderBy: { sequence: "asc" } },
-      topics: true,
       badges: true,
       assignments: {
         include: { trainee: true },
@@ -41,8 +41,9 @@ export default async function ManagerCourseDetail({
   });
   if (!course) notFound();
 
-  const [topics, badges, trainers] = await Promise.all([
+  const [topics, categories, badges, trainers] = await Promise.all([
     prisma.topic.findMany({ orderBy: { id: "asc" } }),
+    prisma.category.findMany({ orderBy: { id: "asc" } }),
     prisma.badge.findMany({ orderBy: { id: "asc" } }),
     prisma.trainer.findMany({
       where: { partnerId: course.partnerId },
@@ -51,7 +52,6 @@ export default async function ManagerCourseDetail({
     }),
   ]);
 
-  const topicIds = new Set(course.topics.map((t) => t.id));
   const badgeIds = new Set(course.badges.map((b) => b.id));
 
   const sessions = course.sessions.map((s) => ({
@@ -94,7 +94,7 @@ export default async function ManagerCourseDetail({
       <form action={updateCourseAdmin} className="card space-y-4 p-5">
         <h2 className="font-semibold text-slate-800">Champs administrateur</h2>
         <input type="hidden" name="courseId" value={course.id} />
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <label className="label">Catalogue</label>
             <select name="population" defaultValue={course.population ?? ""} className="input">
@@ -119,22 +119,7 @@ export default async function ManagerCourseDetail({
               <option value="CANCELLED">Annulé</option>
             </select>
           </div>
-          <div>
-            <span className="label">Thèmes</span>
-            <div className="flex flex-wrap gap-x-3 gap-y-1">
-              {topics.map((t) => (
-                <label key={t.id} className="flex items-center gap-1 text-sm">
-                  <input
-                    type="checkbox"
-                    name="topicIds"
-                    value={t.id}
-                    defaultChecked={topicIds.has(t.id)}
-                  />
-                  {t.name}
-                </label>
-              ))}
-            </div>
-          </div>
+          <TaxonomySelectors topics={topics} categories={categories} course={course} />
           <div>
             <span className="label">Badges</span>
             <div className="flex flex-wrap gap-x-3 gap-y-1">

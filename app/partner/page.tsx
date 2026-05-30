@@ -10,6 +10,7 @@ import {
 } from "@/lib/format";
 import { updatePartnerInfo } from "@/app/partner/_actions";
 import { SaveButton } from "@/app/_components/SaveButton";
+import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export default async function PartnerHome() {
     orderBy: { createdAt: "desc" },
     include: {
       sessions: { orderBy: { sequence: "asc" }, include: { trainer: true } },
-      topics: true,
+      ...taxonomyInclude,
       badges: true,
     },
   });
@@ -123,11 +124,7 @@ export default async function PartnerHome() {
               >
                 {c.visibleInCatalogue ? "Visible dans le catalogue" : "Masqué"}
               </span>
-              {c.topics.map((t) => (
-                <span key={t.id} className="badge-pill bg-indigo-100 text-indigo-700">
-                  {t.name}
-                </span>
-              ))}
+              <TaxonomyPills course={c} />
               {c.badges.map((b) => (
                 <span key={b.id} className="badge-pill bg-amber-100 text-amber-700">
                   {b.name}

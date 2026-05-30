@@ -76,10 +76,12 @@ export default async function TraineeDetail({
 
               {current && (
                 <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
-                  <span className="text-slate-500">Présence :</span>
+                  <span className="text-slate-500">Statut :</span>
                   <PresenceControls
                     assignmentId={current.id}
                     presence={current.presence}
+                    presentLabel="A participé"
+                    absentLabel="N'a pas participé"
                   />
                   <form action={removeDpiAssignment}>
                     <input type="hidden" name="assignmentId" value={current.id} />

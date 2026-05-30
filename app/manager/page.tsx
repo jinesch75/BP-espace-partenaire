@@ -45,11 +45,11 @@ export default async function ManagerHome() {
       prisma.course.count({ where: { population: "POP2" } }),
       prisma.course.count({ where: { visibleInCatalogue: false } }),
       prisma.topic.findMany({
-        include: { _count: { select: { courses: true } } },
+        include: { _count: { select: { primaryOf: true } } },
         orderBy: { id: "asc" },
       }),
       prisma.course.count({
-        where: { OR: [{ population: null }, { topics: { none: {} } }] },
+        where: { OR: [{ population: null }, { topicPrimaryId: null }] },
       }),
     ]);
 
@@ -97,7 +97,9 @@ export default async function ManagerHome() {
       </div>
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Activités par thème</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">
+          Activités par type (principal)
+        </h2>
         <div className="flex flex-wrap gap-2">
           {byTopic.map((t) => (
             <Link
@@ -105,7 +107,7 @@ export default async function ManagerHome() {
               href={`/manager/courses?topicId=${t.id}`}
               className="badge-pill bg-indigo-100 text-indigo-700 transition-colors hover:bg-indigo-200"
             >
-              {t.name}: {t._count.courses}
+              {t.name}: {t._count.primaryOf}
             </Link>
           ))}
         </div>

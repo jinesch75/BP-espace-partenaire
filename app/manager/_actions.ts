@@ -234,12 +234,12 @@ export async function updateCourseAdmin(formData: FormData) {
   const population =
     populationRaw === "POP1" || populationRaw === "POP2" ? populationRaw : null;
   const visible = formData.get("visibleInCatalogue") === "on";
-  const topicIds = formData.getAll("topicIds").map((v) => Number(v));
   const badgeIds = formData.getAll("badgeIds").map((v) => Number(v));
   const statusRaw = String(formData.get("status") ?? "");
   const status = ["DRAFT", "OPEN", "COMPLETED", "CANCELLED"].includes(statusRaw)
     ? statusRaw
     : undefined;
+  const num = (k: string) => Number(formData.get(k)) || null;
 
   await prisma.course.update({
     where: { id: courseId },
@@ -247,7 +247,12 @@ export async function updateCourseAdmin(formData: FormData) {
       population: population as any,
       visibleInCatalogue: visible,
       status: status as any,
-      topics: { set: topicIds.map((id) => ({ id })) },
+      topicPrimaryId: num("topicPrimaryId"),
+      topicSecondaryId: num("topicSecondaryId"),
+      topicTertiaryId: num("topicTertiaryId"),
+      categoryPrimaryId: num("categoryPrimaryId"),
+      categorySecondaryId: num("categorySecondaryId"),
+      categoryTertiaryId: num("categoryTertiaryId"),
       badges: { set: badgeIds.map((id) => ({ id })) },
     },
   });
