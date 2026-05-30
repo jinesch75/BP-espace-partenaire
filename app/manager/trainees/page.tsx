@@ -61,7 +61,7 @@ function SortHeader({
 export default async function ManagerTrainees({
   searchParams,
 }: {
-  searchParams: { sort?: string; dir?: string };
+  searchParams: { sort?: string; dir?: string; q?: string };
 }) {
   requireManager();
 
@@ -115,11 +115,24 @@ export default async function ManagerTrainees({
       ? Math.floor((now - new Date(t.inscriptionOna).getTime()) / 86400000)
       : -1;
 
+  // search (surname / first name / national number)
+  const q = (searchParams.q ?? "").trim().toLowerCase();
+  const filtered = q
+    ? trainees.filter((t) => {
+        const nn = decryptSensitive(t.nationalNumber).toLowerCase();
+        return (
+          t.lastName.toLowerCase().includes(q) ||
+          t.firstName.toLowerCase().includes(q) ||
+          nn.includes(q)
+        );
+      })
+    : trainees;
+
   // sorting
   const sort = searchParams.sort ?? "days";
   const dir = searchParams.dir ?? "desc";
   const mul = dir === "asc" ? 1 : -1;
-  const sorted = [...trainees].sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     let cmp = 0;
     if (sort === "name") cmp = a.lastName.localeCompare(b.lastName);
     else if (sort === "days") cmp = days(a) - days(b);
@@ -150,6 +163,29 @@ export default async function ManagerTrainees({
         <span className="inline-flex items-center gap-1"><CrossIcon /> N&apos;a pas participé</span>
       </div>
 
+      <form method="get" className="flex flex-wrap items-end gap-2">
+        <input type="hidden" name="sort" value={sort} />
+        <input type="hidden" name="dir" value={dir} />
+        <div className="min-w-[280px] flex-1">
+          <label className="label">Rechercher</label>
+          <input
+            name="q"
+            defaultValue={searchParams.q ?? ""}
+            placeholder="Nom, prénom ou numéro national"
+            className="input"
+          />
+        </div>
+        <button className="btn-primary">Rechercher</button>
+        {q && (
+          <a href="/manager/trainees" className="btn-secondary">
+            Effacer
+          </a>
+        )}
+        <span className="ml-auto text-sm text-slate-500">
+          {sorted.length} résultat{sorted.length === 1 ? "" : "s"}
+        </span>
+      </form>
+
       <div className="card overflow-x-auto">
         <table className="w-full">
           <thead className="bg-surface">
@@ -160,12 +196,13 @@ export default async function ManagerTrainees({
               <th className="th">Prénom</th>
               <th className="th">Numéro national</th>
               <th className="th whitespace-nowrap">Inscription ONA</th>
-              <th className="th whitespace-nowrap">
+              <th className="th w-16 text-center align-bottom">
                 <SortHeader
                   label="Jours depuis inscription ONA"
                   sortKey="days"
                   current={sort}
                   dir={dir}
+                  className="inline-block whitespace-normal leading-tight"
                 />
               </th>
               {COLUMNS.map((c) => (
