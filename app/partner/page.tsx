@@ -17,14 +17,28 @@ export default async function PartnerHome() {
   const partner = await requirePartner();
   const courses = await prisma.course.findMany({
     where: { partnerId: partner.id },
-    orderBy: { createdAt: "desc" },
     include: {
       sessions: { orderBy: { sequence: "asc" }, include: { trainer: true } },
       ...taxonomyInclude,
       badges: true,
-      programme: { select: { name: true } },
+      programme: { select: { id: true, name: true } },
     },
   });
+
+  // group éditions by programme (fallback: title), sort by first séance date
+  const firstDate = (c: (typeof courses)[number]) =>
+    c.sessions[0] ? new Date(c.sessions[0].date).getTime() : Infinity;
+  const groupsMap = new Map<string, { label: string; items: typeof courses }>();
+  for (const c of courses) {
+    const key = c.programme ? `p${c.programme.id}` : `t${c.title}`;
+    const label = c.programme?.name ?? c.title;
+    if (!groupsMap.has(key)) groupsMap.set(key, { label, items: [] });
+    groupsMap.get(key)!.items.push(c);
+  }
+  const groups = [...groupsMap.values()].sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
+  for (const g of groups) g.items.sort((a, b) => firstDate(a) - firstDate(b));
 
   return (
     <div className="space-y-6">
@@ -55,8 +69,16 @@ export default async function PartnerHome() {
         </div>
       )}
 
-      <div className="space-y-4">
-        {courses.map((c) => (
+      <div className="space-y-8">
+        {groups.map((g) => (
+          <div key={g.label} className="space-y-3">
+            <h3 className="text-lg font-bold text-slate-700">
+              {g.label}{" "}
+              <span className="text-sm font-normal text-slate-400">
+                ({g.items.length} édition{g.items.length > 1 ? "s" : ""})
+              </span>
+            </h3>
+            {g.items.map((c) => (
           <div key={c.id} className="card p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -148,6 +170,8 @@ export default async function PartnerHome() {
                 </tbody>
               </table>
             </div>
+          </div>
+            ))}
           </div>
         ))}
       </div>
