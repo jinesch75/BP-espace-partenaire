@@ -47,8 +47,8 @@ export default async function Home() {
       <section className="card p-5">
         <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Chaque partenaire gère ses propres cours et formateurs. ONA peut aussi
-          affecter des participants.
+          Chaque partenaire gère ses propres cours et formateurs. ONA et MIFA
+          (rôle DPI) peuvent aussi affecter des participants.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {partners.map((p) => (
