@@ -52,8 +52,8 @@ export function TaxonomySelectors({
         <Select name="topicTertiaryId" label="Tertiaire" value={course.topicTertiaryId} options={topics} />
       </div>
       <div className="space-y-2">
-        <span className="label">Catégorie</span>
-        <Select name="categoryPrimaryId" label="Principale" value={course.categoryPrimaryId} options={categories} />
+        <span className="label">Domaine de la loi</span>
+        <Select name="categoryPrimaryId" label="Principal" value={course.categoryPrimaryId} options={categories} />
         <Select name="categorySecondaryId" label="Secondaire" value={course.categorySecondaryId} options={categories} />
         <Select name="categoryTertiaryId" label="Tertiaire" value={course.categoryTertiaryId} options={categories} />
       </div>

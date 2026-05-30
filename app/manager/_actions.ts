@@ -39,6 +39,53 @@ export async function assignDpiCourse(formData: FormData) {
   revalidatePath(`/manager/trainees/${traineeId}`);
 }
 
+// Click-to-toggle the status of a DPI cell.
+// With a future-dated affectation: date → présent (✓) → absent (✗) → date.
+// Otherwise: ✓ ↔ ✗ (manual "a participé / n'a pas participé").
+export async function cycleDpiStatus(formData: FormData) {
+  requireManager();
+  const traineeId = Number(formData.get("traineeId"));
+  const key = String(formData.get("key") ?? "");
+  if (!traineeId || !key) return;
+
+  const assignments = await prisma.traineeAssignment.findMany({
+    where: { traineeId },
+    include: { course: { select: { title: true } } },
+  });
+  const a = assignments.find((x) => dpiKeyOf(x.course.title) === key);
+  const now = Date.now();
+
+  if (!a) {
+    // no affectation yet → create one (présent / green check) on the first matching activity
+    const courses = await prisma.course.findMany({
+      include: { sessions: { orderBy: { sequence: "asc" }, take: 1 } },
+    });
+    const target = courses.find((c) => dpiKeyOf(c.title) === key);
+    if (!target) return; // no activity of this step exists to affect
+    await prisma.traineeAssignment.create({
+      data: {
+        traineeId,
+        courseId: target.id,
+        assignedDate: target.sessions[0]?.date ?? new Date(),
+        presence: "PRESENT",
+      },
+    });
+  } else {
+    const future = new Date(a.assignedDate).getTime() > now;
+    let next: "PRESENT" | "ABSENT" | null;
+    if (a.presence === null) next = future ? "PRESENT" : "ABSENT";
+    else if (a.presence === "PRESENT") next = "ABSENT";
+    else next = null; // ABSENT → date (future) or check (past)
+    await prisma.traineeAssignment.update({
+      where: { id: a.id },
+      data: { presence: next },
+    });
+  }
+
+  revalidatePath("/manager/trainees");
+  revalidatePath(`/manager/trainees/${traineeId}`);
+}
+
 export async function removeDpiAssignment(formData: FormData) {
   requireManager();
   const id = Number(formData.get("assignmentId"));

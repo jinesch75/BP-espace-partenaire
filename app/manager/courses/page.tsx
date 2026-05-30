@@ -22,6 +22,7 @@ export default async function ManagerCourses({
     status?: string;
     visible?: string;
     topicId?: string;
+    categoryId?: string;
     todo?: string;
   };
 }) {
@@ -36,6 +37,8 @@ export default async function ManagerCourses({
   else if (searchParams.visible === "0") where.visibleInCatalogue = false;
   if (searchParams.topicId)
     where.topicPrimaryId = Number(searchParams.topicId);
+  if (searchParams.categoryId)
+    where.categoryPrimaryId = Number(searchParams.categoryId);
   if (searchParams.todo === "1")
     where.OR = [{ population: null }, { topicPrimaryId: null }];
 

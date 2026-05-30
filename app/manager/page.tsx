@@ -35,23 +35,37 @@ function Stat({
 export default async function ManagerHome() {
   requireManager();
 
-  const [partners, courses, trainers, trainees, pop1, pop2, hidden, byTopic, todo] =
-    await Promise.all([
-      prisma.partner.count(),
-      prisma.course.count(),
-      prisma.trainer.count(),
-      prisma.trainee.count(),
-      prisma.course.count({ where: { population: "POP1" } }),
-      prisma.course.count({ where: { population: "POP2" } }),
-      prisma.course.count({ where: { visibleInCatalogue: false } }),
-      prisma.topic.findMany({
-        include: { _count: { select: { primaryOf: true } } },
-        orderBy: { id: "asc" },
-      }),
-      prisma.course.count({
-        where: { OR: [{ population: null }, { topicPrimaryId: null }] },
-      }),
-    ]);
+  const [
+    partners,
+    courses,
+    trainers,
+    trainees,
+    pop1,
+    pop2,
+    hidden,
+    byTopic,
+    byCategory,
+    todo,
+  ] = await Promise.all([
+    prisma.partner.count(),
+    prisma.course.count(),
+    prisma.trainer.count(),
+    prisma.trainee.count(),
+    prisma.course.count({ where: { population: "POP1" } }),
+    prisma.course.count({ where: { population: "POP2" } }),
+    prisma.course.count({ where: { visibleInCatalogue: false } }),
+    prisma.topic.findMany({
+      include: { _count: { select: { primaryOf: true } } },
+      orderBy: { id: "asc" },
+    }),
+    prisma.category.findMany({
+      include: { _count: { select: { primaryOf: true } } },
+      orderBy: { id: "asc" },
+    }),
+    prisma.course.count({
+      where: { OR: [{ population: null }, { topicPrimaryId: null }] },
+    }),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -113,19 +127,21 @@ export default async function ManagerHome() {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <Link href="/manager/partners" className="btn-primary">
-          Gérer les partenaires
-        </Link>
-        <Link href="/manager/courses" className="btn-secondary">
-          Gérer toutes les activités
-        </Link>
-        <Link href="/manager/trainees" className="btn-secondary">
-          Base des participants
-        </Link>
-        <a href="/manager/export" className="btn-secondary">
-          Exporter vers Excel
-        </a>
+      <div className="card p-5">
+        <h2 className="mb-3 font-semibold text-slate-800">
+          Activités par domaine de la loi (principal)
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          {byCategory.map((c) => (
+            <Link
+              key={c.id}
+              href={`/manager/courses?categoryId=${c.id}`}
+              className="badge-pill bg-teal-100 text-teal-700 transition-colors hover:bg-teal-200"
+            >
+              {c.name}: {c._count.primaryOf}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

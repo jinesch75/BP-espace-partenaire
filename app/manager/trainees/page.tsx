@@ -4,6 +4,7 @@ import { requireManager } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { decryptSensitive } from "@/lib/crypto";
 import { DPI_COLUMNS as COLUMNS } from "@/lib/dpi";
+import { cycleDpiStatus } from "@/app/manager/_actions";
 
 export const dynamic = "force-dynamic";
 
@@ -53,6 +54,7 @@ export default async function ManagerTrainees() {
         <p className="text-sm text-slate-500">
           {trainees.length} participants. Le numéro national est sensible et
           chiffré. Suivi de participation aux six activités du parcours.
+          Cliquez sur une case pour changer son statut.
         </p>
       </div>
 
@@ -117,7 +119,17 @@ export default async function ManagerTrainees() {
                   }
                   return (
                     <td key={c.key} className="td text-center">
-                      <span className="inline-flex justify-center">{cell}</span>
+                      <form action={cycleDpiStatus} className="inline-flex">
+                        <input type="hidden" name="traineeId" value={t.id} />
+                        <input type="hidden" name="key" value={c.key} />
+                        <button
+                          type="submit"
+                          title="Cliquer pour changer le statut"
+                          className="inline-flex min-w-[2rem] justify-center rounded p-1 hover:bg-slate-100"
+                        >
+                          {cell}
+                        </button>
+                      </form>
                     </td>
                   );
                 })}
