@@ -4,7 +4,7 @@ import { requireManager } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { decryptSensitive } from "@/lib/crypto";
 import { DPI_COLUMNS as COLUMNS, courseDpiKey } from "@/lib/dpi";
-import { cycleDpiStatus } from "@/app/manager/_actions";
+import { DpiCell } from "@/app/_components/DpiCell";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +45,25 @@ export default async function ManagerTrainees() {
   });
 
   const now = Date.now();
+
+  // available future activities per DPI step (for the click-to-affect dropdown)
+  const allCourses = await prisma.course.findMany({
+    select: {
+      id: true,
+      title: true,
+      dpiStep: true,
+      sessions: { orderBy: { sequence: "asc" }, take: 1, select: { date: true } },
+    },
+  });
+  const optionsByKey: Record<string, { id: number; label: string }[]> = {};
+  for (const col of COLUMNS) optionsByKey[col.key] = [];
+  for (const c of allCourses) {
+    const key = courseDpiKey(c);
+    if (!key || !optionsByKey[key]) continue;
+    const d = c.sessions[0]?.date;
+    if (!d || new Date(d).getTime() < now) continue; // future only
+    optionsByKey[key].push({ id: c.id, label: `${c.title} — ${formatDate(d)}` });
+  }
 
   return (
     <div className="space-y-6">
@@ -134,17 +153,14 @@ export default async function ManagerTrainees() {
                   }
                   return (
                     <td key={c.key} className="td text-center">
-                      <form action={cycleDpiStatus} className="inline-flex">
-                        <input type="hidden" name="traineeId" value={t.id} />
-                        <input type="hidden" name="key" value={c.key} />
-                        <button
-                          type="submit"
-                          title="Cliquer pour changer le statut"
-                          className="inline-flex min-w-[2rem] justify-center rounded p-1 hover:bg-slate-100"
-                        >
-                          {cell}
-                        </button>
-                      </form>
+                      <DpiCell
+                        traineeId={t.id}
+                        colKey={c.key}
+                        options={optionsByKey[c.key] ?? []}
+                        currentCourseId={a?.courseId ?? null}
+                      >
+                        {cell}
+                      </DpiCell>
                     </td>
                   );
                 })}

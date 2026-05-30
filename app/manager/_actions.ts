@@ -100,6 +100,41 @@ export async function cycleDpiStatus(formData: FormData) {
   revalidatePath(`/manager/trainees/${traineeId}`);
 }
 
+// Quick explicit mark for a DPI cell: PRESENT / ABSENT / CLEAR.
+export async function markDpi(formData: FormData) {
+  requireManager();
+  const traineeId = Number(formData.get("traineeId"));
+  const key = String(formData.get("key") ?? "");
+  const status = String(formData.get("status") ?? "");
+  if (!traineeId || !key) return;
+
+  const assignments = await prisma.traineeAssignment.findMany({
+    where: { traineeId },
+    include: { course: { select: { title: true, dpiStep: true } } },
+  });
+  const a = assignments.find((x) => courseDpiKey(x.course) === key);
+
+  if (status === "CLEAR") {
+    if (a) await prisma.traineeAssignment.delete({ where: { id: a.id } });
+    await prisma.traineeDpiStatus.deleteMany({ where: { traineeId, dpiKey: key } });
+  } else if (status === "PRESENT" || status === "ABSENT") {
+    if (a) {
+      await prisma.traineeAssignment.update({
+        where: { id: a.id },
+        data: { presence: status },
+      });
+    } else {
+      await prisma.traineeDpiStatus.upsert({
+        where: { traineeId_dpiKey: { traineeId, dpiKey: key } },
+        update: { status },
+        create: { traineeId, dpiKey: key, status },
+      });
+    }
+  }
+  revalidatePath("/manager/trainees");
+  revalidatePath(`/manager/trainees/${traineeId}`);
+}
+
 export async function removeDpiAssignment(formData: FormData) {
   requireManager();
   const id = Number(formData.get("assignmentId"));

@@ -49,14 +49,34 @@ export default async function ManagerCourses({
     prisma.badge.findMany({ orderBy: { id: "asc" } }),
     prisma.course.findMany({
       where,
-      orderBy: [{ partnerId: "asc" }, { title: "asc" }],
       include: {
         partner: true,
+        programme: { select: { id: true, name: true } },
         sessions: { orderBy: { sequence: "asc" } },
         badges: true,
       },
     }),
   ]);
+
+  // first-session timestamp (Infinity if no session yet → sorts last)
+  const firstDate = (c: (typeof courses)[number]) =>
+    c.sessions[0] ? new Date(c.sessions[0].date).getTime() : Infinity;
+
+  // group éditions by programme (fallback: by title)
+  const groupsMap = new Map<
+    string,
+    { label: string; items: typeof courses }
+  >();
+  for (const c of courses) {
+    const key = c.programme ? `p${c.programme.id}` : `t${c.title}`;
+    const label = c.programme?.name ?? c.title;
+    if (!groupsMap.has(key)) groupsMap.set(key, { label, items: [] });
+    groupsMap.get(key)!.items.push(c);
+  }
+  const groups = [...groupsMap.values()].sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
+  for (const g of groups) g.items.sort((a, b) => firstDate(a) - firstDate(b));
 
   return (
     <div className="space-y-6">
@@ -133,8 +153,16 @@ export default async function ManagerCourses({
         <span className="ml-auto text-sm text-slate-500">{courses.length} activités</span>
       </form>
 
-      <div className="space-y-4">
-        {courses.map((c) => {
+      <div className="space-y-8">
+        {groups.map((g) => (
+          <div key={g.label} className="space-y-3">
+            <h2 className="text-lg font-bold text-slate-700">
+              {g.label}{" "}
+              <span className="text-sm font-normal text-slate-400">
+                ({g.items.length} édition{g.items.length > 1 ? "s" : ""})
+              </span>
+            </h2>
+            {g.items.map((c) => {
           const badgeIds = new Set(c.badges.map((b) => b.id));
           return (
             <form
@@ -222,7 +250,9 @@ export default async function ManagerCourses({
               </div>
             </form>
           );
-        })}
+            })}
+          </div>
+        ))}
       </div>
     </div>
   );

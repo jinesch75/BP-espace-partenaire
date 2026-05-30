@@ -46,6 +46,7 @@ export default async function ManagerHome() {
     byTopic,
     byCategory,
     todo,
+    drafts,
   ] = await Promise.all([
     prisma.partner.count(),
     prisma.course.count(),
@@ -65,6 +66,7 @@ export default async function ManagerHome() {
     prisma.course.count({
       where: { OR: [{ population: null }, { topicPrimaryId: null }] },
     }),
+    prisma.course.count({ where: { status: "DRAFT" } }),
   ]);
 
   return (
@@ -80,6 +82,18 @@ export default async function ManagerHome() {
             ⚠ {todo} activité{todo > 1 ? "s" : ""} à compléter
           </span>{" "}
           — catalogue, thèmes ou badges à définir. Cliquez pour les voir.
+        </Link>
+      )}
+
+      {drafts > 0 && (
+        <Link
+          href="/manager/courses?status=DRAFT"
+          className="block rounded-xl border border-blue-300 bg-blue-50 px-4 py-3 text-sm text-blue-800 transition-colors hover:bg-blue-100"
+        >
+          <span className="font-semibold">
+            📝 {drafts} activité{drafts > 1 ? "s" : ""} en brouillon à valider
+          </span>{" "}
+          — à passer en « Ouvert ». Cliquez pour les voir.
         </Link>
       )}
 

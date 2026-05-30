@@ -8,9 +8,8 @@ import {
   statusClasses,
   statusLabel,
 } from "@/lib/format";
-import { updatePartnerInfo } from "@/app/partner/_actions";
-import { SaveButton } from "@/app/_components/SaveButton";
 import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
+import { PartnerInfo } from "@/app/_components/PartnerInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -29,42 +28,15 @@ export default async function PartnerHome() {
 
   return (
     <div className="space-y-6">
-      {/* Informations générales du partenaire — modifiables par le partenaire */}
-      <form action={updatePartnerInfo} className="card space-y-4 p-5">
-        <div>
-          <label className="label">Nom</label>
-          <input name="name" className="input" defaultValue={partner.name} />
-        </div>
-        <div>
-          <label className="label">Description</label>
-          <textarea
-            name="description"
-            rows={2}
-            className="input"
-            defaultValue={partner.description ?? ""}
-          />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div>
-            <label className="label">E-mail</label>
-            <input
-              name="contactEmail"
-              type="email"
-              className="input"
-              defaultValue={partner.contactEmail ?? ""}
-            />
-          </div>
-          <div>
-            <label className="label">Téléphone</label>
-            <input name="phone" className="input" defaultValue={partner.phone ?? ""} />
-          </div>
-          <div>
-            <label className="label">Adresse</label>
-            <input name="address" className="input" defaultValue={partner.address ?? ""} />
-          </div>
-        </div>
-        <SaveButton>Enregistrer mes informations</SaveButton>
-      </form>
+      <PartnerInfo
+        partner={{
+          name: partner.name,
+          description: partner.description,
+          contactEmail: partner.contactEmail,
+          phone: partner.phone,
+          address: partner.address,
+        }}
+      />
 
       <div className="flex items-center justify-between">
         <div>
