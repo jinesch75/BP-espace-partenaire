@@ -53,7 +53,7 @@ export default async function ManagerPartners({
             <div className="flex items-end">
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" name="managesTrainees" />
-                Peut affecter des participants (ONA)
+                Peut affecter des participants (Rôle DPI)
               </label>
             </div>
             <div>
@@ -94,7 +94,7 @@ export default async function ManagerPartners({
                 <div className="flex items-center gap-2">
                   <h2 className="font-semibold text-slate-800">{p.name}</h2>
                   {p.managesTrainees && (
-                    <span className="badge-pill bg-amber-100 text-amber-700">ONA</span>
+                    <span className="badge-pill bg-amber-100 text-amber-700">Rôle DPI</span>
                   )}
                 </div>
                 <span className="text-xs text-slate-500">

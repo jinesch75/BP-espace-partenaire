@@ -60,7 +60,7 @@ export default async function Home() {
                     {p.name}
                     {p.managesTrainees && (
                       <span className="badge-pill ml-2 bg-amber-100 text-amber-700">
-                        ONA
+                        Rôle DPI
                       </span>
                     )}
                   </span>
