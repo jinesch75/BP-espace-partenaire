@@ -13,7 +13,13 @@ export const dynamic = "force-dynamic";
 export default async function ManagerCourses({
   searchParams,
 }: {
-  searchParams: { partnerId?: string; population?: string; status?: string };
+  searchParams: {
+    partnerId?: string;
+    population?: string;
+    status?: string;
+    visible?: string;
+    topicId?: string;
+  };
 }) {
   requireManager();
 
@@ -22,6 +28,10 @@ export default async function ManagerCourses({
   if (searchParams.population === "UNSET") where.population = null;
   else if (searchParams.population) where.population = searchParams.population;
   if (searchParams.status) where.status = searchParams.status;
+  if (searchParams.visible === "1") where.visibleInCatalogue = true;
+  else if (searchParams.visible === "0") where.visibleInCatalogue = false;
+  if (searchParams.topicId)
+    where.topics = { some: { id: Number(searchParams.topicId) } };
 
   const [partners, topics, badges, courses] = await Promise.all([
     prisma.partner.findMany({ orderBy: { name: "asc" } }),
@@ -73,6 +83,25 @@ export default async function ManagerCourses({
             <option value="OPEN">Ouvert</option>
             <option value="COMPLETED">Terminé</option>
             <option value="CANCELLED">Annulé</option>
+          </select>
+        </div>
+        <div>
+          <label className="label">Catalogue</label>
+          <select name="visible" defaultValue={searchParams.visible ?? ""} className="input">
+            <option value="">Tous</option>
+            <option value="1">Visibles</option>
+            <option value="0">Masqués</option>
+          </select>
+        </div>
+        <div>
+          <label className="label">Thème</label>
+          <select name="topicId" defaultValue={searchParams.topicId ?? ""} className="input">
+            <option value="">Tous</option>
+            {topics.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
           </select>
         </div>
         <button className="btn-secondary">Filtrer</button>
