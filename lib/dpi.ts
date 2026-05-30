@@ -28,3 +28,12 @@ export function dpiKeyOf(title: string): string | null {
   for (const c of DPI_COLUMNS) if (c.match(title)) return c.key;
   return null;
 }
+
+// Prefer the explicit dpiStep (set from the programme); fall back to the title.
+export function courseDpiKey(course: {
+  dpiStep?: string | null;
+  title?: string;
+}): string | null {
+  if (course.dpiStep) return course.dpiStep;
+  return course.title ? dpiKeyOf(course.title) : null;
+}

@@ -134,11 +134,18 @@ function SessionBlock({
   );
 }
 
-export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
+export default function CourseForm({
+  trainers,
+  programmes,
+}: {
+  trainers: Trainer[];
+  programmes: { id: number; name: string }[];
+}) {
   const [type, setType] = useState<"SINGLE" | "MULTI" | "RECURRING">("SINGLE");
   const [keys, setKeys] = useState<number[]>([0]);
   const [recOnline, setRecOnline] = useState(false);
   const [endMode, setEndMode] = useState<"count" | "date">("count");
+  const [programme, setProgramme] = useState("new");
 
   const multiKeys = type === "MULTI" ? keys : [0];
 
@@ -152,6 +159,35 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
         <div>
           <label className="label">Description</label>
           <textarea name="description" rows={3} className="input" />
+        </div>
+        <div>
+          <label className="label">Programme (regroupement)</label>
+          <select
+            className="input"
+            value={programme}
+            onChange={(e) => setProgramme(e.target.value)}
+          >
+            <option value="new">+ Nouveau programme</option>
+            {programmes.map((p) => (
+              <option key={p.id} value={String(p.id)}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+          {programme === "new" ? (
+            <input
+              name="newProgrammeName"
+              placeholder="Nom du programme (ex. DAPA 1)"
+              className="input mt-2"
+            />
+          ) : (
+            <input type="hidden" name="programmeId" value={programme} />
+          )}
+          <p className="mt-1 text-xs text-slate-500">
+            Une activité est une <strong>édition</strong> d&apos;un programme. Les
+            éditions d&apos;un même programme partagent ses informations (catalogue,
+            type, domaine, badges), définies par l&apos;administrateur.
+          </p>
         </div>
         <div>
           <label className="label">Format de l'activité</label>

@@ -46,8 +46,33 @@ model Partner {
   passwordHash    String?
   createdAt       DateTime @default(now())
 
-  trainers Trainer[]
-  courses  Course[]
+  trainers   Trainer[]
+  courses    Course[]
+  programmes Programme[]
+}
+
+// A recurring activity definition (e.g. DAPA 1). The administrator sets its
+// shared info here; each Course (édition) created under it inherits a copy.
+model Programme {
+  id                  Int         @id @default(autoincrement())
+  name                String
+  partnerId           Int
+  dpiStep             String? // DAPA1..DAPA5 / BIENV, or null
+  population          Population?
+  visibleInCatalogue  Boolean     @default(false)
+  topicPrimaryId      Int?
+  topicSecondaryId    Int?
+  topicTertiaryId     Int?
+  categoryPrimaryId   Int?
+  categorySecondaryId Int?
+  categoryTertiaryId  Int?
+  badgeIds            Int[]       @default([])
+  createdAt           DateTime    @default(now())
+
+  partner Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  courses Course[]
+
+  @@index([partnerId])
 }
 
 model Trainer {
@@ -84,6 +109,9 @@ model Course {
   // admin-only fields, set by the manager:
   population         Population?
   visibleInCatalogue Boolean      @default(false)
+  // grouping: which recurring programme this édition belongs to
+  programmeId        Int?
+  dpiStep            String? // copied from the programme, for fast DPI matching
   createdAt          DateTime     @default(now())
 
   // Type d'activité (themes), ranked
@@ -96,6 +124,7 @@ model Course {
   categoryTertiaryId  Int?
 
   partner     Partner             @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  programme   Programme?          @relation(fields: [programmeId], references: [id], onDelete: SetNull)
   sessions    Session[]
   badges      Badge[]             @relation("CourseBadges")
   assignments TraineeAssignment[]
@@ -109,6 +138,7 @@ model Course {
   categoryTertiary  Category? @relation("CatTertiary", fields: [categoryTertiaryId], references: [id], onDelete: SetNull)
 
   @@index([partnerId])
+  @@index([programmeId])
 }
 
 model Session {
@@ -124,11 +154,27 @@ model Session {
   placesAvailable Int      @default(0)
   trainerId       Int?
 
-  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  trainer Trainer? @relation(fields: [trainerId], references: [id], onDelete: SetNull)
+  course      Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  trainer     Trainer?     @relation(fields: [trainerId], references: [id], onDelete: SetNull)
+  attendances Attendance[]
 
   @@index([courseId])
   @@index([trainerId])
+}
+
+// Per-séance presence for a participant.
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  traineeId Int
+  sessionId Int
+  status    Presence
+  createdAt DateTime @default(now())
+
+  trainee Trainee @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([traineeId, sessionId])
+  @@index([sessionId])
 }
 
 model Topic {
@@ -164,6 +210,7 @@ model Trainee {
 
   assignments TraineeAssignment[]
   dpiStatuses TraineeDpiStatus[]
+  attendances Attendance[]
 }
 
 // Manual participation mark for a DPI step that has no concrete activity to

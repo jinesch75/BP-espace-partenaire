@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireTrainer } from "@/lib/session";
 import { courseTypeLabel, formatDate } from "@/lib/format";
-import { PresenceControls } from "@/app/_components/PresenceControls";
+import { AttendanceGrid } from "@/app/_components/AttendanceGrid";
 import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +30,15 @@ export default async function TrainerCourseDetail({
   if (!course) notFound();
 
   const registered = course.assignments.length;
+
+  const attRows = await prisma.attendance.findMany({
+    where: {
+      sessionId: { in: course.sessions.map((s) => s.id) },
+      traineeId: { in: course.assignments.map((a) => a.traineeId) },
+    },
+  });
+  const attendance: Record<string, string> = {};
+  for (const r of attRows) attendance[`${r.traineeId}-${r.sessionId}`] = r.status;
 
   return (
     <div className="space-y-6">
@@ -128,38 +137,24 @@ export default async function TrainerCourseDetail({
         </table>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="card overflow-x-auto">
         <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
-          Participants inscrits ({registered}) — présence
+          Participants inscrits ({registered}) — présence par séance
         </div>
-        {registered === 0 ? (
-          <p className="px-5 py-4 text-sm text-slate-500">
-            Personne n&apos;est encore inscrit.
-          </p>
-        ) : (
-          <table className="w-full">
-            <thead className="bg-surface">
-              <tr>
-                <th className="th">Nom de famille</th>
-                <th className="th">Prénom</th>
-                <th className="th">Date</th>
-                <th className="th">Présence</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {course.assignments.map((a) => (
-                <tr key={a.id}>
-                  <td className="td">{a.trainee.lastName}</td>
-                  <td className="td">{a.trainee.firstName}</td>
-                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
-                  <td className="td">
-                    <PresenceControls assignmentId={a.id} presence={a.presence} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <AttendanceGrid
+          sessions={course.sessions.map((s) => ({
+            id: s.id,
+            sequence: s.sequence,
+            date: s.date,
+          }))}
+          participants={course.assignments.map((a) => ({
+            assignmentId: a.id,
+            traineeId: a.traineeId,
+            lastName: a.trainee.lastName,
+            firstName: a.trainee.firstName,
+          }))}
+          attendance={attendance}
+        />
       </div>
     </div>
   );

@@ -11,11 +11,18 @@ export default async function NewCoursePage({
   searchParams: { error?: string };
 }) {
   const partner = await requirePartner();
-  const trainers = await prisma.trainer.findMany({
-    where: { partnerId: partner.id },
-    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
-    select: { id: true, firstName: true, lastName: true },
-  });
+  const [trainers, programmes] = await Promise.all([
+    prisma.trainer.findMany({
+      where: { partnerId: partner.id },
+      orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+      select: { id: true, firstName: true, lastName: true },
+    }),
+    prisma.programme.findMany({
+      where: { partnerId: partner.id },
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -37,7 +44,7 @@ export default async function NewCoursePage({
         </div>
       )}
 
-      <CourseForm trainers={trainers} />
+      <CourseForm trainers={trainers} programmes={programmes} />
     </div>
   );
 }

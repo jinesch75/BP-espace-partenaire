@@ -17,7 +17,7 @@ import {
   removeAssignment,
 } from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
-import { PresenceControls } from "@/app/_components/PresenceControls";
+import { AttendanceGrid } from "@/app/_components/AttendanceGrid";
 import { SaveButton } from "@/app/_components/SaveButton";
 import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 import { decryptSensitive } from "@/lib/crypto";
@@ -44,6 +44,15 @@ export default async function CourseDetail({
   if (!course) notFound();
 
   const conflicts = await getTrainerConflicts(course.id);
+
+  const attRows = await prisma.attendance.findMany({
+    where: {
+      sessionId: { in: course.sessions.map((s) => s.id) },
+      traineeId: { in: course.assignments.map((a) => a.traineeId) },
+    },
+  });
+  const attendance: Record<string, string> = {};
+  for (const r of attRows) attendance[`${r.traineeId}-${r.sessionId}`] = r.status;
 
   // ONA (and any partner that can assign participants) gets the add control
   const trainees = partner.managesTrainees
@@ -199,44 +208,35 @@ export default async function CourseDetail({
           </form>
         )}
 
-        {course.assignments.length === 0 ? (
-          <p className="px-5 py-4 text-sm text-slate-500">
-            Aucun participant pour l&apos;instant.
-          </p>
-        ) : (
-          <table className="w-full">
-            <thead className="bg-surface">
-              <tr>
-                <th className="th">Participant</th>
-                <th className="th">Date</th>
-                <th className="th">Présence</th>
-                {partner.managesTrainees && <th className="th"></th>}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {course.assignments.map((a) => (
-                <tr key={a.id}>
-                  <td className="td">
-                    {a.trainee.lastName} {a.trainee.firstName}
-                  </td>
-                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
-                  <td className="td">
-                    <PresenceControls assignmentId={a.id} presence={a.presence} />
-                  </td>
-                  {partner.managesTrainees && (
-                    <td className="td text-right">
-                      <form action={removeAssignment}>
-                        <input type="hidden" name="assignmentId" value={a.id} />
-                        <button className="text-xs text-red-600 hover:underline">
-                          Retirer
-                        </button>
-                      </form>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="overflow-x-auto">
+          <AttendanceGrid
+            sessions={course.sessions.map((s) => ({
+              id: s.id,
+              sequence: s.sequence,
+              date: s.date,
+            }))}
+            participants={course.assignments.map((a) => ({
+              assignmentId: a.id,
+              traineeId: a.traineeId,
+              lastName: a.trainee.lastName,
+              firstName: a.trainee.firstName,
+            }))}
+            attendance={attendance}
+          />
+        </div>
+
+        {partner.managesTrainees && course.assignments.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+            <span>Retirer :</span>
+            {course.assignments.map((a) => (
+              <form key={a.id} action={removeAssignment}>
+                <input type="hidden" name="assignmentId" value={a.id} />
+                <button className="rounded-full border border-slate-300 px-2 py-0.5 text-red-600 hover:border-red-400">
+                  {a.trainee.lastName} {a.trainee.firstName} ✕
+                </button>
+              </form>
+            ))}
+          </div>
         )}
       </div>
 

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { decryptSensitive } from "@/lib/crypto";
-import { DPI_COLUMNS, dpiKeyOf } from "@/lib/dpi";
+import { DPI_COLUMNS, courseDpiKey } from "@/lib/dpi";
 import { PresenceControls } from "@/app/_components/PresenceControls";
 import { assignDpiCourse, removeDpiAssignment } from "@/app/manager/_actions";
 
@@ -55,9 +55,9 @@ export default async function TraineeDetail({
 
       <div className="space-y-4">
         {DPI_COLUMNS.map((col) => {
-          const options = courses.filter((c) => dpiKeyOf(c.title) === col.key);
+          const options = courses.filter((c) => courseDpiKey(c) === col.key);
           const current = trainee.assignments.find(
-            (a) => dpiKeyOf(a.course.title) === col.key
+            (a) => courseDpiKey(a.course) === col.key
           );
           return (
             <div key={col.key} className="card p-5">

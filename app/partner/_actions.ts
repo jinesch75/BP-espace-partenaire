@@ -131,14 +131,47 @@ export async function createCourse(formData: FormData) {
 
   if (sessions.length === 0) redirect("/partner/courses/new?error=session");
 
+  // Programme (regroupement). Pick an existing programme of this partner, or
+  // create a new one. A new édition inherits the programme's shared info.
+  let programmeId = Number(formData.get("programmeId")) || null;
+  const newProgrammeName = String(formData.get("newProgrammeName") ?? "").trim();
+  if (!programmeId) {
+    const prog = await prisma.programme.create({
+      data: { name: newProgrammeName || title, partnerId: partner.id },
+    });
+    programmeId = prog.id;
+  } else {
+    // ensure the chosen programme belongs to this partner
+    const owned = await prisma.programme.findFirst({
+      where: { id: programmeId, partnerId: partner.id },
+    });
+    if (!owned) programmeId = null;
+  }
+
+  const prog = programmeId
+    ? await prisma.programme.findUnique({ where: { id: programmeId } })
+    : null;
+
   const created = await prisma.course.create({
     data: {
       partnerId: partner.id,
+      programmeId,
       title,
       description,
       type: type === "SINGLE" ? "SINGLE" : "MULTI",
       recurring: type === "RECURRING",
       status: "DRAFT",
+      // inherit the programme's shared admin info
+      dpiStep: prog?.dpiStep ?? null,
+      population: prog?.population ?? null,
+      visibleInCatalogue: prog?.visibleInCatalogue ?? false,
+      topicPrimaryId: prog?.topicPrimaryId ?? null,
+      topicSecondaryId: prog?.topicSecondaryId ?? null,
+      topicTertiaryId: prog?.topicTertiaryId ?? null,
+      categoryPrimaryId: prog?.categoryPrimaryId ?? null,
+      categorySecondaryId: prog?.categorySecondaryId ?? null,
+      categoryTertiaryId: prog?.categoryTertiaryId ?? null,
+      badges: prog ? { connect: prog.badgeIds.map((id) => ({ id })) } : undefined,
       sessions: { create: sessions },
     },
   });

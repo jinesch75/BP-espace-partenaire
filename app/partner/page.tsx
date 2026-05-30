@@ -23,6 +23,7 @@ export default async function PartnerHome() {
       sessions: { orderBy: { sequence: "asc" }, include: { trainer: true } },
       ...taxonomyInclude,
       badges: true,
+      programme: { select: { name: true } },
     },
   });
 
@@ -96,8 +97,13 @@ export default async function PartnerHome() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-500">
+                  {c.programme && (
+                    <span className="font-medium text-slate-600">
+                      Programme : {c.programme.name} ·{" "}
+                    </span>
+                  )}
                   {courseTypeLabel(c.type, c.recurring)} · {c.sessions.length}{" "}
-                  session{c.sessions.length > 1 ? "s" : ""}
+                  séance{c.sessions.length > 1 ? "s" : ""}
                 </p>
               </div>
               <div className="flex gap-2">

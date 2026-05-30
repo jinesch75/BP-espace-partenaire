@@ -9,7 +9,7 @@ import {
   deleteCourseAsManager,
 } from "@/app/manager/_actions";
 import EditCourseForm from "@/app/partner/courses/[id]/edit/EditCourseForm";
-import { PresenceControls } from "@/app/_components/PresenceControls";
+import { AttendanceGrid } from "@/app/_components/AttendanceGrid";
 import { SaveButton } from "@/app/_components/SaveButton";
 import { TaxonomySelectors } from "@/app/_components/TaxonomySelectors";
 
@@ -53,6 +53,15 @@ export default async function ManagerCourseDetail({
   ]);
 
   const badgeIds = new Set(course.badges.map((b) => b.id));
+
+  const attRows = await prisma.attendance.findMany({
+    where: {
+      sessionId: { in: course.sessions.map((s) => s.id) },
+      traineeId: { in: course.assignments.map((a) => a.traineeId) },
+    },
+  });
+  const attendance: Record<string, string> = {};
+  for (const r of attRows) attendance[`${r.traineeId}-${r.sessionId}`] = r.status;
 
   const sessions = course.sessions.map((s) => ({
     id: s.id,
@@ -152,39 +161,25 @@ export default async function ManagerCourseDetail({
         />
       </div>
 
-      {/* Participants et présence */}
-      <div className="card overflow-hidden">
+      {/* Participants et présence par séance */}
+      <div className="card overflow-x-auto">
         <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
-          Participants ({course.assignments.length}) — présence
+          Participants ({course.assignments.length}) — présence par séance
         </div>
-        {course.assignments.length === 0 ? (
-          <p className="px-5 py-4 text-sm text-slate-500">
-            Aucun participant pour l&apos;instant.
-          </p>
-        ) : (
-          <table className="w-full">
-            <thead className="bg-surface">
-              <tr>
-                <th className="th">Participant</th>
-                <th className="th">Date</th>
-                <th className="th">Présence</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {course.assignments.map((a) => (
-                <tr key={a.id}>
-                  <td className="td">
-                    {a.trainee.lastName} {a.trainee.firstName}
-                  </td>
-                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
-                  <td className="td">
-                    <PresenceControls assignmentId={a.id} presence={a.presence} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <AttendanceGrid
+          sessions={course.sessions.map((s) => ({
+            id: s.id,
+            sequence: s.sequence,
+            date: s.date,
+          }))}
+          participants={course.assignments.map((a) => ({
+            assignmentId: a.id,
+            traineeId: a.traineeId,
+            lastName: a.trainee.lastName,
+            firstName: a.trainee.firstName,
+          }))}
+          attendance={attendance}
+        />
       </div>
 
       {/* Supprimer l'activité */}

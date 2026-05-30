@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { hashPassword } from "@/lib/crypto";
-import { dpiKeyOf } from "@/lib/dpi";
+import { dpiKeyOf, courseDpiKey } from "@/lib/dpi";
 
 // Affect a participant to a specific activity (one per DPI column).
 export async function assignDpiCourse(formData: FormData) {
@@ -20,11 +20,13 @@ export async function assignDpiCourse(formData: FormData) {
   });
   if (!course) return;
 
-  const key = dpiKeyOf(course.title);
+  const key = courseDpiKey(course);
   if (key) {
     // keep only one assignment per DPI column: drop other activities of this column
-    const all = await prisma.course.findMany({ select: { id: true, title: true } });
-    const ids = all.filter((c) => dpiKeyOf(c.title) === key).map((c) => c.id);
+    const all = await prisma.course.findMany({
+      select: { id: true, title: true, dpiStep: true },
+    });
+    const ids = all.filter((c) => courseDpiKey(c) === key).map((c) => c.id);
     await prisma.traineeAssignment.deleteMany({
       where: { traineeId, courseId: { in: ids } },
     });
@@ -50,16 +52,16 @@ export async function cycleDpiStatus(formData: FormData) {
 
   const assignments = await prisma.traineeAssignment.findMany({
     where: { traineeId },
-    include: { course: { select: { title: true } } },
+    include: { course: { select: { title: true, dpiStep: true } } },
   });
-  const a = assignments.find((x) => dpiKeyOf(x.course.title) === key);
+  const a = assignments.find((x) => courseDpiKey(x.course) === key);
   const now = Date.now();
 
   if (!a) {
     const courses = await prisma.course.findMany({
       include: { sessions: { orderBy: { sequence: "asc" }, take: 1 } },
     });
-    const target = courses.find((c) => dpiKeyOf(c.title) === key);
+    const target = courses.find((c) => courseDpiKey(c) === key);
     if (target) {
       // an activity exists for this step → affect it (présent / green check)
       await prisma.traineeAssignment.create({
@@ -282,6 +284,69 @@ export async function deletePartner(formData: FormData) {
   await prisma.partner.delete({ where: { id } });
   revalidatePath("/manager/partners");
   redirect("/manager/partners");
+}
+
+// Copy a programme's shared info onto all its éditions (courses).
+export async function propagateProgramme(programmeId: number) {
+  const p = await prisma.programme.findUnique({ where: { id: programmeId } });
+  if (!p) return;
+  const courses = await prisma.course.findMany({
+    where: { programmeId },
+    select: { id: true },
+  });
+  for (const c of courses) {
+    await prisma.course.update({
+      where: { id: c.id },
+      data: {
+        population: p.population,
+        visibleInCatalogue: p.visibleInCatalogue,
+        dpiStep: p.dpiStep,
+        topicPrimaryId: p.topicPrimaryId,
+        topicSecondaryId: p.topicSecondaryId,
+        topicTertiaryId: p.topicTertiaryId,
+        categoryPrimaryId: p.categoryPrimaryId,
+        categorySecondaryId: p.categorySecondaryId,
+        categoryTertiaryId: p.categoryTertiaryId,
+        badges: { set: p.badgeIds.map((id) => ({ id })) },
+      },
+    });
+  }
+}
+
+const DPI_STEPS = ["DAPA1", "DAPA2", "DAPA3", "DAPA4", "DAPA5", "BIENV"];
+
+export async function updateProgramme(formData: FormData) {
+  requireManager();
+  const id = Number(formData.get("programmeId"));
+  if (!id) return;
+  const populationRaw = String(formData.get("population") ?? "");
+  const population =
+    populationRaw === "POP1" || populationRaw === "POP2" ? populationRaw : null;
+  const visible = formData.get("visibleInCatalogue") === "on";
+  const dpiRaw = String(formData.get("dpiStep") ?? "");
+  const dpiStep = DPI_STEPS.includes(dpiRaw) ? dpiRaw : null;
+  const num = (k: string) => Number(formData.get(k)) || null;
+  const badgeIds = formData.getAll("badgeIds").map((v) => Number(v));
+
+  await prisma.programme.update({
+    where: { id },
+    data: {
+      population: population as any,
+      visibleInCatalogue: visible,
+      dpiStep,
+      topicPrimaryId: num("topicPrimaryId"),
+      topicSecondaryId: num("topicSecondaryId"),
+      topicTertiaryId: num("topicTertiaryId"),
+      categoryPrimaryId: num("categoryPrimaryId"),
+      categorySecondaryId: num("categorySecondaryId"),
+      categoryTertiaryId: num("categoryTertiaryId"),
+      badgeIds,
+    },
+  });
+  await propagateProgramme(id);
+  revalidatePath("/manager/programmes");
+  revalidatePath("/manager/courses");
+  revalidatePath("/manager/trainees");
 }
 
 export async function updateCourseAdmin(formData: FormData) {

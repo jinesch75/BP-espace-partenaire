@@ -36,7 +36,8 @@ async function TopBar() {
     links = [
       { href: "/manager", text: "Tableau de bord" },
       { href: "/manager/partners", text: "Partenaires" },
-      { href: "/manager/courses", text: "Toutes les activités" },
+      { href: "/manager/programmes", text: "Programmes" },
+      { href: "/manager/courses", text: "Activités" },
       { href: "/manager/trainees", text: "Participants" },
     ];
   } else if (session.role === "PARTNER" && session.partnerId) {

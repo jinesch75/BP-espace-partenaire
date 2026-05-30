@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { decryptSensitive } from "@/lib/crypto";
-import { DPI_COLUMNS as COLUMNS } from "@/lib/dpi";
+import { DPI_COLUMNS as COLUMNS, courseDpiKey } from "@/lib/dpi";
 import { cycleDpiStatus } from "@/app/manager/_actions";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +37,7 @@ export default async function ManagerTrainees() {
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
     include: {
       assignments: {
-        include: { course: { select: { title: true } } },
+        include: { course: { select: { title: true, dpiStep: true } } },
         orderBy: { assignedDate: "asc" },
       },
       dpiStatuses: true,
@@ -91,7 +91,9 @@ export default async function ManagerTrainees() {
                   {decryptSensitive(t.nationalNumber)}
                 </td>
                 {COLUMNS.map((c) => {
-                  const a = t.assignments.find((x) => c.match(x.course.title));
+                  const a = t.assignments.find(
+                    (x) => courseDpiKey(x.course) === c.key
+                  );
                   const s = t.dpiStatuses.find((x) => x.dpiKey === c.key);
                   const check = (
                     <span title="A participé">

@@ -167,3 +167,38 @@ Partner ──< Course ──< Session >── Trainer
 - Confirmation emails
 
 **Still open / optional:** interface language (German/French toggle) — say the word if you want it.
+
+---
+
+## 10. Programmes récurrents et éditions (planifié)
+
+**Besoin :** un même cours (ex. DAPA 1) est proposé plusieurs fois dans l'année — chaque fois avec ses propres séances (séance 1, 2, 3). Des participants font le cycle de janvier, d'autres celui de février.
+
+**Solution retenue — trois niveaux :** *Programme → Édition → Séance*.
+
+- **Programme** (ex. « DAPA 1 ») : la définition récurrente. Créé par un **partenaire**. Porte les informations partagées, définies par l'**administrateur** : étape DPI, catalogue (principal / DPI), type d'activité (principal/secondaire/tertiaire), domaine de la loi (principal/secondaire/tertiaire), badges. **Toutes ses éditions héritent** de ces informations.
+- **Édition** (= l'« activité » actuelle, un cycle daté : « DAPA 1 – janvier ») : créée par le partenaire avec ses propres **séances**, son **statut** (Brouillon/Ouvert/…) et ses **participants**. Une édition peut aussi être **autonome** (sans programme) pour un événement ponctuel — comportement actuel conservé.
+- **Séance** : une date (inchangé).
+
+**Participation & présence :** le participant s'inscrit à une **édition**. La présence est marquée **par séance** (présent/absent). Une édition est **« complétée »** quand le participant a assisté à toutes ses séances. La grille DPI affiche ✓ quand le participant a complété une édition du programme (ou via le marquage manuel).
+
+**Modèle de données :**
+
+- Nouveau `Programme` : `name`, `partnerId`, `dpiStep?` (DAPA1…BIENV ou aucun), + les champs admin partagés (catalogue, type ×3, domaine ×3, badges).
+- `Course` (= édition) reçoit `programmeId?` (nul = activité autonome). Les champs admin se lisent depuis le programme quand l'édition y est rattachée ; sinon ils restent sur l'édition.
+- Nouveau `Attendance` (présence par séance) : `traineeId`, `sessionId`, `status`.
+- La règle « à compléter » et les statistiques (par type/domaine principal) passent au niveau **programme**.
+
+**Impact sur l'UI :**
+
+- **Partenaire** : crée un programme, puis ajoute des éditions (chacune avec ses séances) sous ce programme.
+- **Administrateur** : définit le catalogue / type / domaine / badges / étape DPI **sur le programme** (l'alerte « à compléter » suit les programmes).
+- **DPI – Gérer un participant** : on choisit l'**édition** (le cycle mensuel) à affecter ; la correspondance avec les colonnes DAPA se fait via `dpiStep` du programme (plus par le titre).
+- **Statistiques** : agrégées par programme.
+
+**Migration (seed) :** créer les 6 programmes DPI (DAPA 1–5, Bienvenue) et rattacher les activités DAPA/Bienvenue existantes comme premières éditions.
+
+**Phasage proposé :**
+1. Modèle `Programme` + rattachement des activités ; déplacement des champs admin vers le programme ; correspondance DPI par `dpiStep`.
+2. Présence **par séance** + logique de complétion ; mise à jour du ✓ de la grille DPI.
+3. UI partenaire pour programmes & éditions ; champs admin du programme + alerte « à compléter » au niveau programme.

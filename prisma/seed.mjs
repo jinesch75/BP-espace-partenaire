@@ -42,6 +42,7 @@ const DEMO_PASSWORD = "biergerpakt";
 async function resetSequences() {
   const tables = [
     "Partner",
+    "Programme",
     "Trainer",
     "Course",
     "Session",
@@ -199,6 +200,53 @@ async function applyDemoParticipation() {
   }
 }
 
+// Group every activité (édition) under a Programme. DPI activités of the same
+// step share one programme; others get a 1:1 programme. Idempotent.
+const DPI_LABEL = {
+  DAPA1: "DAPA 1",
+  DAPA2: "DAPA 2",
+  DAPA3: "DAPA 3",
+  DAPA4: "DAPA 4",
+  DAPA5: "DAPA 5",
+  BIENV: "Bienvenue",
+};
+async function ensureProgrammes() {
+  const courses = await prisma.course.findMany({
+    where: { programmeId: null },
+    include: { badges: { select: { id: true } } },
+  });
+  for (const c of courses) {
+    const step = dpiKey(c.title);
+    let prog = step
+      ? await prisma.programme.findFirst({
+          where: { partnerId: c.partnerId, dpiStep: step },
+        })
+      : null;
+    if (!prog) {
+      prog = await prisma.programme.create({
+        data: {
+          name: step ? DPI_LABEL[step] : c.title,
+          partnerId: c.partnerId,
+          dpiStep: step ?? null,
+          population: c.population ?? null,
+          visibleInCatalogue: c.visibleInCatalogue,
+          topicPrimaryId: c.topicPrimaryId ?? null,
+          topicSecondaryId: c.topicSecondaryId ?? null,
+          topicTertiaryId: c.topicTertiaryId ?? null,
+          categoryPrimaryId: c.categoryPrimaryId ?? null,
+          categorySecondaryId: c.categorySecondaryId ?? null,
+          categoryTertiaryId: c.categoryTertiaryId ?? null,
+          badgeIds: c.badges.map((b) => b.id),
+        },
+      });
+    }
+    await prisma.course.update({
+      where: { id: c.id },
+      data: { programmeId: prog.id, dpiStep: step ?? null },
+    });
+  }
+}
+
 // Illustration: give every (non-DPI) course a handful of random participants.
 // Rules, enforced idempotently on each run:
 //  - fewer participants than the course capacity (min places across sessions)
@@ -265,6 +313,7 @@ async function main() {
   await capTrainees(30);
   await applyDemoParticipation();
   await applyDemoCourseParticipants();
+  await ensureProgrammes();
 
   const existing = await prisma.partner.count();
   if (existing > 0) {
@@ -371,6 +420,7 @@ async function main() {
   await capTrainees(30);
   await applyDemoParticipation();
   await applyDemoCourseParticipants();
+  await ensureProgrammes();
 
   const counts = {
     partners: await prisma.partner.count(),
