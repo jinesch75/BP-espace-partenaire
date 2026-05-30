@@ -4,6 +4,36 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
+import { hashPassword } from "@/lib/crypto";
+
+export async function createPartner(formData: FormData) {
+  requireManager();
+  const name = String(formData.get("name") ?? "").trim();
+  if (!name) redirect("/manager/partners?error=name");
+
+  const loginEmail = String(formData.get("loginEmail") ?? "").trim().toLowerCase() || null;
+  if (loginEmail) {
+    const existing = await prisma.partner.findFirst({ where: { email: loginEmail } });
+    if (existing) redirect("/manager/partners?error=email");
+  }
+  const password = String(formData.get("password") ?? "");
+
+  await prisma.partner.create({
+    data: {
+      name,
+      managesTrainees: formData.get("managesTrainees") === "on",
+      description: String(formData.get("description") ?? "").trim() || null,
+      contactEmail: String(formData.get("contactEmail") ?? "").trim() || null,
+      phone: String(formData.get("phone") ?? "").trim() || null,
+      address: String(formData.get("address") ?? "").trim() || null,
+      email: loginEmail,
+      passwordHash: password ? hashPassword(password) : null,
+    },
+  });
+
+  revalidatePath("/manager/partners");
+  redirect("/manager/partners");
+}
 
 export async function updatePartner(formData: FormData) {
   requireManager();
