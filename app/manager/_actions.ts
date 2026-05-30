@@ -9,12 +9,12 @@ import { hashPassword } from "@/lib/crypto";
 export async function createPartner(formData: FormData) {
   requireManager();
   const name = String(formData.get("name") ?? "").trim();
-  if (!name) redirect("/manager/partners?error=name");
+  if (!name) redirect("/manager/partners/new?error=name");
 
   const loginEmail = String(formData.get("loginEmail") ?? "").trim().toLowerCase() || null;
   if (loginEmail) {
     const existing = await prisma.partner.findFirst({ where: { email: loginEmail } });
-    if (existing) redirect("/manager/partners?error=email");
+    if (existing) redirect("/manager/partners/new?error=email");
   }
   const password = String(formData.get("password") ?? "");
 
