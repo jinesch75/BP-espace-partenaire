@@ -1,27 +1,11 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { decryptSensitive } from "@/lib/crypto";
+import { DPI_COLUMNS as COLUMNS } from "@/lib/dpi";
 
 export const dynamic = "force-dynamic";
-
-function norm(s: string): string {
-  return s.toUpperCase().replace(/[^A-Z0-9]/g, "");
-}
-
-// The six activitéses tracked as columns.
-const COLUMNS: { key: string; label: string; match: (title: string) => boolean }[] = [
-  { key: "DAPA1", label: "DAPA 1", match: (t) => norm(t) === "DAPA1" },
-  { key: "DAPA2", label: "DAPA 2", match: (t) => norm(t) === "DAPA2" },
-  { key: "DAPA3", label: "DAPA 3", match: (t) => norm(t) === "DAPA3" },
-  { key: "DAPA4", label: "DAPA 4", match: (t) => norm(t) === "DAPA4" },
-  { key: "DAPA5", label: "DAPA 5", match: (t) => norm(t) === "DAPA5" },
-  {
-    key: "BIENV",
-    label: "Bienvenue",
-    match: (t) => /bienvenue/i.test(t) || norm(t) === "WELCOME",
-  },
-];
 
 function CheckIcon() {
   return (
@@ -92,6 +76,7 @@ export default async function ManagerTrainees() {
                   {c.label}
                 </th>
               ))}
+              <th className="th"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -133,6 +118,14 @@ export default async function ManagerTrainees() {
                     </td>
                   );
                 })}
+                <td className="td text-right">
+                  <Link
+                    href={`/manager/trainees/${t.id}`}
+                    className="text-xs font-semibold text-brand hover:underline"
+                  >
+                    Gérer
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

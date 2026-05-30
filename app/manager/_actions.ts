@@ -5,6 +5,53 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { hashPassword } from "@/lib/crypto";
+import { dpiKeyOf } from "@/lib/dpi";
+
+// Affect a participant to a specific activity (one per DPI column).
+export async function assignDpiCourse(formData: FormData) {
+  requireManager();
+  const traineeId = Number(formData.get("traineeId"));
+  const courseId = Number(formData.get("courseId"));
+  if (!traineeId || !courseId) return;
+
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    include: { sessions: { orderBy: { sequence: "asc" }, take: 1 } },
+  });
+  if (!course) return;
+
+  const key = dpiKeyOf(course.title);
+  if (key) {
+    // keep only one assignment per DPI column: drop other activities of this column
+    const all = await prisma.course.findMany({ select: { id: true, title: true } });
+    const ids = all.filter((c) => dpiKeyOf(c.title) === key).map((c) => c.id);
+    await prisma.traineeAssignment.deleteMany({
+      where: { traineeId, courseId: { in: ids } },
+    });
+  }
+
+  const assignedDate = course.sessions[0]?.date ?? new Date();
+  await prisma.traineeAssignment.create({
+    data: { traineeId, courseId, assignedDate },
+  });
+
+  revalidatePath("/manager/trainees");
+  revalidatePath(`/manager/trainees/${traineeId}`);
+}
+
+export async function removeDpiAssignment(formData: FormData) {
+  requireManager();
+  const id = Number(formData.get("assignmentId"));
+  if (!id) return;
+  const a = await prisma.traineeAssignment.findUnique({
+    where: { id },
+    select: { traineeId: true },
+  });
+  if (!a) return;
+  await prisma.traineeAssignment.delete({ where: { id } });
+  revalidatePath("/manager/trainees");
+  revalidatePath(`/manager/trainees/${a.traineeId}`);
+}
 
 export async function createPartner(formData: FormData) {
   requireManager();
