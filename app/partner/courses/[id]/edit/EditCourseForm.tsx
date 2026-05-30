@@ -40,25 +40,25 @@ function TrainerPicker({
   const [value, setValue] = useState(initial ? String(initial) : "");
   return (
     <div>
-      <label className="label">Trainer</label>
+      <label className="label">Formateur</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       >
-        <option value="">— none —</option>
+        <option value="">— aucun —</option>
         {trainers.map((t) => (
           <option key={t.id} value={t.id}>
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Add a new trainer…</option>
+        <option value="new">+ Ajouter un nouveau formateur…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">
-          <input name={`${prefix}newFirst`} placeholder="First name" className="input" />
-          <input name={`${prefix}newLast`} placeholder="Last name" className="input" />
+          <input name={`${prefix}newFirst`} placeholder="Prénom" className="input" />
+          <input name={`${prefix}newLast`} placeholder="Nom de famille" className="input" />
         </div>
       )}
     </div>
@@ -87,7 +87,7 @@ function SessionBlock({
         <span className="text-sm font-bold text-slate-700">Session {index + 1}</span>
         {removable && (
           <button type="button" onClick={onRemove} className="text-xs text-red-600 hover:underline">
-            Remove
+            Retirer
           </button>
         )}
       </div>
@@ -98,16 +98,16 @@ function SessionBlock({
         </div>
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="label">Start</label>
+            <label className="label">Début</label>
             <input type="time" name={`${prefix}startTime`} className="input" defaultValue={init.startTime} required />
           </div>
           <div className="flex-1">
-            <label className="label">End</label>
+            <label className="label">Fin</label>
             <input type="time" name={`${prefix}endTime`} className="input" defaultValue={init.endTime} required />
           </div>
         </div>
         <div>
-          <label className="label">Places available</label>
+          <label className="label">Places disponibles</label>
           <input
             type="number"
             min={0}
@@ -124,12 +124,12 @@ function SessionBlock({
               checked={online}
               onChange={(e) => setOnline(e.target.checked)}
             />
-            This session is online
+            Cette session est en ligne
           </label>
         </div>
         {online ? (
           <div className="sm:col-span-2">
-            <label className="label">Teams meeting link</label>
+            <label className="label">Lien de réunion Teams</label>
             <input
               name={`${prefix}teamsLink`}
               defaultValue={init.teamsLink ?? ""}
@@ -139,7 +139,7 @@ function SessionBlock({
           </div>
         ) : (
           <div className="sm:col-span-2">
-            <label className="label">Location / address</label>
+            <label className="label">Lieu / adresse</label>
             <input name={`${prefix}location`} defaultValue={init.location ?? ""} className="input" />
           </div>
         )}
@@ -171,7 +171,7 @@ export default function EditCourseForm({
 
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Course title</label>
+          <label className="label">Titre du cours</label>
           <input name="title" className="input" defaultValue={course.title} required />
         </div>
         <div>
@@ -206,14 +206,14 @@ export default function EditCourseForm({
             ])
           }
         >
-          + Add another session
+          + Ajouter une autre session
         </button>
       </div>
 
       <div className="flex gap-3">
-        <button className="btn-primary">Save changes</button>
+        <button className="btn-primary">Enregistrer les modifications</button>
         <a href={`/partner/courses/${course.id}`} className="btn-secondary">
-          Cancel
+          Annuler
         </a>
       </div>
     </form>

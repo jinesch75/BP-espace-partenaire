@@ -28,17 +28,17 @@ export default async function AssignPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Assign trainees</h1>
+        <h1 className="section-title">Affecter des participants</h1>
         <p className="text-sm text-slate-500">
-          {partner.name} · add trainees from the database to a course. Places
-          left is shown per session.
+          {partner.name} · ajoutez des participants de la base à un cours. Les
+          places restantes sont affichées par session.
         </p>
       </div>
 
       {trainees.length === 0 && (
         <div className="rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-700">
-          The trainee database is empty. It is populated later via the Biergerpakt
-          interconnection.
+          La base des participants est vide. Elle sera remplie plus tard via
+          l&apos;interconnexion Biergerpakt.
         </div>
       )}
 
@@ -49,7 +49,8 @@ export default async function AssignPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-semibold text-slate-800">{c.title}</h2>
               <span className="text-sm text-slate-500">
-                {assignedCount} trainee{assignedCount === 1 ? "" : "s"} assigned
+                {assignedCount} participant{assignedCount === 1 ? "" : "s"} affecté
+                {assignedCount === 1 ? "" : "s"}
               </span>
             </div>
 
@@ -60,7 +61,7 @@ export default async function AssignPage() {
                   className="badge-pill bg-slate-100 text-slate-600"
                 >
                   {formatDate(s.date)} · {Math.max(0, s.placesAvailable - assignedCount)}/
-                  {s.placesAvailable} left
+                  {s.placesAvailable} restantes
                 </span>
               ))}
             </div>
@@ -68,9 +69,9 @@ export default async function AssignPage() {
             <form action={assignTrainee} className="mt-4 flex flex-wrap items-end gap-2">
               <input type="hidden" name="courseId" value={c.id} />
               <div className="min-w-[260px]">
-                <label className="label">Add a trainee</label>
+                <label className="label">Ajouter un participant</label>
                 <select name="traineeId" className="input" required>
-                  <option value="">— select a trainee —</option>
+                  <option value="">— choisir un participant —</option>
                   {trainees.map((t) => (
                     <option key={t.id} value={t.id}>
                       {t.lastName} {t.firstName} ({decryptSensitive(t.nationalNumber)})
@@ -78,16 +79,16 @@ export default async function AssignPage() {
                   ))}
                 </select>
               </div>
-              <button className="btn-primary">Assign</button>
+              <button className="btn-primary">Affecter</button>
             </form>
 
             {c.assignments.length > 0 && (
               <table className="mt-4 w-full">
-                <thead className="bg-slate-50">
+                <thead className="bg-surface">
                   <tr>
-                    <th className="th">Trainee</th>
-                    <th className="th">National number</th>
-                    <th className="th">Assigned date</th>
+                    <th className="th">Participant</th>
+                    <th className="th">Numéro national</th>
+                    <th className="th">Date d&apos;affectation</th>
                     <th className="th"></th>
                   </tr>
                 </thead>
@@ -103,7 +104,7 @@ export default async function AssignPage() {
                         <form action={removeAssignment}>
                           <input type="hidden" name="assignmentId" value={a.id} />
                           <button className="text-xs text-red-600 hover:underline">
-                            Remove
+                            Retirer
                           </button>
                         </form>
                       </td>

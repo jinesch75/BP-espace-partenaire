@@ -15,31 +15,31 @@ function TrainerPicker({
   const [value, setValue] = useState("");
   return (
     <div>
-      <label className="label">Trainer</label>
+      <label className="label">Formateur</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       >
-        <option value="">— none —</option>
+        <option value="">— aucun —</option>
         {trainers.map((t) => (
           <option key={t.id} value={t.id}>
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Add a new trainer…</option>
+        <option value="new">+ Ajouter un nouveau formateur…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">
           <input
             name={`${prefix}newFirst`}
-            placeholder="First name"
+            placeholder="Prénom"
             className="input"
           />
           <input
             name={`${prefix}newLast`}
-            placeholder="Last name"
+            placeholder="Nom de famille"
             className="input"
           />
         </div>
@@ -70,7 +70,7 @@ function SessionBlock({
         </span>
         {removable && onRemove && (
           <button type="button" onClick={onRemove} className="text-xs text-red-600 hover:underline">
-            Remove
+            Retirer
           </button>
         )}
       </div>
@@ -81,16 +81,16 @@ function SessionBlock({
         </div>
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="label">Start</label>
+            <label className="label">Début</label>
             <input type="time" name={`${prefix}startTime`} className="input" required />
           </div>
           <div className="flex-1">
-            <label className="label">End</label>
+            <label className="label">Fin</label>
             <input type="time" name={`${prefix}endTime`} className="input" required />
           </div>
         </div>
         <div>
-          <label className="label">Places available</label>
+          <label className="label">Places disponibles</label>
           <input
             type="number"
             min={0}
@@ -107,12 +107,12 @@ function SessionBlock({
               checked={online}
               onChange={(e) => setOnline(e.target.checked)}
             />
-            This session is online
+            Cette session est en ligne
           </label>
         </div>
         {online ? (
           <div className="sm:col-span-2">
-            <label className="label">Teams meeting link</label>
+            <label className="label">Lien de réunion Teams</label>
             <input
               name={`${prefix}teamsLink`}
               placeholder="https://teams.microsoft.com/..."
@@ -121,7 +121,7 @@ function SessionBlock({
           </div>
         ) : (
           <div className="sm:col-span-2">
-            <label className="label">Location / address</label>
+            <label className="label">Lieu / adresse</label>
             <input name={`${prefix}location`} className="input" />
           </div>
         )}
@@ -145,7 +145,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
     <form action={createCourse} className="space-y-6">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Course title</label>
+          <label className="label">Titre du cours</label>
           <input name="title" className="input" required />
         </div>
         <div>
@@ -153,12 +153,12 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
           <textarea name="description" rows={3} className="input" />
         </div>
         <div>
-          <label className="label">Course format</label>
+          <label className="label">Format du cours</label>
           <div className="flex flex-wrap gap-4 text-sm">
             {([
-              ["SINGLE", "Single event"],
-              ["MULTI", "Multiple sessions"],
-              ["RECURRING", "Recurring weekly"],
+              ["SINGLE", "Événement unique"],
+              ["MULTI", "Sessions multiples"],
+              ["RECURRING", "Hebdomadaire récurrent"],
             ] as const).map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2">
                 <input
@@ -177,28 +177,29 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
 
       {type === "RECURRING" ? (
         <div className="card space-y-4 p-5">
-          <h3 className="font-semibold text-slate-700">Weekly pattern</h3>
+          <h3 className="font-semibold text-slate-700">Modèle hebdomadaire</h3>
           <p className="text-xs text-slate-500">
-            All sessions share the same weekday, time, place and trainer. We
-            generate one multi-session course you can fine-tune afterwards.
+            Toutes les sessions partagent le même jour, la même heure, le même
+            lieu et le même formateur. Nous générons un cours à sessions multiples
+            que vous pourrez affiner ensuite.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="label">First session date</label>
+              <label className="label">Date de la première session</label>
               <input type="date" name="rec_firstDate" className="input" required />
             </div>
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className="label">Start</label>
+                <label className="label">Début</label>
                 <input type="time" name="rec_startTime" className="input" required />
               </div>
               <div className="flex-1">
-                <label className="label">End</label>
+                <label className="label">Fin</label>
                 <input type="time" name="rec_endTime" className="input" required />
               </div>
             </div>
             <div>
-              <label className="label">Places available</label>
+              <label className="label">Places disponibles</label>
               <input type="number" min={0} name="rec_places" className="input" defaultValue={12} />
             </div>
             <div className="flex items-end">
@@ -209,17 +210,17 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
                   checked={recOnline}
                   onChange={(e) => setRecOnline(e.target.checked)}
                 />
-                Online sessions
+                Sessions en ligne
               </label>
             </div>
             {recOnline ? (
               <div className="sm:col-span-2">
-                <label className="label">Teams meeting link</label>
+                <label className="label">Lien de réunion Teams</label>
                 <input name="rec_teamsLink" className="input" placeholder="https://teams.microsoft.com/..." />
               </div>
             ) : (
               <div className="sm:col-span-2">
-                <label className="label">Location / address</label>
+                <label className="label">Lieu / adresse</label>
                 <input name="rec_location" className="input" />
               </div>
             )}
@@ -229,7 +230,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
           </div>
 
           <div>
-            <label className="label">Ends</label>
+            <label className="label">Fin de la série</label>
             <div className="flex flex-wrap items-center gap-4 text-sm">
               <label className="flex items-center gap-2">
                 <input
@@ -239,7 +240,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
                   checked={endMode === "count"}
                   onChange={() => setEndMode("count")}
                 />
-                After
+                Après
                 <input
                   type="number"
                   min={1}
@@ -259,7 +260,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
                   checked={endMode === "date"}
                   onChange={() => setEndMode("date")}
                 />
-                On date
+                À la date
                 <input
                   type="date"
                   name="rec_endDate"
@@ -289,16 +290,16 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
               className="btn-secondary"
               onClick={() => setKeys((arr) => [...arr, (arr[arr.length - 1] ?? 0) + 1])}
             >
-              + Add another session
+              + Ajouter une autre session
             </button>
           )}
         </div>
       )}
 
       <div className="flex gap-3">
-        <button className="btn-primary">Create course</button>
+        <button className="btn-primary">Créer le cours</button>
         <a href="/partner" className="btn-secondary">
-          Cancel
+          Annuler
         </a>
       </div>
     </form>

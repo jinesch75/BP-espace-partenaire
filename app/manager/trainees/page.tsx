@@ -21,21 +21,22 @@ export default async function ManagerTrainees() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Trainee database</h1>
+        <h1 className="section-title">Base des participants</h1>
         <p className="text-sm text-slate-500">
-          {trainees.length} trainees. The national number is sensitive — encrypt
-          before using real data. Assignments are made by ONA.
+          {trainees.length} participants. Le numéro national est sensible —
+          chiffrez-le avant toute donnée réelle. Les affectations sont faites par
+          ONA.
         </p>
       </div>
 
       <div className="card overflow-hidden">
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-surface">
             <tr>
-              <th className="th">Family name</th>
-              <th className="th">First name</th>
-              <th className="th">National number</th>
-              <th className="th">Assigned courses (date)</th>
+              <th className="th">Nom de famille</th>
+              <th className="th">Prénom</th>
+              <th className="th">Numéro national</th>
+              <th className="th">Cours affectés (date)</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

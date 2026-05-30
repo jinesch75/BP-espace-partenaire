@@ -15,39 +15,39 @@ export default async function TrainersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Trainers</h1>
+        <h1 className="section-title">Formateurs</h1>
         <p className="text-sm text-slate-500">
-          {partner.name} · these appear in the trainer dropdown when you create a
-          course.
+          {partner.name} · ces formateurs apparaissent dans la liste déroulante
+          lorsque vous créez un cours.
         </p>
       </div>
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Add a trainer</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">Ajouter un formateur</h2>
         <form action={addTrainer} className="flex flex-wrap items-end gap-3">
           <div>
             <label className="label" htmlFor="firstName">
-              First name
+              Prénom
             </label>
             <input id="firstName" name="firstName" className="input" />
           </div>
           <div>
             <label className="label" htmlFor="lastName">
-              Last name
+              Nom de famille
             </label>
             <input id="lastName" name="lastName" className="input" />
           </div>
-          <button className="btn-primary">Add</button>
+          <button className="btn-primary">Ajouter</button>
         </form>
       </div>
 
       <div className="card overflow-hidden">
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-surface">
             <tr>
-              <th className="th">Last name</th>
-              <th className="th">First name</th>
-              <th className="th">Sessions assigned</th>
+              <th className="th">Nom de famille</th>
+              <th className="th">Prénom</th>
+              <th className="th">Sessions affectées</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -61,7 +61,7 @@ export default async function TrainersPage() {
             {trainers.length === 0 && (
               <tr>
                 <td className="td text-slate-500" colSpan={3}>
-                  No trainers yet.
+                  Aucun formateur pour l&apos;instant.
                 </td>
               </tr>
             )}

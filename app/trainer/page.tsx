@@ -36,14 +36,14 @@ export default async function TrainerHome() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">My courses</h1>
+        <h1 className="section-title">Mes cours</h1>
         <p className="text-sm text-slate-500">
           {trainer.firstName} {trainer.lastName} · {trainer.partner.name}
         </p>
       </div>
 
-      <Section title="Upcoming" items={upcoming} />
-      <Section title="Past" items={past} muted />
+      <Section title="À venir" items={upcoming} />
+      <Section title="Passés" items={past} muted />
     </div>
   );
 }
@@ -61,7 +61,7 @@ function Section({
     <div>
       <h2 className="mb-3 text-lg font-semibold text-slate-700">{title}</h2>
       {items.length === 0 ? (
-        <p className="text-sm text-slate-400">Nothing here.</p>
+        <p className="text-sm text-slate-400">Rien ici.</p>
       ) : (
         <div className="space-y-3">
           {items.map(({ c }) => (
@@ -75,12 +75,12 @@ function Section({
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-medium text-slate-800">{c.title}</span>
                 <span className="text-xs text-slate-500">
-                  {c._count.assignments} registered
+                  {c._count.assignments} inscrit{c._count.assignments === 1 ? "" : "s"}
                 </span>
               </div>
               <p className="text-xs text-slate-500">
                 {c.partner.name} · {courseTypeLabel(c.type, c.recurring)} ·{" "}
-                {c.sessions.length} session(s) you run
+                {c.sessions.length} session(s) que vous animez
               </p>
               <div className="mt-2 flex flex-wrap gap-2 text-xs">
                 {c.sessions.map((s: any) => (
@@ -89,7 +89,7 @@ function Section({
                     className="badge-pill bg-slate-100 text-slate-600"
                   >
                     {formatDate(s.date)} · {s.startTime}–{s.endTime} ·{" "}
-                    {s.isOnline ? "Online" : s.location}
+                    {s.isOnline ? "En ligne" : s.location}
                   </span>
                 ))}
               </div>

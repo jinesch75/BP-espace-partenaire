@@ -33,7 +33,7 @@ export default async function TrainerCourseDetail({
     <div className="space-y-6">
       <div>
         <Link href="/trainer" className="text-sm text-brand hover:underline">
-          ← Back to my courses
+          ← Retour à mes cours
         </Link>
         <h1 className="mt-2 text-2xl font-bold text-slate-800">{course.title}</h1>
         <p className="text-sm text-slate-500">
@@ -41,7 +41,7 @@ export default async function TrainerCourseDetail({
         </p>
         <div className="mt-3">
           <a href={`/courses/${course.id}/ics`} className="btn-secondary">
-            Download calendar (.ics)
+            Télécharger le calendrier (.ics)
           </a>
         </div>
       </div>
@@ -68,14 +68,14 @@ export default async function TrainerCourseDetail({
           Sessions
         </div>
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-surface">
             <tr>
               <th className="th">#</th>
               <th className="th">Date</th>
-              <th className="th">Time</th>
-              <th className="th">Where</th>
-              <th className="th">Places left</th>
-              <th className="th">Trainer</th>
+              <th className="th">Heure</th>
+              <th className="th">Lieu</th>
+              <th className="th">Places restantes</th>
+              <th className="th">Formateur</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -97,10 +97,10 @@ export default async function TrainerCourseDetail({
                           rel="noreferrer"
                           className="text-blue-600 hover:underline"
                         >
-                          Online (Teams)
+                          En ligne (Teams)
                         </a>
                       ) : (
-                        "Online"
+                        "En ligne"
                       )
                     ) : (
                       s.location
@@ -115,7 +115,7 @@ export default async function TrainerCourseDetail({
                       : "—"}
                     {mine && (
                       <span className="badge-pill ml-1 bg-brand-light text-brand">
-                        you
+                        vous
                       </span>
                     )}
                   </td>
@@ -128,20 +128,20 @@ export default async function TrainerCourseDetail({
 
       <div className="card p-5">
         <h2 className="mb-2 font-semibold text-slate-800">
-          Registered trainees ({registered})
+          Participants inscrits ({registered})
         </h2>
         {registered === 0 ? (
           <p className="text-sm text-slate-500">
-            No one registered yet. For most partners, registrations arrive once
-            the external system is connected.
+            Personne n&apos;est encore inscrit. Pour la plupart des partenaires,
+            les inscriptions arriveront une fois le système externe connecté.
           </p>
         ) : (
           <table className="w-full">
-            <thead className="bg-slate-50">
+            <thead className="bg-surface">
               <tr>
-                <th className="th">Family name</th>
-                <th className="th">First name</th>
-                <th className="th">Registered date</th>
+                <th className="th">Nom de famille</th>
+                <th className="th">Prénom</th>
+                <th className="th">Date d&apos;inscription</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">

@@ -33,21 +33,21 @@ export default async function ManagerHome() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-slate-800">Manager dashboard</h1>
+      <h1 className="section-title">Tableau de bord</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Partners" value={partners} />
-        <Stat label="Courses" value={courses} />
-        <Stat label="Trainers" value={trainers} />
-        <Stat label="Trainees" value={trainees} />
-        <Stat label="Population 1 courses" value={pop1} />
-        <Stat label="Population 2 courses" value={pop2} />
-        <Stat label="Hidden from catalogue" value={hidden} />
-        <Stat label="Visible in catalogue" value={courses - hidden} />
+        <Stat label="Partenaires" value={partners} />
+        <Stat label="Cours" value={courses} />
+        <Stat label="Formateurs" value={trainers} />
+        <Stat label="Participants" value={trainees} />
+        <Stat label="Cours population 1" value={pop1} />
+        <Stat label="Cours population 2" value={pop2} />
+        <Stat label="Masqués du catalogue" value={hidden} />
+        <Stat label="Visibles dans le catalogue" value={courses - hidden} />
       </div>
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Courses per topic</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">Cours par thème</h2>
         <div className="flex flex-wrap gap-2">
           {byTopic.map((t) => (
             <span
@@ -62,16 +62,16 @@ export default async function ManagerHome() {
 
       <div className="flex flex-wrap gap-3">
         <Link href="/manager/partners" className="btn-primary">
-          Manage partners
+          Gérer les partenaires
         </Link>
         <Link href="/manager/courses" className="btn-secondary">
-          Manage all courses
+          Gérer tous les cours
         </Link>
         <Link href="/manager/trainees" className="btn-secondary">
-          Trainee database
+          Base des participants
         </Link>
         <a href="/manager/export" className="btn-secondary">
-          Export to Excel
+          Exporter vers Excel
         </a>
       </div>
     </div>

@@ -4,6 +4,7 @@ import {
   courseTypeLabel,
   formatDate,
   statusClasses,
+  statusLabel,
 } from "@/lib/format";
 import { updateCourseAdmin } from "@/app/manager/_actions";
 
@@ -40,14 +41,14 @@ export default async function ManagerCourses({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">All courses</h1>
+      <h1 className="section-title">Tous les cours</h1>
 
-      {/* Filters */}
+      {/* Filtres */}
       <form className="card flex flex-wrap items-end gap-3 p-4" method="get">
         <div>
-          <label className="label">Partner</label>
+          <label className="label">Partenaire</label>
           <select name="partnerId" defaultValue={searchParams.partnerId ?? ""} className="input">
-            <option value="">All</option>
+            <option value="">Tous</option>
             {partners.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
@@ -58,24 +59,24 @@ export default async function ManagerCourses({
         <div>
           <label className="label">Population</label>
           <select name="population" defaultValue={searchParams.population ?? ""} className="input">
-            <option value="">All</option>
+            <option value="">Toutes</option>
             <option value="POP1">Population 1</option>
             <option value="POP2">Population 2</option>
-            <option value="UNSET">Unset</option>
+            <option value="UNSET">Non définie</option>
           </select>
         </div>
         <div>
-          <label className="label">Status</label>
+          <label className="label">Statut</label>
           <select name="status" defaultValue={searchParams.status ?? ""} className="input">
-            <option value="">All</option>
-            <option value="DRAFT">Draft</option>
-            <option value="OPEN">Open</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
+            <option value="">Tous</option>
+            <option value="DRAFT">Brouillon</option>
+            <option value="OPEN">Ouvert</option>
+            <option value="COMPLETED">Terminé</option>
+            <option value="CANCELLED">Annulé</option>
           </select>
         </div>
-        <button className="btn-secondary">Filter</button>
-        <span className="ml-auto text-sm text-slate-500">{courses.length} courses</span>
+        <button className="btn-secondary">Filtrer</button>
+        <span className="ml-auto text-sm text-slate-500">{courses.length} cours</span>
       </form>
 
       <div className="space-y-4">
@@ -94,13 +95,13 @@ export default async function ManagerCourses({
                   <div className="flex items-center gap-2">
                     <h2 className="font-semibold text-slate-800">{c.title}</h2>
                     <span className={`badge-pill ${statusClasses(c.status)}`}>
-                      {c.status}
+                      {statusLabel(c.status)}
                     </span>
                   </div>
                   <p className="text-xs text-slate-500">
                     {c.partner.name} · {courseTypeLabel(c.type, c.recurring)} ·{" "}
                     {c.sessions.length} session(s)
-                    {c.sessions[0] && <> · from {formatDate(c.sessions[0].date)}</>}
+                    {c.sessions[0] && <> · à partir du {formatDate(c.sessions[0].date)}</>}
                   </p>
                 </div>
               </div>
@@ -113,7 +114,7 @@ export default async function ManagerCourses({
                     defaultValue={c.population ?? ""}
                     className="input"
                   >
-                    <option value="">Unset</option>
+                    <option value="">Non définie</option>
                     <option value="POP1">Population 1</option>
                     <option value="POP2">Population 2</option>
                   </select>
@@ -123,12 +124,12 @@ export default async function ManagerCourses({
                       name="visibleInCatalogue"
                       defaultChecked={c.visibleInCatalogue}
                     />
-                    Visible in catalogue
+                    Visible dans le catalogue
                   </label>
                 </div>
 
                 <div>
-                  <span className="label">Topics</span>
+                  <span className="label">Thèmes</span>
                   <div className="flex flex-wrap gap-x-3 gap-y-1">
                     {topics.map((t) => (
                       <label key={t.id} className="flex items-center gap-1 text-sm">
@@ -163,7 +164,7 @@ export default async function ManagerCourses({
               </div>
 
               <div>
-                <button className="btn-primary">Save</button>
+                <button className="btn-primary">Enregistrer</button>
               </div>
             </form>
           );

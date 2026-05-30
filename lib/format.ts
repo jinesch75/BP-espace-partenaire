@@ -9,8 +9,19 @@ export function formatDate(d: Date | string): string {
 }
 
 export function courseTypeLabel(type: string, recurring: boolean): string {
-  if (recurring) return "Recurring weekly";
-  return type === "MULTI" ? "Multi-session" : "Single event";
+  if (recurring) return "Hebdomadaire récurrent";
+  return type === "MULTI" ? "Sessions multiples" : "Événement unique";
+}
+
+export const STATUS_LABELS: Record<string, string> = {
+  DRAFT: "Brouillon",
+  OPEN: "Ouvert",
+  COMPLETED: "Terminé",
+  CANCELLED: "Annulé",
+};
+
+export function statusLabel(status: string): string {
+  return STATUS_LABELS[status] ?? status;
 }
 
 export function statusClasses(status: string): string {

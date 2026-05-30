@@ -14,10 +14,11 @@ export default async function ManagerPartners() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="section-title">Partners</h1>
+        <h1 className="section-title">Partenaires</h1>
         <p className="text-sm text-slate-500">
-          Edit each partner&apos;s general information, or delete a partner. The
-          contact details appear at the top of that partner&apos;s own page.
+          Modifiez les informations générales de chaque partenaire, ou supprimez
+          un partenaire. Les coordonnées s&apos;affichent en haut de la page du
+          partenaire concerné.
         </p>
       </div>
 
@@ -34,17 +35,17 @@ export default async function ManagerPartners() {
                   )}
                 </div>
                 <span className="text-xs text-slate-500">
-                  {p._count.courses} courses · {p._count.trainers} trainers
+                  {p._count.courses} cours · {p._count.trainers} formateurs
                 </span>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="label">Partner name</label>
+                  <label className="label">Nom du partenaire</label>
                   <input name="name" className="input" defaultValue={p.name} />
                 </div>
                 <div>
-                  <label className="label">Contact email</label>
+                  <label className="label">E-mail de contact</label>
                   <input
                     name="contactEmail"
                     type="email"
@@ -53,11 +54,11 @@ export default async function ManagerPartners() {
                   />
                 </div>
                 <div>
-                  <label className="label">Phone</label>
+                  <label className="label">Téléphone</label>
                   <input name="phone" className="input" defaultValue={p.phone ?? ""} />
                 </div>
                 <div>
-                  <label className="label">Address</label>
+                  <label className="label">Adresse</label>
                   <input name="address" className="input" defaultValue={p.address ?? ""} />
                 </div>
                 <div className="sm:col-span-2">
@@ -71,7 +72,7 @@ export default async function ManagerPartners() {
                 </div>
               </div>
 
-              <button className="btn-primary">Save changes</button>
+              <button className="btn-primary">Enregistrer les modifications</button>
             </form>
 
             <form
@@ -79,9 +80,9 @@ export default async function ManagerPartners() {
               className="mt-4 border-t border-slate-100 pt-3"
             >
               <input type="hidden" name="partnerId" value={p.id} />
-              <button className="btn-danger">Delete this partner</button>
+              <button className="btn-danger">Supprimer ce partenaire</button>
               <span className="ml-2 text-xs text-slate-400">
-                Also deletes this partner&apos;s courses, sessions and trainers.
+                Supprime aussi les cours, sessions et formateurs de ce partenaire.
               </span>
             </form>
           </div>

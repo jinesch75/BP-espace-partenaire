@@ -11,11 +11,11 @@ export default function LoginPage({
   return (
     <div className="mx-auto max-w-md space-y-6">
       <div>
-        <h1 className="section-title">Log in</h1>
+        <h1 className="section-title">Connexion</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Sign in with your account. Just testing?{" "}
+          Connectez-vous avec votre compte. Vous testez ?{" "}
           <Link href="/" className="font-semibold text-brand hover:underline">
-            Use demo access
+            Utiliser l&apos;accès démo
           </Link>
           .
         </p>
@@ -23,20 +23,20 @@ export default function LoginPage({
 
       {searchParams.error && (
         <div className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-700">
-          Incorrect email or password.
+          E-mail ou mot de passe incorrect.
         </div>
       )}
 
       <form action={login} className="card space-y-4 p-5">
         <div>
           <label className="label" htmlFor="email">
-            Email
+            E-mail
           </label>
           <input id="email" name="email" type="email" className="input" required />
         </div>
         <div>
           <label className="label" htmlFor="password">
-            Password
+            Mot de passe
           </label>
           <input
             id="password"
@@ -46,7 +46,7 @@ export default function LoginPage({
             required
           />
         </div>
-        <button className="btn-primary w-full">Log in</button>
+        <button className="btn-primary w-full">Se connecter</button>
       </form>
     </div>
   );

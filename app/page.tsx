@@ -21,34 +21,34 @@ export default async function Home() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="section-title">Demo access — choose a role</h1>
+          <h1 className="section-title">Accès démo — choisissez un rôle</h1>
           <p className="mt-1 text-sm text-slate-500">
-            No account needed. Click any role to explore that view.
+            Aucun compte nécessaire. Cliquez sur un rôle pour explorer cette vue.
           </p>
         </div>
         <Link href="/login" className="btn-secondary">
-          Log in with an account
+          Se connecter avec un compte
         </Link>
       </div>
 
-      {/* Manager */}
+      {/* Administrateur */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Manager (you)</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Accès administrateur</h2>
         <p className="mt-1 text-sm text-slate-500">
-          See all courses, set population / topics / badges / catalogue
-          visibility, and view the trainee database.
+          Voir tous les cours, définir la population / les thèmes / les badges /
+          la visibilité dans le catalogue, et consulter la base des participants.
         </p>
         <form action={enterAsManager} className="mt-3">
-          <button className="btn-primary">Enter as Manager</button>
+          <button className="btn-primary">Entrer comme administrateur</button>
         </form>
       </section>
 
-      {/* Partners */}
+      {/* Partenaires */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Partners</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Each partner manages their own courses and trainers. ONA can also
-          assign trainees.
+          Chaque partenaire gère ses propres cours et formateurs. ONA peut aussi
+          affecter des participants.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {partners.map((p) => (
@@ -65,7 +65,7 @@ export default async function Home() {
                     )}
                   </span>
                   <span className="text-xs text-slate-500">
-                    {p._count.courses} courses · {p.trainers.length} trainers
+                    {p._count.courses} cours · {p.trainers.length} formateurs
                   </span>
                 </span>
                 <span className="text-brand">→</span>
@@ -75,19 +75,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Trainers */}
+      {/* Formateur */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Trainer</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Accès formateur</h2>
         <p className="mt-1 text-sm text-slate-500">
-          A trainer sees the courses they are assigned to and who is registered.
+          Un formateur voit les cours auxquels il est affecté et qui y est inscrit.
         </p>
         <form action={enterAsTrainer} className="mt-3 flex flex-wrap items-end gap-3">
           <div className="min-w-[260px]">
             <label className="label" htmlFor="trainerId">
-              Choose a trainer
+              Choisir un formateur
             </label>
             <select id="trainerId" name="trainerId" className="input" required>
-              <option value="">— select —</option>
+              <option value="">— sélectionner —</option>
               {partners.map((p) => (
                 <optgroup key={p.id} label={p.name}>
                   {p.trainers.map((t) => (
@@ -99,7 +99,7 @@ export default async function Home() {
               ))}
             </select>
           </div>
-          <button className="btn-primary">Enter as Trainer</button>
+          <button className="btn-primary">Entrer comme formateur</button>
         </form>
       </section>
     </div>

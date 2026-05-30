@@ -21,42 +21,42 @@ const body = Urbanist({
 
 export const metadata: Metadata = {
   title: "Espace partenaire · Biergerpakt",
-  description: "Training course management — partner space",
+  description: "Gestion des cours de formation — espace partenaire",
 };
 
 async function TopBar() {
   const session = getSession();
   if (!session) return null;
 
-  let label = "Manager";
+  let label = "Administrateur";
   let links: { href: string; text: string }[] = [];
 
   if (session.role === "MANAGER") {
-    label = "Manager";
+    label = "Administrateur";
     links = [
-      { href: "/manager", text: "Dashboard" },
-      { href: "/manager/partners", text: "Partners" },
-      { href: "/manager/courses", text: "All courses" },
-      { href: "/manager/trainees", text: "Trainees" },
+      { href: "/manager", text: "Tableau de bord" },
+      { href: "/manager/partners", text: "Partenaires" },
+      { href: "/manager/courses", text: "Tous les cours" },
+      { href: "/manager/trainees", text: "Participants" },
     ];
   } else if (session.role === "PARTNER" && session.partnerId) {
     const partner = await prisma.partner.findUnique({
       where: { id: session.partnerId },
     });
-    label = `Partner · ${partner?.name ?? "?"}`;
+    label = `Partenaire · ${partner?.name ?? "?"}`;
     links = [
-      { href: "/partner", text: "My courses" },
-      { href: "/partner/trainers", text: "Trainers" },
+      { href: "/partner", text: "Mes cours" },
+      { href: "/partner/trainers", text: "Formateurs" },
     ];
     if (partner?.managesTrainees) {
-      links.push({ href: "/partner/assign", text: "Assign trainees" });
+      links.push({ href: "/partner/assign", text: "Affecter des participants" });
     }
   } else if (session.role === "TRAINER" && session.trainerId) {
     const trainer = await prisma.trainer.findUnique({
       where: { id: session.trainerId },
     });
-    label = `Trainer · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
-    links = [{ href: "/trainer", text: "My courses" }];
+    label = `Formateur · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
+    links = [{ href: "/trainer", text: "Mes cours" }];
   }
 
   return (
@@ -83,7 +83,7 @@ async function TopBar() {
           <span className="badge-pill bg-brand-light text-brand">{label}</span>
           <form action={exitDemo}>
             <button className="text-sm font-medium text-slate-500 hover:text-brand">
-              Switch role
+              Changer de rôle
             </button>
           </form>
         </div>
@@ -107,7 +107,7 @@ export default function RootLayout({
             <span className="font-heading font-bold text-ink">
               Espace partenaire
             </span>
-            <span>Training course management · Biergerpakt</span>
+            <span>Gestion des cours de formation · Biergerpakt</span>
           </div>
         </footer>
       </body>

@@ -7,6 +7,8 @@ import {
   formatDate,
   populationLabel,
   statusClasses,
+  statusLabel,
+  STATUS_LABELS,
 } from "@/lib/format";
 import { setCourseStatus, deleteCourse } from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
@@ -38,11 +40,11 @@ export default async function CourseDetail({
     <div className="space-y-6">
       {conflicts.length > 0 && (
         <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          <p className="font-semibold">Trainer double-booking warning</p>
+          <p className="font-semibold">Avertissement : double réservation d&apos;un formateur</p>
           <ul className="mt-1 list-disc pl-5">
             {conflicts.map((c, i) => (
               <li key={i}>
-                {c.trainer} is also booked for “{c.otherCourse}” on {c.date} ({c.time}).
+                {c.trainer} est aussi réservé pour « {c.otherCourse} » le {c.date} ({c.time}).
               </li>
             ))}
           </ul>
@@ -50,12 +52,12 @@ export default async function CourseDetail({
       )}
       <div>
         <Link href="/partner" className="text-sm text-brand hover:underline">
-          ← Back to my courses
+          ← Retour à mes cours
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-bold text-slate-800">{course.title}</h1>
           <span className={`badge-pill ${statusClasses(course.status)}`}>
-            {course.status}
+            {statusLabel(course.status)}
           </span>
         </div>
         <p className="text-sm text-slate-500">
@@ -64,10 +66,10 @@ export default async function CourseDetail({
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href={`/partner/courses/${course.id}/edit`} className="btn-primary">
-            Edit course &amp; sessions
+            Modifier le cours et les sessions
           </Link>
           <a href={`/courses/${course.id}/ics`} className="btn-secondary">
-            Download calendar (.ics)
+            Télécharger le calendrier (.ics)
           </a>
         </div>
       </div>
@@ -77,7 +79,9 @@ export default async function CourseDetail({
       )}
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Set by the manager</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">
+          Défini par l&apos;administrateur
+        </h2>
         <div className="flex flex-wrap gap-2 text-xs">
           <span className="badge-pill bg-slate-100 text-slate-600">
             {populationLabel(course.population)}
@@ -89,7 +93,7 @@ export default async function CourseDetail({
                 : "bg-slate-100 text-slate-500"
             }`}
           >
-            {course.visibleInCatalogue ? "Visible in catalogue" : "Hidden"}
+            {course.visibleInCatalogue ? "Visible dans le catalogue" : "Masqué"}
           </span>
           {course.topics.map((t) => (
             <span key={t.id} className="badge-pill bg-indigo-100 text-indigo-700">
@@ -109,14 +113,14 @@ export default async function CourseDetail({
           Sessions
         </div>
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-surface">
             <tr>
               <th className="th">#</th>
               <th className="th">Date</th>
-              <th className="th">Time</th>
-              <th className="th">Where</th>
+              <th className="th">Heure</th>
+              <th className="th">Lieu</th>
               <th className="th">Places</th>
-              <th className="th">Trainer</th>
+              <th className="th">Formateur</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -136,10 +140,10 @@ export default async function CourseDetail({
                         rel="noreferrer"
                         className="text-blue-600 hover:underline"
                       >
-                        Online (Teams link)
+                        En ligne (lien Teams)
                       </a>
                     ) : (
-                      <span className="text-blue-600">Online</span>
+                      <span className="text-blue-600">En ligne</span>
                     )
                   ) : (
                     s.location
@@ -160,11 +164,12 @@ export default async function CourseDetail({
       {partner.managesTrainees && (
         <div className="card p-5">
           <h2 className="mb-2 font-semibold text-slate-800">
-            Assigned trainees ({course.assignments.length})
+            Participants affectés ({course.assignments.length})
           </h2>
           {course.assignments.length === 0 ? (
             <p className="text-sm text-slate-500">
-              None yet. Use “Assign trainees” to add them.
+              Aucun pour l&apos;instant. Utilisez « Affecter des participants » pour
+              les ajouter.
             </p>
           ) : (
             <ul className="text-sm text-slate-700">
@@ -183,21 +188,21 @@ export default async function CourseDetail({
         <form action={setCourseStatus} className="flex items-end gap-2">
           <input type="hidden" name="courseId" value={course.id} />
           <div>
-            <label className="label">Status</label>
+            <label className="label">Statut</label>
             <select name="status" defaultValue={course.status} className="input">
               {STATUSES.map((s) => (
                 <option key={s} value={s}>
-                  {s}
+                  {STATUS_LABELS[s]}
                 </option>
               ))}
             </select>
           </div>
-          <button className="btn-primary">Update status</button>
+          <button className="btn-primary">Mettre à jour le statut</button>
         </form>
 
         <form action={deleteCourse} className="ml-auto">
           <input type="hidden" name="courseId" value={course.id} />
-          <button className="btn-danger">Delete course</button>
+          <button className="btn-danger">Supprimer le cours</button>
         </form>
       </div>
     </div>
