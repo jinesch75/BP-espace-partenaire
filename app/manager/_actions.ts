@@ -106,6 +106,16 @@ export async function updateCourseDetails(formData: FormData) {
   redirect(`/manager/courses/${courseId}`);
 }
 
+export async function deleteCourseAsManager(formData: FormData) {
+  requireManager();
+  const courseId = Number(formData.get("courseId"));
+  if (!courseId) return;
+  // deletes the course and (by cascade) its sessions and assignments
+  await prisma.course.delete({ where: { id: courseId } });
+  revalidatePath("/manager/courses");
+  redirect("/manager/courses");
+}
+
 export async function deletePartner(formData: FormData) {
   requireManager();
   const id = Number(formData.get("partnerId"));

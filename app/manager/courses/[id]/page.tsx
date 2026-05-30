@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { courseTypeLabel, statusClasses, statusLabel } from "@/lib/format";
-import { updateCourseAdmin, updateCourseDetails } from "@/app/manager/_actions";
+import {
+  updateCourseAdmin,
+  updateCourseDetails,
+  deleteCourseAsManager,
+} from "@/app/manager/_actions";
 import EditCourseForm from "@/app/partner/courses/[id]/edit/EditCourseForm";
 
 export const dynamic = "force-dynamic";
@@ -147,6 +151,18 @@ export default async function ManagerCourseDetail({
           action={updateCourseDetails}
           cancelHref="/manager/courses"
         />
+      </div>
+
+      {/* Supprimer le cours */}
+      <div className="card flex flex-wrap items-center gap-3 border-red-100 p-5">
+        <form action={deleteCourseAsManager}>
+          <input type="hidden" name="courseId" value={course.id} />
+          <button className="btn-danger">Supprimer le cours</button>
+        </form>
+        <span className="text-xs text-slate-400">
+          Supprime définitivement ce cours, ses sessions et les affectations de
+          participants.
+        </span>
       </div>
     </div>
   );
