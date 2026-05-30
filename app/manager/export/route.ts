@@ -2,7 +2,7 @@ import ExcelJS from "exceljs";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { decryptSensitive } from "@/lib/crypto";
-import { courseTypeLabel, statusLabel } from "@/lib/format";
+import { courseTypeLabel, statusLabel, populationLabel } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +40,7 @@ export async function GET() {
     { header: "Titre", key: "title", width: 28 },
     { header: "Type", key: "type", width: 18 },
     { header: "Statut", key: "status", width: 12 },
-    { header: "Population", key: "population", width: 12 },
+    { header: "Catalogue", key: "population", width: 18 },
     { header: "Visible", key: "visible", width: 10 },
     { header: "Thèmes", key: "topics", width: 20 },
     { header: "Badges", key: "badges", width: 20 },
@@ -55,7 +55,7 @@ export async function GET() {
       title: c.title,
       type: courseTypeLabel(c.type, c.recurring),
       status: statusLabel(c.status),
-      population: c.population ?? "—",
+      population: populationLabel(c.population),
       visible: c.visibleInCatalogue ? "Oui" : "Non",
       topics: c.topics.map((t) => t.name).join(", "),
       badges: c.badges.map((b) => b.name).join(", "),

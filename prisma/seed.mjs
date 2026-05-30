@@ -57,7 +57,72 @@ async function resetSequences() {
   }
 }
 
+// Canonical themes (8) and badges (8). Applied on every run so the live
+// database always reflects the latest names.
+const TOPICS = [
+  "Ateliers créatifs et de rencontre",
+  "Cafés des langues",
+  "Formations et conférences",
+  "Podcasts",
+  "Sessions d'information en ligne",
+  "Soirées cinématiques",
+  "Visites guidées",
+  "Autres",
+];
+const BADGES = [
+  "Démocratie",
+  "Linguistique",
+  "Culturel",
+  "Patrimoine",
+  "Anti-racisme",
+  "Social",
+  "Echange culturel",
+  "Administratif",
+];
+
+async function applyTaxonomy() {
+  for (let i = 0; i < TOPICS.length; i++) {
+    await prisma.topic.upsert({
+      where: { id: i + 1 },
+      update: { name: TOPICS[i] },
+      create: { id: i + 1, name: TOPICS[i] },
+    });
+  }
+  for (let i = 0; i < BADGES.length; i++) {
+    await prisma.badge.upsert({
+      where: { id: i + 1 },
+      update: { name: BADGES[i] },
+      create: { id: i + 1, name: BADGES[i] },
+    });
+  }
+}
+
+// Catalogue rule (applied on every run, even when the seed is skipped):
+// ONA courses belong to the DPI catalogue (POP2),
+// ASTI courses to the main catalogue (POP1).
+async function applyCatalogueRules() {
+  const ona = await prisma.partner.findFirst({ where: { name: "ONA" } });
+  if (ona) {
+    await prisma.course.updateMany({
+      where: { partnerId: ona.id },
+      data: { population: "POP2" },
+    });
+  }
+  const asti = await prisma.partner.findFirst({ where: { name: "ASTI" } });
+  if (asti) {
+    await prisma.course.updateMany({
+      where: { partnerId: asti.id },
+      data: { population: "POP1" },
+    });
+  }
+}
+
 async function main() {
+  // always enforce theme/badge names and the catalogue rule,
+  // even on an already-seeded database
+  await applyTaxonomy();
+  await applyCatalogueRules();
+
   const existing = await prisma.partner.count();
   if (existing > 0) {
     console.log(`Seed skipped — ${existing} partners already present.`);
@@ -73,13 +138,7 @@ async function main() {
     },
   });
 
-  // Topics & badges (ids are 1-based, matching course references)
-  await prisma.topic.createMany({
-    data: data.topics.map((name, i) => ({ id: i + 1, name })),
-  });
-  await prisma.badge.createMany({
-    data: data.badges.map((name, i) => ({ id: i + 1, name })),
-  });
+  // Topics & badges are created/updated by applyTaxonomy() above.
 
   let partnerId = 0;
   for (const p of data.partners) {
@@ -162,6 +221,7 @@ async function main() {
   }
 
   await resetSequences();
+  await applyCatalogueRules();
 
   const counts = {
     partners: await prisma.partner.count(),

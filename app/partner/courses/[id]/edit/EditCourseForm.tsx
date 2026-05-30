@@ -155,17 +155,22 @@ export default function EditCourseForm({
   course,
   sessions,
   trainers,
+  action = updateCourse,
+  cancelHref,
 }: {
   course: { id: number; title: string; description: string | null };
   sessions: SessionData[];
   trainers: Trainer[];
+  action?: (formData: FormData) => void | Promise<void>;
+  cancelHref?: string;
 }) {
   const [rows, setRows] = useState(
     sessions.map((s, i) => ({ key: i, init: s }))
   );
+  const backHref = cancelHref ?? `/partner/courses/${course.id}`;
 
   return (
-    <form action={updateCourse} className="space-y-6">
+    <form action={action} className="space-y-6">
       <input type="hidden" name="courseId" value={course.id} />
       <input type="hidden" name="sessionCount" value={rows.length} />
 
@@ -212,7 +217,7 @@ export default function EditCourseForm({
 
       <div className="flex gap-3">
         <button className="btn-primary">Enregistrer les modifications</button>
-        <a href={`/partner/courses/${course.id}`} className="btn-secondary">
+        <a href={backHref} className="btn-secondary">
           Annuler
         </a>
       </div>

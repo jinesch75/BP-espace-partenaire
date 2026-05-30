@@ -35,8 +35,8 @@ export default async function Home() {
       <section className="card p-5">
         <h2 className="text-lg font-semibold text-slate-800">Accès administrateur</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Voir tous les cours, définir la population / les thèmes / les badges /
-          la visibilité dans le catalogue, et consulter la base des participants.
+          Voir tous les cours, définir le catalogue / les thèmes / les badges /
+          la visibilité, et consulter la base des participants.
         </p>
         <form action={enterAsManager} className="mt-3">
           <button className="btn-primary">Entrer comme administrateur</button>

@@ -24,6 +24,88 @@ export async function updatePartner(formData: FormData) {
   revalidatePath("/partner");
 }
 
+async function resolveTrainer(
+  partnerId: number,
+  formData: FormData,
+  prefix: string
+): Promise<number | null> {
+  const raw = String(formData.get(`${prefix}trainerId`) ?? "");
+  if (raw === "new") {
+    const first = String(formData.get(`${prefix}newFirst`) ?? "").trim();
+    const last = String(formData.get(`${prefix}newLast`) ?? "").trim();
+    if (!first && !last) return null;
+    const existing = await prisma.trainer.findFirst({
+      where: { partnerId, firstName: first, lastName: last },
+    });
+    if (existing) return existing.id;
+    const created = await prisma.trainer.create({
+      data: { partnerId, firstName: first, lastName: last },
+    });
+    return created.id;
+  }
+  const id = Number(raw);
+  if (!id) return null;
+  const t = await prisma.trainer.findFirst({ where: { id, partnerId } });
+  return t ? t.id : null;
+}
+
+// Manager can edit the details (title, description, sessions) of ANY course.
+export async function updateCourseDetails(formData: FormData) {
+  requireManager();
+  const courseId = Number(formData.get("courseId"));
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    include: { sessions: { select: { id: true } } },
+  });
+  if (!course) redirect("/manager/courses");
+
+  const title = String(formData.get("title") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim() || null;
+  if (!title) redirect(`/manager/courses/${courseId}?error=title`);
+
+  await prisma.course.update({
+    where: { id: courseId },
+    data: { title, description },
+  });
+
+  const count = Number(formData.get("sessionCount") ?? 0);
+  const keptIds: number[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const prefix = `s_${i}_`;
+    if (!formData.get(`${prefix}date`)) continue;
+    const isOnline = formData.get(`${prefix}isOnline`) === "on";
+    const trainerId = await resolveTrainer(course.partnerId, formData, prefix);
+    const data = {
+      sequence: keptIds.length + 1,
+      date: new Date(String(formData.get(`${prefix}date`))),
+      startTime: String(formData.get(`${prefix}startTime`) ?? ""),
+      endTime: String(formData.get(`${prefix}endTime`) ?? ""),
+      isOnline,
+      location: isOnline ? null : String(formData.get(`${prefix}location`) ?? "") || null,
+      teamsLink: isOnline ? String(formData.get(`${prefix}teamsLink`) ?? "") || null : null,
+      placesAvailable: Number(formData.get(`${prefix}places`) ?? 0) || 0,
+      trainerId,
+    };
+    const existingId = Number(formData.get(`${prefix}id`) ?? 0);
+    if (existingId && course.sessions.some((s) => s.id === existingId)) {
+      await prisma.session.update({ where: { id: existingId }, data });
+      keptIds.push(existingId);
+    } else {
+      const created = await prisma.session.create({ data: { ...data, courseId } });
+      keptIds.push(created.id);
+    }
+  }
+
+  await prisma.session.deleteMany({
+    where: { courseId, id: { notIn: keptIds.length ? keptIds : [-1] } },
+  });
+
+  revalidatePath("/manager/courses");
+  revalidatePath(`/manager/courses/${courseId}`);
+  redirect(`/manager/courses/${courseId}`);
+}
+
 export async function deletePartner(formData: FormData) {
   requireManager();
   const id = Number(formData.get("partnerId"));

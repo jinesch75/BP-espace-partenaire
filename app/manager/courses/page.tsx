@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import {
@@ -67,12 +68,12 @@ export default async function ManagerCourses({
           </select>
         </div>
         <div>
-          <label className="label">Population</label>
+          <label className="label">Catalogue</label>
           <select name="population" defaultValue={searchParams.population ?? ""} className="input">
-            <option value="">Toutes</option>
-            <option value="POP1">Population 1</option>
-            <option value="POP2">Population 2</option>
-            <option value="UNSET">Non définie</option>
+            <option value="">Tous</option>
+            <option value="POP1">Catalogue principal</option>
+            <option value="POP2">Catalogue DPI</option>
+            <option value="UNSET">Non défini</option>
           </select>
         </div>
         <div>
@@ -86,7 +87,7 @@ export default async function ManagerCourses({
           </select>
         </div>
         <div>
-          <label className="label">Catalogue</label>
+          <label className="label">Visibilité</label>
           <select name="visible" defaultValue={searchParams.visible ?? ""} className="input">
             <option value="">Tous</option>
             <option value="1">Visibles</option>
@@ -119,7 +120,7 @@ export default async function ManagerCourses({
               className="card space-y-4 p-5"
             >
               <input type="hidden" name="courseId" value={c.id} />
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="font-semibold text-slate-800">{c.title}</h2>
@@ -133,19 +134,22 @@ export default async function ManagerCourses({
                     {c.sessions[0] && <> · à partir du {formatDate(c.sessions[0].date)}</>}
                   </p>
                 </div>
+                <Link href={`/manager/courses/${c.id}`} className="btn-secondary">
+                  Ouvrir le cours
+                </Link>
               </div>
 
               <div className="grid gap-4 lg:grid-cols-3">
                 <div>
-                  <label className="label">Population</label>
+                  <label className="label">Catalogue</label>
                   <select
                     name="population"
                     defaultValue={c.population ?? ""}
                     className="input"
                   >
-                    <option value="">Non définie</option>
-                    <option value="POP1">Population 1</option>
-                    <option value="POP2">Population 2</option>
+                    <option value="">Non défini</option>
+                    <option value="POP1">Catalogue principal</option>
+                    <option value="POP2">Catalogue DPI</option>
                   </select>
                   <label className="mt-3 flex items-center gap-2 text-sm">
                     <input

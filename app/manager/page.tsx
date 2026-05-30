@@ -60,12 +60,12 @@ export default async function ManagerHome() {
         <Stat label="Formateurs" value={trainers} href="/manager/trainers" />
         <Stat label="Participants" value={trainees} href="/manager/trainees" />
         <Stat
-          label="Cours population 1"
+          label="Cours Catalogue principal"
           value={pop1}
           href="/manager/courses?population=POP1"
         />
         <Stat
-          label="Cours population 2"
+          label="Cours Catalogue DPI"
           value={pop2}
           href="/manager/courses?population=POP2"
         />

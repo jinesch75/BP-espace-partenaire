@@ -40,7 +40,7 @@ export function statusClasses(status: string): string {
 }
 
 export function populationLabel(pop: string | null): string {
-  if (pop === "POP1") return "Population 1";
-  if (pop === "POP2") return "Population 2";
+  if (pop === "POP1") return "Catalogue principal";
+  if (pop === "POP2") return "Catalogue DPI";
   return "—";
 }
