@@ -35,7 +35,7 @@ export default async function Home() {
       <section className="card p-5">
         <h2 className="text-lg font-semibold text-slate-800">Accès administrateur</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Voir tous les cours, définir le catalogue / les thèmes / les badges /
+          Voir toutes les activités, définir le catalogue / les thèmes / les badges /
           la visibilité, et consulter la base des participants.
         </p>
         <form action={enterAsManager} className="mt-3">
@@ -47,7 +47,7 @@ export default async function Home() {
       <section className="card p-5">
         <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Chaque partenaire gère ses propres cours et formateurs. ONA et MIFA
+          Chaque partenaire gère ses propres activités et intervenants. ONA et MIFA
           (rôle DPI) peuvent aussi affecter des participants.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,7 +65,7 @@ export default async function Home() {
                     )}
                   </span>
                   <span className="text-xs text-slate-500">
-                    {p._count.courses} cours · {p.trainers.length} formateurs
+                    {p._count.courses} activités · {p.trainers.length} intervenants
                   </span>
                 </span>
                 <span className="text-brand">→</span>
@@ -75,16 +75,16 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Formateur */}
+      {/* Intervenant */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Accès formateur</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Accès intervenant</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Un formateur voit les cours auxquels il est affecté et qui y est inscrit.
+          Un intervenant voit les activités auxquelles il est affecté et qui y est inscrit.
         </p>
         <form action={enterAsTrainer} className="mt-3 flex flex-wrap items-end gap-3">
           <div className="min-w-[260px]">
             <label className="label" htmlFor="trainerId">
-              Choisir un formateur
+              Choisir un intervenant
             </label>
             <select id="trainerId" name="trainerId" className="input" required>
               <option value="">— sélectionner —</option>
@@ -99,7 +99,7 @@ export default async function Home() {
               ))}
             </select>
           </div>
-          <button className="btn-primary">Entrer comme formateur</button>
+          <button className="btn-primary">Entrer comme intervenant</button>
         </form>
       </section>
     </div>

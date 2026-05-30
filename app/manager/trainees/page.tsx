@@ -9,7 +9,7 @@ function norm(s: string): string {
   return s.toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
-// The six courses tracked as columns.
+// The six activitéses tracked as columns.
 const COLUMNS: { key: string; label: string; match: (title: string) => boolean }[] = [
   { key: "DAPA1", label: "DAPA 1", match: (t) => norm(t) === "DAPA1" },
   { key: "DAPA2", label: "DAPA 2", match: (t) => norm(t) === "DAPA2" },
@@ -68,7 +68,7 @@ export default async function ManagerTrainees() {
         </h1>
         <p className="text-sm text-slate-500">
           {trainees.length} participants. Le numéro national est sensible et
-          chiffré. Suivi de participation aux six cours du parcours.
+          chiffré. Suivi de participation aux six activités du parcours.
         </p>
       </div>
 

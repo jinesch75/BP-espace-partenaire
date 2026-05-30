@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { updatePartner, deletePartner } from "@/app/manager/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -64,7 +65,7 @@ export default async function ManagerPartners() {
                   )}
                 </div>
                 <span className="text-xs text-slate-500">
-                  {p._count.courses} cours · {p._count.trainers} formateurs
+                  {p._count.courses} activités · {p._count.trainers} intervenants
                 </span>
               </div>
 
@@ -101,14 +102,14 @@ export default async function ManagerPartners() {
                 </div>
               </div>
 
-              <button className="btn-primary">Enregistrer les modifications</button>
+              <SaveButton>Enregistrer les modifications</SaveButton>
             </form>
 
             <div className="mt-4 grid gap-4 border-t border-slate-100 pt-3 sm:grid-cols-2">
               <div>
-                <p className="label mb-1">Formateurs ({p.trainers.length})</p>
+                <p className="label mb-1">Intervenants ({p.trainers.length})</p>
                 {p.trainers.length === 0 ? (
-                  <p className="text-xs text-slate-400">Aucun formateur.</p>
+                  <p className="text-xs text-slate-400">Aucun intervenant.</p>
                 ) : (
                   <div className="flex flex-wrap gap-1.5">
                     {p.trainers.map((t) => (
@@ -124,7 +125,7 @@ export default async function ManagerPartners() {
               </div>
 
               <div>
-                <p className="label mb-1">Cours ({p._count.courses})</p>
+                <p className="label mb-1">Activités ({p._count.courses})</p>
                 <p className="text-xs font-semibold text-slate-500">À venir</p>
                 {upcoming.length === 0 ? (
                   <p className="text-xs text-slate-400">Aucun.</p>
@@ -159,7 +160,7 @@ export default async function ManagerPartners() {
               <input type="hidden" name="partnerId" value={p.id} />
               <button className="btn-danger">Supprimer ce partenaire</button>
               <span className="ml-2 text-xs text-slate-400">
-                Supprime aussi les cours, sessions et formateurs de ce partenaire.
+                Supprime aussi les activités, sessions et intervenants de ce partenaire.
               </span>
             </form>
           </div>

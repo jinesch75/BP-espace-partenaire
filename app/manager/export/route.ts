@@ -33,9 +33,9 @@ export async function GET() {
   const wb = new ExcelJS.Workbook();
   wb.creator = "Espace partenaire";
 
-  const cs = wb.addWorksheet("Cours");
+  const cs = wb.addWorksheet("Activités");
   cs.columns = [
-    { header: "ID cours", key: "id", width: 10 },
+    { header: "ID activité", key: "id", width: 10 },
     { header: "Partenaire", key: "partner", width: 28 },
     { header: "Titre", key: "title", width: 28 },
     { header: "Type", key: "type", width: 18 },
@@ -69,7 +69,7 @@ export async function GET() {
     { header: "Nom de famille", key: "last", width: 20 },
     { header: "Prénom", key: "first", width: 20 },
     { header: "Numéro national", key: "nn", width: 24 },
-    { header: "Cours", key: "course", width: 16 },
+    { header: "Activités", key: "course", width: 16 },
     { header: "Partenaire", key: "partner", width: 24 },
     { header: "Date d'affectation", key: "date", width: 16 },
   ];

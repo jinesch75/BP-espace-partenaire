@@ -5,6 +5,7 @@ import {
   updateTrainerAsManager,
   deleteTrainerAsManager,
 } from "@/app/manager/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -24,9 +25,9 @@ export default async function ManagerTrainers() {
         <Link href="/manager" className="text-sm text-brand hover:underline">
           ← Retour au tableau de bord
         </Link>
-        <h1 className="section-title mt-2">Formateurs</h1>
+        <h1 className="section-title mt-2">Intervenants</h1>
         <p className="text-sm text-slate-500">
-          {trainers.length} formateurs au total, tous partenaires confondus.
+          {trainers.length} intervenants au total, tous partenaires confondus.
         </p>
       </div>
 
@@ -50,7 +51,7 @@ export default async function ManagerTrainers() {
                 <span className="label">Partenaire</span>
                 <div className="px-1 py-2 text-sm text-slate-600">{t.partner.name}</div>
               </div>
-              <button className="btn-primary">Enregistrer</button>
+              <SaveButton>Enregistrer</SaveButton>
             </form>
             <div className="mt-2 flex items-center gap-4 text-xs text-slate-500">
               <span>{t._count.sessions} session(s) affectée(s)</span>
@@ -63,7 +64,7 @@ export default async function ManagerTrainers() {
         ))}
         {trainers.length === 0 && (
           <div className="card p-6 text-center text-sm text-slate-500">
-            Aucun formateur pour l&apos;instant.
+            Aucun intervenant pour l&apos;instant.
           </div>
         )}
       </div>

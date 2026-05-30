@@ -10,6 +10,7 @@ import {
 } from "@/app/manager/_actions";
 import EditCourseForm from "@/app/partner/courses/[id]/edit/EditCourseForm";
 import { PresenceControls } from "@/app/_components/PresenceControls";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -69,7 +70,7 @@ export default async function ManagerCourseDetail({
     <div className="space-y-6">
       <div>
         <Link href="/manager/courses" className="text-sm text-brand hover:underline">
-          ← Retour à tous les cours
+          ← Retour à toutes les activités
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-bold text-slate-800">{course.title}</h1>
@@ -85,7 +86,7 @@ export default async function ManagerCourseDetail({
 
       {searchParams.error === "title" && (
         <div className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-700">
-          Veuillez saisir un titre de cours.
+          Veuillez saisir un titre d'activité.
         </div>
       )}
 
@@ -143,12 +144,12 @@ export default async function ManagerCourseDetail({
             </div>
           </div>
         </div>
-        <button className="btn-primary">Enregistrer les champs administrateur</button>
+        <SaveButton>Enregistrer les champs administrateur</SaveButton>
       </form>
 
-      {/* Détails du cours */}
+      {/* Détails de l'activité */}
       <div>
-        <h2 className="section-title mb-3 text-xl">Détails du cours</h2>
+        <h2 className="section-title mb-3 text-xl">Détails de l'activité</h2>
         <EditCourseForm
           course={{ id: course.id, title: course.title, description: course.description }}
           sessions={sessions}
@@ -193,14 +194,14 @@ export default async function ManagerCourseDetail({
         )}
       </div>
 
-      {/* Supprimer le cours */}
+      {/* Supprimer l'activité */}
       <div className="card flex flex-wrap items-center gap-3 border-red-100 p-5">
         <form action={deleteCourseAsManager}>
           <input type="hidden" name="courseId" value={course.id} />
-          <button className="btn-danger">Supprimer le cours</button>
+          <button className="btn-danger">Supprimer l'activité</button>
         </form>
         <span className="text-xs text-slate-400">
-          Supprime définitivement ce cours, ses sessions et les affectations de
+          Supprime définitivement cette activité, ses sessions et les affectations de
           participants.
         </span>
       </div>

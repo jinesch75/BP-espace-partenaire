@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireManager } from "@/lib/session";
 import { createPartner } from "@/app/manager/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -70,7 +71,7 @@ export default function NewPartnerPage({
             </div>
           </div>
           <div className="flex gap-3">
-            <button className="btn-primary">Ajouter le partenaire</button>
+            <SaveButton>Ajouter le partenaire</SaveButton>
             <Link href="/manager/partners" className="btn-secondary">
               Annuler
             </Link>

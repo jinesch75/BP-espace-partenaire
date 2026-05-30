@@ -279,6 +279,22 @@ export async function addTrainer(formData: FormData) {
   revalidatePath("/partner/trainers");
 }
 
+export async function updatePartnerInfo(formData: FormData) {
+  const partner = await requirePartner();
+  const name = String(formData.get("name") ?? "").trim();
+  await prisma.partner.update({
+    where: { id: partner.id },
+    data: {
+      name: name || undefined,
+      description: String(formData.get("description") ?? "").trim() || null,
+      contactEmail: String(formData.get("contactEmail") ?? "").trim() || null,
+      phone: String(formData.get("phone") ?? "").trim() || null,
+      address: String(formData.get("address") ?? "").trim() || null,
+    },
+  });
+  revalidatePath("/partner");
+}
+
 export async function updateTrainer(formData: FormData) {
   const partner = await requirePartner();
   const id = Number(formData.get("trainerId"));

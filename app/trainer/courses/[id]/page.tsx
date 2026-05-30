@@ -34,7 +34,7 @@ export default async function TrainerCourseDetail({
     <div className="space-y-6">
       <div>
         <Link href="/trainer" className="text-sm text-brand hover:underline">
-          ← Retour à mes cours
+          ← Retour à mes activités
         </Link>
         <h1 className="mt-2 text-2xl font-bold text-slate-800">{course.title}</h1>
         <p className="text-sm text-slate-500">
@@ -76,7 +76,7 @@ export default async function TrainerCourseDetail({
               <th className="th">Heure</th>
               <th className="th">Lieu</th>
               <th className="th">Inscrits / max</th>
-              <th className="th">Formateur</th>
+              <th className="th">Intervenant</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

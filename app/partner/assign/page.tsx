@@ -30,7 +30,7 @@ export default async function AssignPage() {
       <div>
         <h1 className="section-title">Affecter des participants</h1>
         <p className="text-sm text-slate-500">
-          {partner.name} · ajoutez des participants de la base à un cours. Les
+          {partner.name} · ajoutez des participants de la base à une activité. Les
           places restantes sont affichées par session.
         </p>
       </div>

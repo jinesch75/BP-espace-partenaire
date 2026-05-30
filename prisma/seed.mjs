@@ -272,7 +272,7 @@ async function main() {
         id: partnerId,
         name: p.name,
         managesTrainees: !!p.manages_trainees,
-        description: `${p.name} est un partenaire de formation proposant des cours dans le cadre du programme Biergerpakt.`,
+        description: `${p.name} est un partenaire de formation proposant des activités dans le cadre du programme Biergerpakt.`,
         contactEmail: `contact@${slug(p.name)}.lu`,
         phone: `+352 27 ${100000 + partnerId * 137}`.slice(0, 16),
         address: `${partnerId} Rue de la Formation, Luxembourg`,

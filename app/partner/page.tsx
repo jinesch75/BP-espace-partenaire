@@ -8,6 +8,8 @@ import {
   statusClasses,
   statusLabel,
 } from "@/lib/format";
+import { updatePartnerInfo } from "@/app/partner/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -23,54 +25,57 @@ export default async function PartnerHome() {
     },
   });
 
-  const hasInfo =
-    partner.description || partner.contactEmail || partner.phone || partner.address;
-
   return (
     <div className="space-y-6">
-      {/* Informations générales du partenaire (gérées par l'administrateur) */}
-      <div className="card p-5">
-        <h1 className="section-title">{partner.name}</h1>
-        {partner.description && (
-          <p className="mt-2 text-sm text-slate-600">{partner.description}</p>
-        )}
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600">
-          {partner.contactEmail && (
-            <span>
-              <span className="font-semibold">E-mail :</span> {partner.contactEmail}
-            </span>
-          )}
-          {partner.phone && (
-            <span>
-              <span className="font-semibold">Téléphone :</span> {partner.phone}
-            </span>
-          )}
-          {partner.address && (
-            <span>
-              <span className="font-semibold">Adresse :</span> {partner.address}
-            </span>
-          )}
+      {/* Informations générales du partenaire — modifiables par le partenaire */}
+      <form action={updatePartnerInfo} className="card space-y-4 p-5">
+        <div>
+          <label className="label">Nom</label>
+          <input name="name" className="input" defaultValue={partner.name} />
         </div>
-        {!hasInfo && (
-          <p className="mt-2 text-sm text-slate-400">
-            Aucune coordonnée pour l&apos;instant — l&apos;administrateur du centre
-            peut les ajouter.
-          </p>
-        )}
-      </div>
+        <div>
+          <label className="label">Description</label>
+          <textarea
+            name="description"
+            rows={2}
+            className="input"
+            defaultValue={partner.description ?? ""}
+          />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <label className="label">E-mail</label>
+            <input
+              name="contactEmail"
+              type="email"
+              className="input"
+              defaultValue={partner.contactEmail ?? ""}
+            />
+          </div>
+          <div>
+            <label className="label">Téléphone</label>
+            <input name="phone" className="input" defaultValue={partner.phone ?? ""} />
+          </div>
+          <div>
+            <label className="label">Adresse</label>
+            <input name="address" className="input" defaultValue={partner.address ?? ""} />
+          </div>
+        </div>
+        <SaveButton>Enregistrer mes informations</SaveButton>
+      </form>
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Mes cours</h2>
+          <h2 className="text-xl font-bold text-slate-800">Mes activités</h2>
         </div>
         <Link href="/partner/courses/new" className="btn-primary">
-          + Nouveau cours
+          + Nouvelle activité
         </Link>
       </div>
 
       {courses.length === 0 && (
         <div className="card p-8 text-center text-slate-500">
-          Aucun cours pour l&apos;instant. Créez votre premier cours.
+          Aucune activité pour l&apos;instant. Créez votre première activité.
         </div>
       )}
 
@@ -137,7 +142,7 @@ export default async function PartnerHome() {
                     <th className="th">Heure</th>
                     <th className="th">Lieu</th>
                     <th className="th">Places</th>
-                    <th className="th">Formateur</th>
+                    <th className="th">Intervenant</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">

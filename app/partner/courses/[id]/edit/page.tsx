@@ -46,14 +46,14 @@ export default async function EditCoursePage({
     <div className="space-y-6">
       <div>
         <Link href={`/partner/courses/${course.id}`} className="text-sm font-medium text-brand hover:underline">
-          ← Retour au cours
+          ← Retour à l'activité
         </Link>
-        <h1 className="section-title mt-2">Modifier le cours</h1>
+        <h1 className="section-title mt-2">Modifier l'activité</h1>
       </div>
 
       {searchParams.error === "title" && (
         <div className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-700">
-          Veuillez saisir un titre de cours.
+          Veuillez saisir un titre d'activité.
         </div>
       )}
 

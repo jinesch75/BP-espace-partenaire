@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createCourse } from "@/app/partner/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 type Trainer = { id: number; firstName: string; lastName: string };
 
@@ -15,7 +16,7 @@ function TrainerPicker({
   const [value, setValue] = useState("");
   return (
     <div>
-      <label className="label">Formateur</label>
+      <label className="label">Intervenant</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
@@ -28,7 +29,7 @@ function TrainerPicker({
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Ajouter un nouveau formateur…</option>
+        <option value="new">+ Ajouter un nouvel intervenant…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">
@@ -145,7 +146,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
     <form action={createCourse} className="space-y-6">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Titre du cours</label>
+          <label className="label">Titre de l'activité</label>
           <input name="title" className="input" required />
         </div>
         <div>
@@ -153,7 +154,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
           <textarea name="description" rows={3} className="input" />
         </div>
         <div>
-          <label className="label">Format du cours</label>
+          <label className="label">Format de l'activité</label>
           <div className="flex flex-wrap gap-4 text-sm">
             {([
               ["SINGLE", "Événement unique"],
@@ -180,7 +181,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
           <h3 className="font-semibold text-slate-700">Modèle hebdomadaire</h3>
           <p className="text-xs text-slate-500">
             Toutes les sessions partagent le même jour, la même heure, le même
-            lieu et le même formateur. Nous générons un cours à sessions multiples
+            lieu et le même intervenant. Nous générons une activité à sessions multiples
             que vous pourrez affiner ensuite.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -297,7 +298,7 @@ export default function CourseForm({ trainers }: { trainers: Trainer[] }) {
       )}
 
       <div className="flex gap-3">
-        <button className="btn-primary">Créer le cours</button>
+        <SaveButton>Créer l'activité</SaveButton>
         <a href="/partner" className="btn-secondary">
           Annuler
         </a>

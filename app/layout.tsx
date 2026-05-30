@@ -21,7 +21,7 @@ const body = Urbanist({
 
 export const metadata: Metadata = {
   title: "Espace partenaire · Biergerpakt",
-  description: "Gestion des cours de formation — espace partenaire",
+  description: "Gestion des activités de formation — espace partenaire",
 };
 
 async function TopBar() {
@@ -36,7 +36,7 @@ async function TopBar() {
     links = [
       { href: "/manager", text: "Tableau de bord" },
       { href: "/manager/partners", text: "Partenaires" },
-      { href: "/manager/courses", text: "Tous les cours" },
+      { href: "/manager/courses", text: "Toutes les activités" },
       { href: "/manager/trainees", text: "Participants" },
     ];
   } else if (session.role === "PARTNER" && session.partnerId) {
@@ -45,15 +45,15 @@ async function TopBar() {
     });
     label = `Partenaire · ${partner?.name ?? "?"}`;
     links = [
-      { href: "/partner", text: "Mes cours" },
-      { href: "/partner/trainers", text: "Formateurs" },
+      { href: "/partner", text: "Mes activités" },
+      { href: "/partner/trainers", text: "Intervenants" },
     ];
   } else if (session.role === "TRAINER" && session.trainerId) {
     const trainer = await prisma.trainer.findUnique({
       where: { id: session.trainerId },
     });
-    label = `Formateur · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
-    links = [{ href: "/trainer", text: "Mes cours" }];
+    label = `Intervenant · ${trainer?.firstName ?? ""} ${trainer?.lastName ?? ""}`;
+    links = [{ href: "/trainer", text: "Mes activités" }];
   }
 
   return (
@@ -104,7 +104,7 @@ export default function RootLayout({
             <span className="font-heading font-bold text-ink">
               Espace partenaire
             </span>
-            <span>Gestion des cours de formation · Biergerpakt</span>
+            <span>Gestion des activités de formation · Biergerpakt</span>
           </div>
         </footer>
       </body>

@@ -36,7 +36,7 @@ export default async function TrainerHome() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="section-title">Mes cours</h1>
+        <h1 className="section-title">Mes activités</h1>
         <p className="text-sm text-slate-500">
           {trainer.firstName} {trainer.lastName} · {trainer.partner.name}
         </p>

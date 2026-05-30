@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateCourse } from "@/app/partner/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 type Trainer = { id: number; firstName: string; lastName: string };
 type SessionData = {
@@ -40,7 +41,7 @@ function TrainerPicker({
   const [value, setValue] = useState(initial ? String(initial) : "");
   return (
     <div>
-      <label className="label">Formateur</label>
+      <label className="label">Intervenant</label>
       <select
         name={`${prefix}trainerId`}
         className="input"
@@ -53,7 +54,7 @@ function TrainerPicker({
             {t.firstName} {t.lastName}
           </option>
         ))}
-        <option value="new">+ Ajouter un nouveau formateur…</option>
+        <option value="new">+ Ajouter un nouvel intervenant…</option>
       </select>
       {value === "new" && (
         <div className="mt-2 flex gap-2">
@@ -176,7 +177,7 @@ export default function EditCourseForm({
 
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Titre du cours</label>
+          <label className="label">Titre de l'activité</label>
           <input name="title" className="input" defaultValue={course.title} required />
         </div>
         <div>
@@ -216,7 +217,7 @@ export default function EditCourseForm({
       </div>
 
       <div className="flex gap-3">
-        <button className="btn-primary">Enregistrer les modifications</button>
+        <SaveButton>Enregistrer les modifications</SaveButton>
         <a href={backHref} className="btn-secondary">
           Annuler
         </a>

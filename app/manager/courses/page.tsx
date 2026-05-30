@@ -8,6 +8,7 @@ import {
   statusLabel,
 } from "@/lib/format";
 import { updateCourseAdmin } from "@/app/manager/_actions";
+import { SaveButton } from "@/app/_components/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,7 @@ export default async function ManagerCourses({
 
   return (
     <div className="space-y-6">
-      <h1 className="section-title">Tous les cours</h1>
+      <h1 className="section-title">Toutes les activités</h1>
 
       {/* Filtres */}
       <form className="card flex flex-wrap items-end gap-3 p-4" method="get">
@@ -106,7 +107,7 @@ export default async function ManagerCourses({
           </select>
         </div>
         <button className="btn-secondary">Filtrer</button>
-        <span className="ml-auto text-sm text-slate-500">{courses.length} cours</span>
+        <span className="ml-auto text-sm text-slate-500">{courses.length} activités</span>
       </form>
 
       <div className="space-y-4">
@@ -135,7 +136,7 @@ export default async function ManagerCourses({
                   </p>
                 </div>
                 <Link href={`/manager/courses/${c.id}`} className="btn-secondary">
-                  Ouvrir le cours
+                  Ouvrir l'activité
                 </Link>
               </div>
 
@@ -197,7 +198,7 @@ export default async function ManagerCourses({
               </div>
 
               <div>
-                <button className="btn-primary">Enregistrer</button>
+                <SaveButton>Enregistrer</SaveButton>
               </div>
             </form>
           );

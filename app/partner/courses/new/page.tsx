@@ -21,14 +21,14 @@ export default async function NewCoursePage({
     <div className="space-y-6">
       <div>
         <Link href="/partner" className="text-sm text-brand hover:underline">
-          ← Retour à mes cours
+          ← Retour à mes activités
         </Link>
-        <h1 className="section-title mt-2">Nouveau cours</h1>
+        <h1 className="section-title mt-2">Nouvelle activité</h1>
       </div>
 
       {searchParams.error === "title" && (
         <div className="rounded-md bg-red-50 px-4 py-2 text-sm text-red-700">
-          Veuillez saisir un titre de cours.
+          Veuillez saisir un titre d'activité.
         </div>
       )}
       {searchParams.error === "session" && (

@@ -56,16 +56,16 @@ export default async function ManagerHome() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Partenaires" value={partners} href="/manager/partners" />
-        <Stat label="Cours" value={courses} href="/manager/courses" />
-        <Stat label="Formateurs" value={trainers} href="/manager/trainers" />
+        <Stat label="Activités" value={courses} href="/manager/courses" />
+        <Stat label="Intervenants" value={trainers} href="/manager/trainers" />
         <Stat label="Participants" value={trainees} href="/manager/trainees" />
         <Stat
-          label="Cours Catalogue principal"
+          label="Activités Catalogue principal"
           value={pop1}
           href="/manager/courses?population=POP1"
         />
         <Stat
-          label="Cours Catalogue DPI"
+          label="Activités Catalogue DPI"
           value={pop2}
           href="/manager/courses?population=POP2"
         />
@@ -82,7 +82,7 @@ export default async function ManagerHome() {
       </div>
 
       <div className="card p-5">
-        <h2 className="mb-3 font-semibold text-slate-800">Cours par thème</h2>
+        <h2 className="mb-3 font-semibold text-slate-800">Activités par thème</h2>
         <div className="flex flex-wrap gap-2">
           {byTopic.map((t) => (
             <Link
@@ -101,7 +101,7 @@ export default async function ManagerHome() {
           Gérer les partenaires
         </Link>
         <Link href="/manager/courses" className="btn-secondary">
-          Gérer tous les cours
+          Gérer toutes les activités
         </Link>
         <Link href="/manager/trainees" className="btn-secondary">
           Base des participants

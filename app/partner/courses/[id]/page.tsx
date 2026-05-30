@@ -18,6 +18,7 @@ import {
 } from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
 import { PresenceControls } from "@/app/_components/PresenceControls";
+import { SaveButton } from "@/app/_components/SaveButton";
 import { decryptSensitive } from "@/lib/crypto";
 
 export const dynamic = "force-dynamic";
@@ -54,7 +55,7 @@ export default async function CourseDetail({
     <div className="space-y-6">
       {conflicts.length > 0 && (
         <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          <p className="font-semibold">Avertissement : double réservation d&apos;un formateur</p>
+          <p className="font-semibold">Avertissement : double réservation d&apos;un intervenant</p>
           <ul className="mt-1 list-disc pl-5">
             {conflicts.map((c, i) => (
               <li key={i}>
@@ -66,7 +67,7 @@ export default async function CourseDetail({
       )}
       <div>
         <Link href="/partner" className="text-sm text-brand hover:underline">
-          ← Retour à mes cours
+          ← Retour à mes activités
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-bold text-slate-800">{course.title}</h1>
@@ -80,7 +81,7 @@ export default async function CourseDetail({
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href={`/partner/courses/${course.id}/edit`} className="btn-primary">
-            Modifier le cours et les sessions
+            Modifier l'activité et les sessions
           </Link>
           <a href={`/courses/${course.id}/ics`} className="btn-secondary">
             Télécharger le calendrier (.ics)
@@ -134,7 +135,7 @@ export default async function CourseDetail({
               <th className="th">Heure</th>
               <th className="th">Lieu</th>
               <th className="th">Places</th>
-              <th className="th">Formateur</th>
+              <th className="th">Intervenant</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -197,7 +198,7 @@ export default async function CourseDetail({
                 ))}
               </select>
             </div>
-            <button className="btn-primary">Ajouter des participants</button>
+            <SaveButton>Ajouter des participants</SaveButton>
           </form>
         )}
 
@@ -255,12 +256,12 @@ export default async function CourseDetail({
               ))}
             </select>
           </div>
-          <button className="btn-primary">Mettre à jour le statut</button>
+          <SaveButton>Mettre à jour le statut</SaveButton>
         </form>
 
         <form action={deleteCourse} className="ml-auto">
           <input type="hidden" name="courseId" value={course.id} />
-          <button className="btn-danger">Supprimer le cours</button>
+          <button className="btn-danger">Supprimer l'activité</button>
         </form>
       </div>
     </div>
