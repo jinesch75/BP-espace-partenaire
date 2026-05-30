@@ -89,7 +89,8 @@ function Section({
                     className="badge-pill bg-slate-100 text-slate-600"
                   >
                     {formatDate(s.date)} · {s.startTime}–{s.endTime} ·{" "}
-                    {s.isOnline ? "En ligne" : s.location}
+                    {s.isOnline ? "En ligne" : s.location || "Lieu non précisé"} ·{" "}
+                    {s.placesAvailable} places
                   </span>
                 ))}
               </div>

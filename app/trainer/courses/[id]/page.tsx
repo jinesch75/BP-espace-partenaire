@@ -75,7 +75,7 @@ export default async function TrainerCourseDetail({
               <th className="th">Date</th>
               <th className="th">Heure</th>
               <th className="th">Lieu</th>
-              <th className="th">Places restantes</th>
+              <th className="th">Inscrits / max</th>
               <th className="th">Formateur</th>
             </tr>
           </thead>
@@ -91,24 +91,28 @@ export default async function TrainerCourseDetail({
                   </td>
                   <td className="td">
                     {s.isOnline ? (
-                      s.teamsLink ? (
-                        <a
-                          href={s.teamsLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-blue-600 hover:underline"
-                        >
-                          En ligne (Teams)
-                        </a>
-                      ) : (
-                        "En ligne"
-                      )
+                      <span>
+                        <span className="font-medium text-blue-600">En ligne</span>
+                        {s.teamsLink && (
+                          <>
+                            {" — "}
+                            <a
+                              href={s.teamsLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-blue-600 hover:underline"
+                            >
+                              lien Teams
+                            </a>
+                          </>
+                        )}
+                      </span>
                     ) : (
-                      s.location
+                      s.location || <span className="text-slate-400">Lieu non précisé</span>
                     )}
                   </td>
-                  <td className="td">
-                    {Math.max(0, s.placesAvailable - registered)}/{s.placesAvailable}
+                  <td className="td whitespace-nowrap">
+                    {registered} / {s.placesAvailable}
                   </td>
                   <td className="td">
                     {s.trainer
