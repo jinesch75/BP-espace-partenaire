@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
+import {
+  updateTrainerAsManager,
+  deleteTrainerAsManager,
+} from "@/app/manager/_actions";
 
 export const dynamic = "force-dynamic";
 
@@ -26,34 +30,42 @@ export default async function ManagerTrainers() {
         </p>
       </div>
 
-      <div className="card overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-surface">
-            <tr>
-              <th className="th">Nom de famille</th>
-              <th className="th">Prénom</th>
-              <th className="th">Partenaire</th>
-              <th className="th">Sessions affectées</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {trainers.map((t) => (
-              <tr key={t.id}>
-                <td className="td">{t.lastName}</td>
-                <td className="td">{t.firstName}</td>
-                <td className="td">{t.partner.name}</td>
-                <td className="td">{t._count.sessions}</td>
-              </tr>
-            ))}
-            {trainers.length === 0 && (
-              <tr>
-                <td className="td text-slate-500" colSpan={4}>
-                  Aucun formateur pour l&apos;instant.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="space-y-3">
+        {trainers.map((t) => (
+          <div key={t.id} className="card p-4">
+            <form
+              action={updateTrainerAsManager}
+              className="flex flex-wrap items-end gap-3"
+            >
+              <input type="hidden" name="trainerId" value={t.id} />
+              <div>
+                <label className="label">Prénom</label>
+                <input name="firstName" className="input" defaultValue={t.firstName} />
+              </div>
+              <div>
+                <label className="label">Nom de famille</label>
+                <input name="lastName" className="input" defaultValue={t.lastName} />
+              </div>
+              <div>
+                <span className="label">Partenaire</span>
+                <div className="px-1 py-2 text-sm text-slate-600">{t.partner.name}</div>
+              </div>
+              <button className="btn-primary">Enregistrer</button>
+            </form>
+            <div className="mt-2 flex items-center gap-4 text-xs text-slate-500">
+              <span>{t._count.sessions} session(s) affectée(s)</span>
+              <form action={deleteTrainerAsManager}>
+                <input type="hidden" name="trainerId" value={t.id} />
+                <button className="text-red-600 hover:underline">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        ))}
+        {trainers.length === 0 && (
+          <div className="card p-6 text-center text-sm text-slate-500">
+            Aucun formateur pour l&apos;instant.
+          </div>
+        )}
       </div>
     </div>
   );

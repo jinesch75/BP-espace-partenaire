@@ -116,6 +116,27 @@ export async function deleteCourseAsManager(formData: FormData) {
   redirect("/manager/courses");
 }
 
+export async function updateTrainerAsManager(formData: FormData) {
+  requireManager();
+  const id = Number(formData.get("trainerId"));
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
+  if (!id || (!firstName && !lastName)) return;
+  await prisma.trainer.update({
+    where: { id },
+    data: { firstName, lastName },
+  });
+  revalidatePath("/manager/trainers");
+}
+
+export async function deleteTrainerAsManager(formData: FormData) {
+  requireManager();
+  const id = Number(formData.get("trainerId"));
+  if (!id) return;
+  await prisma.trainer.delete({ where: { id } });
+  revalidatePath("/manager/trainers");
+}
+
 export async function deletePartner(formData: FormData) {
   requireManager();
   const id = Number(formData.get("partnerId"));

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requirePartner } from "@/lib/session";
-import { addTrainer } from "@/app/partner/_actions";
+import { addTrainer, updateTrainer, deleteTrainer } from "@/app/partner/_actions";
 
 export const dynamic = "force-dynamic";
 
@@ -41,32 +41,35 @@ export default async function TrainersPage() {
         </form>
       </div>
 
-      <div className="card overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-surface">
-            <tr>
-              <th className="th">Nom de famille</th>
-              <th className="th">Prénom</th>
-              <th className="th">Sessions affectées</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {trainers.map((t) => (
-              <tr key={t.id}>
-                <td className="td">{t.lastName}</td>
-                <td className="td">{t.firstName}</td>
-                <td className="td">{t._count.sessions}</td>
-              </tr>
-            ))}
-            {trainers.length === 0 && (
-              <tr>
-                <td className="td text-slate-500" colSpan={3}>
-                  Aucun formateur pour l&apos;instant.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="space-y-3">
+        {trainers.map((t) => (
+          <div key={t.id} className="card p-4">
+            <form action={updateTrainer} className="flex flex-wrap items-end gap-3">
+              <input type="hidden" name="trainerId" value={t.id} />
+              <div>
+                <label className="label">Prénom</label>
+                <input name="firstName" className="input" defaultValue={t.firstName} />
+              </div>
+              <div>
+                <label className="label">Nom de famille</label>
+                <input name="lastName" className="input" defaultValue={t.lastName} />
+              </div>
+              <button className="btn-primary">Enregistrer</button>
+            </form>
+            <div className="mt-2 flex items-center gap-4 text-xs text-slate-500">
+              <span>{t._count.sessions} session(s) affectée(s)</span>
+              <form action={deleteTrainer}>
+                <input type="hidden" name="trainerId" value={t.id} />
+                <button className="text-red-600 hover:underline">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        ))}
+        {trainers.length === 0 && (
+          <div className="card p-6 text-center text-sm text-slate-500">
+            Aucun formateur pour l&apos;instant.
+          </div>
+        )}
       </div>
     </div>
   );

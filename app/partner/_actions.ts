@@ -276,3 +276,25 @@ export async function addTrainer(formData: FormData) {
   });
   revalidatePath("/partner/trainers");
 }
+
+export async function updateTrainer(formData: FormData) {
+  const partner = await requirePartner();
+  const id = Number(formData.get("trainerId"));
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
+  if (!id || (!firstName && !lastName)) return;
+  await prisma.trainer.updateMany({
+    where: { id, partnerId: partner.id },
+    data: { firstName, lastName },
+  });
+  revalidatePath("/partner/trainers");
+}
+
+export async function deleteTrainer(formData: FormData) {
+  const partner = await requirePartner();
+  const id = Number(formData.get("trainerId"));
+  if (!id) return;
+  // sessions that referenced this trainer keep their slot but lose the trainer
+  await prisma.trainer.deleteMany({ where: { id, partnerId: partner.id } });
+  revalidatePath("/partner/trainers");
+}
