@@ -2,13 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
-import { courseTypeLabel, statusClasses, statusLabel } from "@/lib/format";
+import { courseTypeLabel, formatDate, statusClasses, statusLabel } from "@/lib/format";
 import {
   updateCourseAdmin,
   updateCourseDetails,
   deleteCourseAsManager,
 } from "@/app/manager/_actions";
 import EditCourseForm from "@/app/partner/courses/[id]/edit/EditCourseForm";
+import { PresenceControls } from "@/app/_components/PresenceControls";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,10 @@ export default async function ManagerCourseDetail({
       sessions: { orderBy: { sequence: "asc" } },
       topics: true,
       badges: true,
+      assignments: {
+        include: { trainee: true },
+        orderBy: [{ assignedDate: "asc" }],
+      },
     },
   });
   if (!course) notFound();
@@ -140,6 +145,41 @@ export default async function ManagerCourseDetail({
         </div>
         <button className="btn-primary">Enregistrer les champs administrateur</button>
       </form>
+
+      {/* Participants et présence */}
+      <div className="card overflow-hidden">
+        <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
+          Participants ({course.assignments.length}) — présence
+        </div>
+        {course.assignments.length === 0 ? (
+          <p className="px-5 py-4 text-sm text-slate-500">
+            Aucun participant pour l&apos;instant.
+          </p>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-surface">
+              <tr>
+                <th className="th">Participant</th>
+                <th className="th">Date</th>
+                <th className="th">Présence</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {course.assignments.map((a) => (
+                <tr key={a.id}>
+                  <td className="td">
+                    {a.trainee.lastName} {a.trainee.firstName}
+                  </td>
+                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
+                  <td className="td">
+                    <PresenceControls assignmentId={a.id} presence={a.presence} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
 
       {/* Détails du cours */}
       <div>

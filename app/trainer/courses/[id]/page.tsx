@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireTrainer } from "@/lib/session";
 import { courseTypeLabel, formatDate } from "@/lib/format";
+import { PresenceControls } from "@/app/_components/PresenceControls";
 
 export const dynamic = "force-dynamic";
 
@@ -126,14 +127,13 @@ export default async function TrainerCourseDetail({
         </table>
       </div>
 
-      <div className="card p-5">
-        <h2 className="mb-2 font-semibold text-slate-800">
-          Participants inscrits ({registered})
-        </h2>
+      <div className="card overflow-hidden">
+        <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
+          Participants inscrits ({registered}) — présence
+        </div>
         {registered === 0 ? (
-          <p className="text-sm text-slate-500">
-            Personne n&apos;est encore inscrit. Pour la plupart des partenaires,
-            les inscriptions arriveront une fois le système externe connecté.
+          <p className="px-5 py-4 text-sm text-slate-500">
+            Personne n&apos;est encore inscrit.
           </p>
         ) : (
           <table className="w-full">
@@ -141,7 +141,8 @@ export default async function TrainerCourseDetail({
               <tr>
                 <th className="th">Nom de famille</th>
                 <th className="th">Prénom</th>
-                <th className="th">Date d&apos;inscription</th>
+                <th className="th">Date</th>
+                <th className="th">Présence</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -149,7 +150,10 @@ export default async function TrainerCourseDetail({
                 <tr key={a.id}>
                   <td className="td">{a.trainee.lastName}</td>
                   <td className="td">{a.trainee.firstName}</td>
-                  <td className="td">{formatDate(a.assignedDate)}</td>
+                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
+                  <td className="td">
+                    <PresenceControls assignmentId={a.id} presence={a.presence} />
+                  </td>
                 </tr>
               ))}
             </tbody>

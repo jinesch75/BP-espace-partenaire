@@ -27,6 +27,11 @@ enum Population {
   POP2
 }
 
+enum Presence {
+  PRESENT
+  ABSENT
+}
+
 model Partner {
   id              Int      @id @default(autoincrement())
   name            String
@@ -135,11 +140,12 @@ model Trainee {
 }
 
 model TraineeAssignment {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   traineeId    Int
   courseId     Int
   assignedDate DateTime
-  createdAt    DateTime @default(now())
+  presence     Presence?
+  createdAt    DateTime  @default(now())
 
   trainee Trainee @relation(fields: [traineeId], references: [id], onDelete: Cascade)
   course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)

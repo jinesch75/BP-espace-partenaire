@@ -127,6 +127,21 @@ function dpiKey(title) {
   return null;
 }
 
+// Keep at most `maxCount` participants, deleting the rest at random.
+// Idempotent: once the count is at or below the cap, it does nothing.
+async function capTrainees(maxCount) {
+  const count = await prisma.trainee.count();
+  if (count <= maxCount) return;
+  const all = await prisma.trainee.findMany({ select: { id: true } });
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  const toDelete = all.slice(maxCount).map((t) => t.id);
+  await prisma.trainee.deleteMany({ where: { id: { in: toDelete } } });
+  console.log(`Trimmed participants from ${count} to ${maxCount}.`);
+}
+
 async function applyDemoParticipation() {
   const order = ["DAPA1", "DAPA2", "DAPA3", "DAPA4", "DAPA5", "BIENV"];
   const courses = await prisma.course.findMany({ select: { id: true, title: true } });
@@ -165,12 +180,45 @@ async function applyDemoParticipation() {
   }
 }
 
+// Illustration: give every course a handful of random participants, with
+// some marked present/absent. Only seeds a course that has none yet, so it
+// is idempotent and never overrides real data.
+async function applyDemoCourseParticipants() {
+  const trainees = await prisma.trainee.findMany({ select: { id: true } });
+  if (trainees.length === 0) return;
+  const courses = await prisma.course.findMany({
+    include: {
+      sessions: { orderBy: { sequence: "asc" }, take: 1 },
+      _count: { select: { assignments: true } },
+    },
+  });
+  const presences = ["PRESENT", "ABSENT", null];
+  for (const c of courses) {
+    if (c._count.assignments > 0) continue;
+    const date = c.sessions[0]?.date ?? new Date();
+    const shuffled = [...trainees].sort(() => Math.random() - 0.5);
+    const pick = shuffled.slice(0, 3 + Math.floor(Math.random() * 4)); // 3-6
+    for (let i = 0; i < pick.length; i++) {
+      await prisma.traineeAssignment.create({
+        data: {
+          traineeId: pick[i].id,
+          courseId: c.id,
+          assignedDate: date,
+          presence: presences[i % presences.length],
+        },
+      });
+    }
+  }
+}
+
 async function main() {
-  // always enforce theme/badge names, the catalogue rule and the
-  // illustration participation data, even on an already-seeded database
+  // always enforce theme/badge names, the catalogue rule, the participant
+  // cap and the illustration data, even on an already-seeded database
   await applyTaxonomy();
   await applyCatalogueRules();
+  await capTrainees(30);
   await applyDemoParticipation();
+  await applyDemoCourseParticipants();
 
   const existing = await prisma.partner.count();
   if (existing > 0) {
@@ -271,6 +319,9 @@ async function main() {
 
   await resetSequences();
   await applyCatalogueRules();
+  await capTrainees(30);
+  await applyDemoParticipation();
+  await applyDemoCourseParticipants();
 
   const counts = {
     partners: await prisma.partner.count(),

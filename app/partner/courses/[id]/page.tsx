@@ -12,6 +12,7 @@ import {
 } from "@/lib/format";
 import { setCourseStatus, deleteCourse } from "@/app/partner/_actions";
 import { getTrainerConflicts } from "@/lib/conflicts";
+import { PresenceControls } from "@/app/_components/PresenceControls";
 
 export const dynamic = "force-dynamic";
 
@@ -161,28 +162,39 @@ export default async function CourseDetail({
         </table>
       </div>
 
-      {partner.managesTrainees && (
-        <div className="card p-5">
-          <h2 className="mb-2 font-semibold text-slate-800">
-            Participants affectés ({course.assignments.length})
-          </h2>
-          {course.assignments.length === 0 ? (
-            <p className="text-sm text-slate-500">
-              Aucun pour l&apos;instant. Utilisez « Affecter des participants » pour
-              les ajouter.
-            </p>
-          ) : (
-            <ul className="text-sm text-slate-700">
-              {course.assignments.map((a) => (
-                <li key={a.id}>
-                  {a.trainee.lastName} {a.trainee.firstName} —{" "}
-                  {formatDate(a.assignedDate)}
-                </li>
-              ))}
-            </ul>
-          )}
+      <div className="card overflow-hidden">
+        <div className="border-b border-slate-100 px-5 py-3 font-semibold text-slate-800">
+          Participants ({course.assignments.length}) — présence
         </div>
-      )}
+        {course.assignments.length === 0 ? (
+          <p className="px-5 py-4 text-sm text-slate-500">
+            Aucun participant pour l&apos;instant.
+          </p>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-surface">
+              <tr>
+                <th className="th">Participant</th>
+                <th className="th">Date</th>
+                <th className="th">Présence</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {course.assignments.map((a) => (
+                <tr key={a.id}>
+                  <td className="td">
+                    {a.trainee.lastName} {a.trainee.firstName}
+                  </td>
+                  <td className="td whitespace-nowrap">{formatDate(a.assignedDate)}</td>
+                  <td className="td">
+                    <PresenceControls assignmentId={a.id} presence={a.presence} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
 
       <div className="card flex flex-wrap items-end gap-4 p-5">
         <form action={setCourseStatus} className="flex items-end gap-2">
