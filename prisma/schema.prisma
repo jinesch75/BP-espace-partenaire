@@ -207,6 +207,7 @@ model Trainee {
   // Sensitive (GDPR). Stored plain in demo with fictional data;
   // encrypt at rest before using real data.
   nationalNumber String
+  inscriptionOna DateTime? // date of first registration in the ONA system
   createdAt      DateTime @default(now())
 
   assignments TraineeAssignment[]

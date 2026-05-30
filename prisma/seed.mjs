@@ -210,6 +210,24 @@ const DPI_LABEL = {
   DAPA5: "DAPA 5",
   BIENV: "Bienvenue",
 };
+// Give each participant a fictional ONA registration date (Jan 2026 → today)
+// where missing. Idempotent.
+async function applyInscriptionDates() {
+  const start = new Date("2026-01-01").getTime();
+  const end = Date.now();
+  const trainees = await prisma.trainee.findMany({
+    where: { inscriptionOna: null },
+    select: { id: true },
+  });
+  for (const t of trainees) {
+    const d = new Date(start + Math.random() * (end - start));
+    await prisma.trainee.update({
+      where: { id: t.id },
+      data: { inscriptionOna: d },
+    });
+  }
+}
+
 async function ensureProgrammes() {
   const courses = await prisma.course.findMany({
     where: { programmeId: null },
@@ -320,6 +338,7 @@ async function main() {
   await applyDemoParticipation();
   await applyDemoCourseParticipants();
   await ensureProgrammes();
+  await applyInscriptionDates();
 
   const existing = await prisma.partner.count();
   if (existing > 0) {
@@ -427,6 +446,7 @@ async function main() {
   await applyDemoParticipation();
   await applyDemoCourseParticipants();
   await ensureProgrammes();
+  await applyInscriptionDates();
 
   const counts = {
     partners: await prisma.partner.count(),

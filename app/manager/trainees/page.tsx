@@ -30,11 +30,42 @@ function shortDate(d: Date | string): string {
   });
 }
 
-export default async function ManagerTrainees() {
+// Small sortable header link that toggles direction.
+function SortHeader({
+  label,
+  sortKey,
+  current,
+  dir,
+  className,
+}: {
+  label: string;
+  sortKey: string;
+  current: string;
+  dir: string;
+  className?: string;
+}) {
+  const active = current === sortKey;
+  const nextDir = active && dir === "asc" ? "desc" : "asc";
+  const arrow = active ? (dir === "asc" ? " ▲" : " ▼") : "";
+  return (
+    <Link
+      href={`/manager/trainees?sort=${sortKey}&dir=${nextDir}`}
+      className={`hover:text-brand ${active ? "text-brand" : ""} ${className ?? ""}`}
+    >
+      {label}
+      {arrow}
+    </Link>
+  );
+}
+
+export default async function ManagerTrainees({
+  searchParams,
+}: {
+  searchParams: { sort?: string; dir?: string };
+}) {
   requireManager();
 
   const trainees = await prisma.trainee.findMany({
-    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
     include: {
       assignments: {
         include: { course: { select: { title: true, dpiStep: true } } },
@@ -65,6 +96,38 @@ export default async function ManagerTrainees() {
     optionsByKey[key].push({ id: c.id, label: `${c.title} — ${formatDate(d)}` });
   }
 
+  // rank for a column: 2 = a participé, 1 = programmé, 0 = rien
+  function colRank(t: (typeof trainees)[number], key: string): number {
+    const a = t.assignments.find((x) => courseDpiKey(x.course) === key);
+    const s = t.dpiStatuses.find((x) => x.dpiKey === key);
+    if (a) {
+      if (a.presence === "ABSENT") return 0;
+      if (a.presence === "PRESENT" || new Date(a.assignedDate).getTime() <= now)
+        return 2;
+      return 1; // future, scheduled
+    }
+    if (s) return s.status === "PRESENT" ? 2 : 0;
+    return 0;
+  }
+
+  const days = (t: (typeof trainees)[number]) =>
+    t.inscriptionOna
+      ? Math.floor((now - new Date(t.inscriptionOna).getTime()) / 86400000)
+      : -1;
+
+  // sorting
+  const sort = searchParams.sort ?? "days";
+  const dir = searchParams.dir ?? "desc";
+  const mul = dir === "asc" ? 1 : -1;
+  const sorted = [...trainees].sort((a, b) => {
+    let cmp = 0;
+    if (sort === "name") cmp = a.lastName.localeCompare(b.lastName);
+    else if (sort === "days") cmp = days(a) - days(b);
+    else if (sort.startsWith("col_")) cmp = colRank(a, sort.slice(4)) - colRank(b, sort.slice(4));
+    if (cmp === 0) cmp = a.lastName.localeCompare(b.lastName) * (dir === "asc" ? 1 : -1);
+    return cmp * mul;
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -74,7 +137,8 @@ export default async function ManagerTrainees() {
         <p className="text-sm text-slate-500">
           {trainees.length} participants. Le numéro national est sensible et
           chiffré. Suivi de participation aux six activités du parcours.
-          Cliquez sur une case pour changer son statut.
+          Cliquez sur une case pour changer son statut, ou sur un en-tête pour
+          trier.
         </p>
       </div>
 
@@ -90,24 +154,46 @@ export default async function ManagerTrainees() {
         <table className="w-full">
           <thead className="bg-surface">
             <tr>
-              <th className="th">Nom de famille</th>
+              <th className="th">
+                <SortHeader label="Nom de famille" sortKey="name" current={sort} dir={dir} />
+              </th>
               <th className="th">Prénom</th>
               <th className="th">Numéro national</th>
+              <th className="th whitespace-nowrap">Inscription ONA</th>
+              <th className="th whitespace-nowrap">
+                <SortHeader
+                  label="Jours depuis inscription ONA"
+                  sortKey="days"
+                  current={sort}
+                  dir={dir}
+                />
+              </th>
               {COLUMNS.map((c) => (
                 <th key={c.key} className="th text-center">
-                  {c.label}
+                  <SortHeader
+                    label={c.label}
+                    sortKey={`col_${c.key}`}
+                    current={sort}
+                    dir={dir}
+                  />
                 </th>
               ))}
               <th className="th"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {trainees.map((t) => (
+            {sorted.map((t) => (
               <tr key={t.id}>
                 <td className="td">{t.lastName}</td>
                 <td className="td">{t.firstName}</td>
                 <td className="td whitespace-nowrap">
                   {decryptSensitive(t.nationalNumber)}
+                </td>
+                <td className="td whitespace-nowrap">
+                  {t.inscriptionOna ? formatDate(t.inscriptionOna) : "—"}
+                </td>
+                <td className="td text-center">
+                  {days(t) >= 0 ? days(t) : "—"}
                 </td>
                 {COLUMNS.map((c) => {
                   const a = t.assignments.find(
