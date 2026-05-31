@@ -45,7 +45,12 @@ export default async function Home() {
 
       {/* Partenaires */}
       <section className="card p-5">
-        <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <h2 className="text-lg font-semibold text-slate-800">Accès partenaires</h2>
+          <Link href="/partenaires/nouveau" className="btn-primary">
+            + Nouveau partenaire
+          </Link>
+        </div>
         <p className="mt-1 text-sm text-slate-500">
           Chaque partenaire gère ses propres activités et intervenants/formateurs. ONA et MIFA
           (rôle DPI) peuvent aussi affecter des participants.
