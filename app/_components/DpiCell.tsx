@@ -11,19 +11,24 @@ function Mark({
   status,
   label,
   className,
+  onDone,
 }: {
   traineeId: number;
   colKey: string;
   status: string;
   label: string;
   className: string;
+  onDone: () => void;
 }) {
   return (
     <form action={markDpi}>
       <input type="hidden" name="traineeId" value={traineeId} />
       <input type="hidden" name="key" value={colKey} />
       <input type="hidden" name="status" value={status} />
-      <button className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${className}`}>
+      <button
+        onClick={() => onDone()}
+        className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${className}`}
+      >
         {label}
       </button>
     </form>
@@ -63,7 +68,11 @@ export function DpiCell({
           />
           <div className="absolute left-1/2 z-20 mt-1 w-64 -translate-x-1/2 rounded-lg border border-slate-200 bg-white p-3 text-left shadow-lg">
             {options.length > 0 ? (
-              <form action={assignDpiCourse} className="space-y-2">
+              <form
+                action={assignDpiCourse}
+                className="space-y-2"
+                onSubmit={() => setOpen(false)}
+              >
                 <input type="hidden" name="traineeId" value={traineeId} />
                 <label className="label text-xs">
                   Affecter une activité (à venir)
@@ -95,6 +104,7 @@ export function DpiCell({
                 status="PRESENT"
                 label="A participé"
                 className="border-green-300 text-green-700 hover:bg-green-50"
+                onDone={() => setOpen(false)}
               />
               <Mark
                 traineeId={traineeId}
@@ -102,6 +112,7 @@ export function DpiCell({
                 status="ABSENT"
                 label="Absent"
                 className="border-red-300 text-red-700 hover:bg-red-50"
+                onDone={() => setOpen(false)}
               />
               <Mark
                 traineeId={traineeId}
@@ -109,6 +120,7 @@ export function DpiCell({
                 status="CLEAR"
                 label="Retirer"
                 className="border-slate-300 text-slate-500 hover:bg-slate-50"
+                onDone={() => setOpen(false)}
               />
             </div>
           </div>

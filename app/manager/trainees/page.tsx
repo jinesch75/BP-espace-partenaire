@@ -136,6 +136,7 @@ export default async function ManagerTrainees({
     let cmp = 0;
     if (sort === "name") cmp = a.lastName.localeCompare(b.lastName);
     else if (sort === "days") cmp = days(a) - days(b);
+    else if (sort === "member") cmp = (a.biergerpaktMember ? 1 : 0) - (b.biergerpaktMember ? 1 : 0);
     else if (sort.startsWith("col_")) cmp = colRank(a, sort.slice(4)) - colRank(b, sort.slice(4));
     if (cmp === 0) cmp = a.lastName.localeCompare(b.lastName) * (dir === "asc" ? 1 : -1);
     return cmp * mul;
@@ -215,6 +216,15 @@ export default async function ManagerTrainees({
                   />
                 </th>
               ))}
+              <th className="th text-center whitespace-nowrap">
+                <SortHeader
+                  label="Adhérent Biergerpakt"
+                  sortKey="member"
+                  current={sort}
+                  dir={dir}
+                  className="inline-block w-20 whitespace-normal leading-tight"
+                />
+              </th>
               <th className="th"></th>
             </tr>
           </thead>
@@ -287,6 +297,13 @@ export default async function ManagerTrainees({
                     </td>
                   );
                 })}
+                <td className="td text-center">
+                  {t.biergerpaktMember ? (
+                    <span className="badge-pill bg-green-100 text-green-700">Oui</span>
+                  ) : (
+                    <span className="badge-pill bg-slate-100 text-slate-500">Non</span>
+                  )}
+                </td>
                 <td className="td text-right">
                   <Link
                     href={`/manager/trainees/${t.id}`}

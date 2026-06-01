@@ -38,6 +38,12 @@ export default async function TrainersPage() {
             </label>
             <input id="lastName" name="lastName" className="input" />
           </div>
+          <div>
+            <label className="label" htmlFor="email">
+              E-mail
+            </label>
+            <input id="email" name="email" type="email" className="input" />
+          </div>
           <SaveButton>Ajouter</SaveButton>
         </form>
       </div>
@@ -54,6 +60,10 @@ export default async function TrainersPage() {
               <div>
                 <label className="label">Nom de famille</label>
                 <input name="lastName" className="input" defaultValue={t.lastName} />
+              </div>
+              <div>
+                <label className="label">E-mail</label>
+                <input name="email" type="email" className="input" defaultValue={t.email ?? ""} />
               </div>
               <SaveButton>Enregistrer</SaveButton>
             </form>

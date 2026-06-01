@@ -295,9 +295,10 @@ export async function addTrainer(formData: FormData) {
   const partner = await requirePartner();
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim() || null;
   if (!firstName && !lastName) return;
   await prisma.trainer.create({
-    data: { partnerId: partner.id, firstName, lastName },
+    data: { partnerId: partner.id, firstName, lastName, email },
   });
   revalidatePath("/partner/trainers");
 }
@@ -323,10 +324,11 @@ export async function updateTrainer(formData: FormData) {
   const id = Number(formData.get("trainerId"));
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim() || null;
   if (!id || (!firstName && !lastName)) return;
   await prisma.trainer.updateMany({
     where: { id, partnerId: partner.id },
-    data: { firstName, lastName },
+    data: { firstName, lastName, email },
   });
   revalidatePath("/partner/trainers");
 }

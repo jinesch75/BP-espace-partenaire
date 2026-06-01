@@ -48,6 +48,10 @@ export default async function ManagerTrainers() {
                 <input name="lastName" className="input" defaultValue={t.lastName} />
               </div>
               <div>
+                <label className="label">E-mail</label>
+                <input name="email" type="email" className="input" defaultValue={t.email ?? ""} />
+              </div>
+              <div>
                 <span className="label">Partenaire</span>
                 <div className="px-1 py-2 text-sm text-slate-600">{t.partner.name}</div>
               </div>

@@ -137,15 +137,21 @@ function SessionBlock({
 export default function CourseForm({
   trainers,
   programmes,
+  initialProgrammeId = "",
 }: {
   trainers: Trainer[];
   programmes: { id: number; name: string }[];
+  initialProgrammeId?: string;
 }) {
   const [type, setType] = useState<"SINGLE" | "MULTI" | "RECURRING">("SINGLE");
   const [keys, setKeys] = useState<number[]>([0]);
   const [recOnline, setRecOnline] = useState(false);
   const [endMode, setEndMode] = useState<"count" | "date">("count");
-  const [programme, setProgramme] = useState("");
+  const [programme, setProgramme] = useState(
+    initialProgrammeId && programmes.some((p) => String(p.id) === initialProgrammeId)
+      ? initialProgrammeId
+      : ""
+  );
 
   const multiKeys = type === "MULTI" ? keys : [0];
 

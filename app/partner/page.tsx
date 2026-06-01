@@ -28,17 +28,28 @@ export default async function PartnerHome() {
   // group éditions by programme (fallback: title), sort by first séance date
   const firstDate = (c: (typeof courses)[number]) =>
     c.sessions[0] ? new Date(c.sessions[0].date).getTime() : Infinity;
-  const groupsMap = new Map<string, { label: string; items: typeof courses }>();
+  const groupsMap = new Map<
+    string,
+    { label: string; programmeId: number | null; items: typeof courses }
+  >();
   for (const c of courses) {
     const key = c.programme ? `p${c.programme.id}` : `t${c.title}`;
     const label = c.programme?.name ?? c.title;
-    if (!groupsMap.has(key)) groupsMap.set(key, { label, items: [] });
+    if (!groupsMap.has(key))
+      groupsMap.set(key, { label, programmeId: c.programme?.id ?? null, items: [] });
     groupsMap.get(key)!.items.push(c);
   }
   const groups = [...groupsMap.values()].sort((a, b) =>
     a.label.localeCompare(b.label)
   );
   for (const g of groups) g.items.sort((a, b) => firstDate(a) - firstDate(b));
+
+  // all the partner's programmes (incl. those without any édition yet)
+  const programmes = await prisma.programme.findMany({
+    where: { partnerId: partner.id },
+    orderBy: { name: "asc" },
+    include: { _count: { select: { courses: true } } },
+  });
 
   return (
     <div className="space-y-6">
@@ -51,6 +62,36 @@ export default async function PartnerHome() {
           address: partner.address,
         }}
       />
+
+      {/* Résumé des programmes proposés, avec création rapide d'une édition */}
+      {programmes.length > 0 && (
+        <div className="card p-5">
+          <h2 className="mb-3 font-semibold text-slate-800">
+            Activités proposées par {partner.name}
+          </h2>
+          <ul className="divide-y divide-slate-100">
+            {programmes.map((p) => (
+              <li
+                key={p.id}
+                className="flex flex-wrap items-center justify-between gap-2 py-2"
+              >
+                <span className="text-sm">
+                  <span className="font-medium text-slate-800">{p.name}</span>
+                  <span className="ml-2 text-xs text-slate-400">
+                    {p._count.courses} édition{p._count.courses > 1 ? "s" : ""}
+                  </span>
+                </span>
+                <Link
+                  href={`/partner/courses/new?programmeId=${p.id}`}
+                  className="btn-secondary"
+                >
+                  + Nouvelle édition
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="flex items-center justify-between">
         <div>

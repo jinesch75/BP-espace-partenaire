@@ -228,6 +228,22 @@ async function applyInscriptionDates() {
   }
 }
 
+// Illustration: randomly mark participants as Biergerpakt members. Runs once
+// (only if no member exists yet), so it doesn't re-randomize on each deploy.
+async function applyBiergerpaktMembership() {
+  const already = await prisma.trainee.count({ where: { biergerpaktMember: true } });
+  if (already > 0) return;
+  const trainees = await prisma.trainee.findMany({ select: { id: true } });
+  for (const t of trainees) {
+    if (Math.random() < 0.5) {
+      await prisma.trainee.update({
+        where: { id: t.id },
+        data: { biergerpaktMember: true },
+      });
+    }
+  }
+}
+
 async function ensureProgrammes() {
   const courses = await prisma.course.findMany({
     where: { programmeId: null },
@@ -339,6 +355,7 @@ async function main() {
   await applyDemoCourseParticipants();
   await ensureProgrammes();
   await applyInscriptionDates();
+  await applyBiergerpaktMembership();
 
   const existing = await prisma.partner.count();
   if (existing > 0) {
@@ -447,6 +464,7 @@ async function main() {
   await applyDemoCourseParticipants();
   await ensureProgrammes();
   await applyInscriptionDates();
+  await applyBiergerpaktMembership();
 
   const counts = {
     partners: await prisma.partner.count(),
