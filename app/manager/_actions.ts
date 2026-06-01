@@ -244,6 +244,8 @@ export async function updateCourseDetails(formData: FormData) {
     const trainerId = await resolveTrainer(course.partnerId, formData, prefix);
     const data = {
       sequence: keptIds.length + 1,
+      title: String(formData.get(`${prefix}title`) ?? "").trim() || null,
+      description: String(formData.get(`${prefix}description`) ?? "").trim() || null,
       date: new Date(String(formData.get(`${prefix}date`))),
       startTime: String(formData.get(`${prefix}startTime`) ?? ""),
       endTime: String(formData.get(`${prefix}endTime`) ?? ""),

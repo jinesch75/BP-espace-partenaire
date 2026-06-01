@@ -7,6 +7,8 @@ import { requirePartner } from "@/lib/session";
 
 type SessionInput = {
   sequence: number;
+  title: string | null;
+  description: string | null;
   date: Date;
   startTime: string;
   endTime: string;
@@ -53,6 +55,8 @@ function readSession(
   const isOnline = formData.get(`${prefix}isOnline`) === "on";
   return {
     sequence,
+    title: String(formData.get(`${prefix}title`) ?? "").trim() || null,
+    description: String(formData.get(`${prefix}description`) ?? "").trim() || null,
     date: new Date(String(formData.get(`${prefix}date`))),
     startTime: String(formData.get(`${prefix}startTime`) ?? ""),
     endTime: String(formData.get(`${prefix}endTime`) ?? ""),
@@ -70,59 +74,14 @@ export async function createCourse(formData: FormData) {
 
   const sessions: SessionInput[] = [];
 
-  if (type === "RECURRING") {
-    const start = new Date(String(formData.get("rec_firstDate")));
-    const startTime = String(formData.get("rec_startTime") ?? "");
-    const endTime = String(formData.get("rec_endTime") ?? "");
-    const isOnline = formData.get("rec_isOnline") === "on";
-    const location = isOnline ? null : String(formData.get("rec_location") ?? "") || null;
-    const teamsLink = isOnline ? String(formData.get("rec_teamsLink") ?? "") || null : null;
-    const places = Number(formData.get("rec_places") ?? 0) || 0;
-    const trainerId = await resolveTrainer(partner.id, formData, "rec_");
-    const endMode = String(formData.get("rec_endMode") ?? "count");
-
-    const dates: Date[] = [];
-    if (endMode === "date") {
-      const endDate = new Date(String(formData.get("rec_endDate")));
-      let cur = new Date(start);
-      let guard = 0;
-      while (cur <= endDate && guard < 104) {
-        dates.push(new Date(cur));
-        cur.setDate(cur.getDate() + 7);
-        guard++;
-      }
-    } else {
-      const count = Math.max(1, Math.min(52, Number(formData.get("rec_count") ?? 1)));
-      for (let i = 0; i < count; i++) {
-        const d = new Date(start);
-        d.setDate(d.getDate() + 7 * i);
-        dates.push(d);
-      }
-    }
-
-    dates.forEach((d, i) => {
-      sessions.push({
-        sequence: i + 1,
-        date: d,
-        startTime,
-        endTime,
-        isOnline,
-        location,
-        teamsLink,
-        placesAvailable: places,
-        trainerId,
-      });
-    });
-  } else {
-    const count = type === "SINGLE" ? 1 : Number(formData.get("sessionCount") ?? 1);
-    for (let i = 0; i < count; i++) {
-      const prefix = `s_${i}_`;
-      // skip blank rows (no date)
-      if (!formData.get(`${prefix}date`)) continue;
-      const s = readSession(formData, prefix, sessions.length + 1);
-      s.trainerId = await resolveTrainer(partner.id, formData, prefix);
-      sessions.push(s);
-    }
+  const count = type === "SINGLE" ? 1 : Number(formData.get("sessionCount") ?? 1);
+  for (let i = 0; i < count; i++) {
+    const prefix = `s_${i}_`;
+    // skip blank rows (no date)
+    if (!formData.get(`${prefix}date`)) continue;
+    const s = readSession(formData, prefix, sessions.length + 1);
+    s.trainerId = await resolveTrainer(partner.id, formData, prefix);
+    sessions.push(s);
   }
 
   if (sessions.length === 0) redirect("/partner/courses/new?error=session");
@@ -132,6 +91,7 @@ export async function createCourse(formData: FormData) {
   // description and shared admin info.
   let programmeId = Number(formData.get("programmeId")) || null;
   const newProgrammeName = String(formData.get("newProgrammeName") ?? "").trim();
+  const newProgrammeDesc = String(formData.get("newProgrammeDescription") ?? "").trim() || null;
 
   if (programmeId) {
     const owned = await prisma.programme.findFirst({
@@ -142,7 +102,7 @@ export async function createCourse(formData: FormData) {
   if (!programmeId) {
     if (!newProgrammeName) redirect("/partner/courses/new?error=programme");
     const prog = await prisma.programme.create({
-      data: { name: newProgrammeName, partnerId: partner.id },
+      data: { name: newProgrammeName, description: newProgrammeDesc, partnerId: partner.id },
     });
     programmeId = prog.id;
   }
@@ -157,7 +117,7 @@ export async function createCourse(formData: FormData) {
       title: prog.name,
       description: prog.description,
       type: type === "SINGLE" ? "SINGLE" : "MULTI",
-      recurring: type === "RECURRING",
+      recurring: false,
       status: "DRAFT",
       // inherit the programme's shared admin info
       dpiStep: prog.dpiStep ?? null,
@@ -198,6 +158,8 @@ export async function updateCourse(formData: FormData) {
     const trainerId = await resolveTrainer(partner.id, formData, prefix);
     const data = {
       sequence: keptIds.length + 1,
+      title: String(formData.get(`${prefix}title`) ?? "").trim() || null,
+      description: String(formData.get(`${prefix}description`) ?? "").trim() || null,
       date: new Date(String(formData.get(`${prefix}date`))),
       startTime: String(formData.get(`${prefix}startTime`) ?? ""),
       endTime: String(formData.get(`${prefix}endTime`) ?? ""),

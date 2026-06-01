@@ -147,6 +147,8 @@ model Session {
   id              Int      @id @default(autoincrement())
   courseId        Int
   sequence        Int
+  title           String?
+  description     String?
   date            DateTime
   startTime       String
   endTime         String

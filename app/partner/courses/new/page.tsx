@@ -20,7 +20,7 @@ export default async function NewCoursePage({
     prisma.programme.findMany({
       where: { partnerId: partner.id },
       orderBy: { name: "asc" },
-      select: { id: true, name: true },
+      select: { id: true, name: true, description: true },
     }),
   ]);
 
@@ -47,6 +47,7 @@ export default async function NewCoursePage({
       <CourseForm
         trainers={trainers}
         programmes={programmes}
+        partnerName={partner.name}
         initialProgrammeId={searchParams.programmeId ?? ""}
         initialDate={searchParams.date ?? ""}
       />
