@@ -57,6 +57,7 @@ model Programme {
   id                  Int         @id @default(autoincrement())
   name                String
   description         String?
+  languages           String[] @default([]) // EN, FR, DE, LU
   partnerId           Int
   dpiStep             String? // DAPA1..DAPA5 / BIENV, or null
   population          Population?

@@ -3,6 +3,7 @@ import { requireManager } from "@/lib/session";
 import { updateProgramme } from "@/app/manager/_actions";
 import { SaveButton } from "@/app/_components/SaveButton";
 import { TaxonomySelectors } from "@/app/_components/TaxonomySelectors";
+import { LanguageSelectors } from "@/app/_components/LanguageSelectors";
 
 export const dynamic = "force-dynamic";
 
@@ -72,6 +73,9 @@ export default async function ManagerProgrammes() {
                     className="input"
                     defaultValue={p.description ?? ""}
                   />
+                </div>
+                <div className="sm:col-span-3">
+                  <LanguageSelectors values={p.languages} />
                 </div>
               </div>
 

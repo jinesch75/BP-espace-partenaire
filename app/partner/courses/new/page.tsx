@@ -20,7 +20,7 @@ export default async function NewCoursePage({
     prisma.programme.findMany({
       where: { partnerId: partner.id },
       orderBy: { name: "asc" },
-      select: { id: true, name: true, description: true },
+      select: { id: true, name: true, description: true, languages: true },
     }),
   ]);
 

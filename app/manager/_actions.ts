@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/session";
 import { hashPassword } from "@/lib/crypto";
 import { dpiKeyOf, courseDpiKey } from "@/lib/dpi";
+import { readLanguages } from "@/app/_components/LanguageSelectors";
 
 // Affect a participant to a specific activity (one per DPI column).
 export async function assignDpiCourse(formData: FormData) {
@@ -354,6 +355,7 @@ export async function updateProgramme(formData: FormData) {
   if (!id) return;
   const name = String(formData.get("name") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim() || null;
+  const languages = readLanguages(formData);
   const populationRaw = String(formData.get("population") ?? "");
   const population =
     populationRaw === "POP1" || populationRaw === "POP2" ? populationRaw : null;
@@ -368,6 +370,7 @@ export async function updateProgramme(formData: FormData) {
     data: {
       name: name || undefined,
       description,
+      languages,
       population: population as any,
       visibleInCatalogue: visible,
       dpiStep,

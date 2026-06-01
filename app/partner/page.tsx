@@ -122,11 +122,11 @@ export default async function PartnerHome() {
       <ActivityCalendar events={calendarEvents} legend={legend} />
 
       {/* Résumé des programmes proposés, avec création rapide d'une édition */}
-      {programmes.length > 0 && (
-        <div className="card p-5">
-          <h2 className="mb-3 font-semibold text-slate-800">
-            Activités proposées par {partner.name}
-          </h2>
+      <div className="card p-5">
+        <h2 className="mb-3 font-semibold text-slate-800">
+          Activités proposées par {partner.name}
+        </h2>
+        {programmes.length > 0 ? (
           <ul className="divide-y divide-slate-100">
             {programmes.map((p) => (
               <li
@@ -148,19 +148,21 @@ export default async function PartnerHome() {
               </li>
             ))}
           </ul>
+        ) : (
+          <p className="text-sm text-slate-500">
+            Aucune activité pour l&apos;instant.
+          </p>
+        )}
+        <div className="mt-4 flex justify-center border-t border-slate-100 pt-4">
+          <Link href="/partner/courses/new" className="btn-primary">
+            + Nouvelle activité
+          </Link>
         </div>
-      )}
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800">
-            Les activités du {partner.name}
-          </h2>
-        </div>
-        <Link href="/partner/courses/new" className="btn-primary">
-          + Nouvelle activité
-        </Link>
       </div>
+
+      <h2 className="text-xl font-bold text-slate-800">
+        Les activités du {partner.name}
+      </h2>
 
       {courses.length === 0 && (
         <div className="card p-8 text-center text-slate-500">

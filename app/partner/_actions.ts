@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requirePartner } from "@/lib/session";
+import { readLanguages } from "@/app/_components/LanguageSelectors";
 
 type SessionInput = {
   sequence: number;
@@ -102,7 +103,12 @@ export async function createCourse(formData: FormData) {
   if (!programmeId) {
     if (!newProgrammeName) redirect("/partner/courses/new?error=programme");
     const prog = await prisma.programme.create({
-      data: { name: newProgrammeName, description: newProgrammeDesc, partnerId: partner.id },
+      data: {
+        name: newProgrammeName,
+        description: newProgrammeDesc,
+        languages: readLanguages(formData),
+        partnerId: partner.id,
+      },
     });
     programmeId = prog.id;
   }

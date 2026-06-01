@@ -3,9 +3,15 @@
 import { useState } from "react";
 import { createCourse } from "@/app/partner/_actions";
 import { SaveButton } from "@/app/_components/SaveButton";
+import { LanguageSelectors } from "@/app/_components/LanguageSelectors";
 
 type Trainer = { id: number; firstName: string; lastName: string };
-type Programme = { id: number; name: string; description: string | null };
+type Programme = {
+  id: number;
+  name: string;
+  description: string | null;
+  languages: string[];
+};
 
 function TrainerPicker({ prefix, trainers }: { prefix: string; trainers: Trainer[] }) {
   const [value, setValue] = useState("");
@@ -189,7 +195,7 @@ export default function CourseForm({
     <form action={createCourse} className="space-y-6">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Activité proposée par {partnerName}</label>
+          <label className="label">Activités proposées par {partnerName}</label>
           <select
             className="input"
             value={programme}
@@ -223,6 +229,7 @@ export default function CourseForm({
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
               />
+              <LanguageSelectors />
             </div>
           )}
           {programme !== "new" && programme !== "" && (
@@ -231,10 +238,11 @@ export default function CourseForm({
           {selectedProg?.description && (
             <p className="mt-2 text-sm text-slate-600">{selectedProg.description}</p>
           )}
-          <p className="mt-1 text-xs text-slate-500">
-            L&apos;activité reprend le titre et la description définis par
-            l&apos;administrateur (catalogue, type, domaine, badges).
-          </p>
+          {selectedProg && selectedProg.languages.length > 0 && (
+            <p className="mt-1 text-xs text-slate-500">
+              Langues : {selectedProg.languages.join(", ")}
+            </p>
+          )}
         </div>
         <div>
           <label className="label">Format de l&apos;activité</label>
