@@ -192,7 +192,7 @@ export default async function PartnerHome() {
                 <p className="text-xs text-slate-500">
                   {c.programme && (
                     <span className="font-medium text-slate-600">
-                      Programme : {c.programme.name} ·{" "}
+                      Activité proposée par {partner.name} : {c.programme.name} ·{" "}
                     </span>
                   )}
                   {courseTypeLabel(c.type, c.recurring)} · {c.sessions.length}{" "}

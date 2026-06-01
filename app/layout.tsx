@@ -36,7 +36,7 @@ async function TopBar() {
     links = [
       { href: "/manager", text: "Tableau de bord" },
       { href: "/manager/partners", text: "Partenaires" },
-      { href: "/manager/programmes", text: "Programmes" },
+      { href: "/manager/programmes", text: "Activités proposées" },
       { href: "/manager/courses", text: "Activités" },
       { href: "/manager/trainees", text: "Participants" },
     ];

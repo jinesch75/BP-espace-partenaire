@@ -45,6 +45,11 @@ function SessionBlock({
   defaultDate,
   defaultTitle,
   defaultDescription,
+  headerLabel,
+  titleLabel,
+  descLabel,
+  onlineLabel,
+  onRemoveLabelOnly,
 }: {
   index: number;
   prefix: string;
@@ -54,21 +59,30 @@ function SessionBlock({
   defaultDate?: string;
   defaultTitle: string;
   defaultDescription: string;
+  headerLabel: string | null; // null = no header line
+  titleLabel: string;
+  descLabel: string;
+  onlineLabel: string;
+  onRemoveLabelOnly?: boolean;
 }) {
   const [online, setOnline] = useState(false);
   return (
     <div className="rounded-lg border border-slate-200 p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-sm font-semibold text-slate-700">Séance {index + 1}</span>
-        {removable && onRemove && (
-          <button type="button" onClick={onRemove} className="text-xs text-red-600 hover:underline">
-            Retirer
-          </button>
-        )}
-      </div>
+      {(headerLabel || (removable && onRemove)) && (
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-sm font-semibold text-slate-700">
+            {headerLabel ?? ""}
+          </span>
+          {removable && onRemove && (
+            <button type="button" onClick={onRemove} className="text-xs text-red-600 hover:underline">
+              Retirer
+            </button>
+          )}
+        </div>
+      )}
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="label">Titre de la séance</label>
+          <label className="label">{titleLabel}</label>
           <input
             name={`${prefix}title`}
             className="input"
@@ -77,7 +91,7 @@ function SessionBlock({
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="label">Description de la séance</label>
+          <label className="label">{descLabel}</label>
           <textarea
             name={`${prefix}description`}
             rows={2}
@@ -112,7 +126,7 @@ function SessionBlock({
               checked={online}
               onChange={(e) => setOnline(e.target.checked)}
             />
-            Cette séance est en ligne
+            {onlineLabel}
           </label>
         </div>
         {online ? (
@@ -168,12 +182,14 @@ export default function CourseForm({
     programme === "new" ? newDesc : selectedProg?.description ?? "";
 
   const multiKeys = type === "MULTI" ? keys : [0];
+  const isSingle = type === "SINGLE";
+  const unit = isSingle ? "activité" : "séance";
 
   return (
     <form action={createCourse} className="space-y-6">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Activités proposées par {partnerName}</label>
+          <label className="label">Activité proposée par {partnerName}</label>
           <select
             className="input"
             value={programme}
@@ -193,7 +209,7 @@ export default function CourseForm({
             <div className="mt-2 space-y-2">
               <input
                 name="newProgrammeName"
-                placeholder="Nom du nouveau programme (ex. DAPA 1)"
+                placeholder="Nom de la nouvelle activité (ex. DAPA 1)"
                 className="input"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
@@ -201,7 +217,7 @@ export default function CourseForm({
               />
               <textarea
                 name="newProgrammeDescription"
-                placeholder="Description du programme"
+                placeholder="Description de l'activité"
                 rows={2}
                 className="input"
                 value={newDesc}
@@ -212,10 +228,12 @@ export default function CourseForm({
           {programme !== "new" && programme !== "" && (
             <input type="hidden" name="programmeId" value={programme} />
           )}
+          {selectedProg?.description && (
+            <p className="mt-2 text-sm text-slate-600">{selectedProg.description}</p>
+          )}
           <p className="mt-1 text-xs text-slate-500">
-            L&apos;activité reprend le titre et la description du programme. Les
-            informations (catalogue, type, domaine, badges) sont définies sur le
-            programme par l&apos;administrateur.
+            L&apos;activité reprend le titre et la description définis par
+            l&apos;administrateur (catalogue, type, domaine, badges).
           </p>
         </div>
         <div>
@@ -223,7 +241,7 @@ export default function CourseForm({
           <div className="flex flex-wrap gap-4 text-sm">
             {([
               ["SINGLE", "Événement unique"],
-              ["MULTI", "Sessions multiples"],
+              ["MULTI", "Séances multiples"],
             ] as const).map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2">
                 <input
@@ -253,6 +271,10 @@ export default function CourseForm({
             defaultDate={i === 0 ? initialDate : undefined}
             defaultTitle={prefillTitle}
             defaultDescription={prefillDesc}
+            headerLabel={isSingle ? null : `Séance ${i + 1}`}
+            titleLabel={isSingle ? "Titre de l'activité" : "Titre de la séance"}
+            descLabel={isSingle ? "Description de l'activité" : "Description de la séance"}
+            onlineLabel={isSingle ? "Cette activité est en ligne" : "Cette séance est en ligne"}
           />
         ))}
         {type === "MULTI" && (
