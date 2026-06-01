@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requirePartner } from "@/lib/session";
 import EditCourseForm from "./EditCourseForm";
+import { LanguageSelectors } from "@/app/_components/LanguageSelectors";
+import { SaveButton } from "@/app/_components/SaveButton";
+import { updateCourseLanguages } from "@/app/partner/_actions";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +23,10 @@ export default async function EditCoursePage({
   const partner = await requirePartner();
   const course = await prisma.course.findFirst({
     where: { id: Number(params.id), partnerId: partner.id },
-    include: { sessions: { orderBy: { sequence: "asc" } } },
+    include: {
+      sessions: { orderBy: { sequence: "asc" } },
+      programme: { select: { id: true, languages: true } },
+    },
   });
   if (!course) notFound();
 
@@ -55,6 +61,15 @@ export default async function EditCoursePage({
         <div className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-700">
           Veuillez saisir un titre d'activité.
         </div>
+      )}
+
+      {course.programme && (
+        <form action={updateCourseLanguages} className="card space-y-3 p-5">
+          <input type="hidden" name="courseId" value={course.id} />
+          <h2 className="font-semibold text-slate-800">Langues</h2>
+          <LanguageSelectors values={course.programme.languages} />
+          <SaveButton>Enregistrer les langues</SaveButton>
+        </form>
       )}
 
       <EditCourseForm

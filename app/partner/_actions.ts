@@ -272,6 +272,22 @@ export async function addTrainer(formData: FormData) {
   revalidatePath("/partner/trainers");
 }
 
+export async function updateCourseLanguages(formData: FormData) {
+  const partner = await requirePartner();
+  const courseId = Number(formData.get("courseId"));
+  const course = await prisma.course.findFirst({
+    where: { id: courseId, partnerId: partner.id },
+    select: { programmeId: true },
+  });
+  if (!course?.programmeId) redirect("/partner");
+  await prisma.programme.update({
+    where: { id: course.programmeId },
+    data: { languages: readLanguages(formData) },
+  });
+  revalidatePath(`/partner/courses/${courseId}/edit`);
+  revalidatePath(`/partner/courses/${courseId}`);
+}
+
 export async function updatePartnerInfo(formData: FormData) {
   const partner = await requirePartner();
   const name = String(formData.get("name") ?? "").trim();
