@@ -44,6 +44,12 @@ export default async function TrainersPage() {
             </label>
             <input id="email" name="email" type="email" className="input" />
           </div>
+          <div>
+            <label className="label" htmlFor="phone">
+              Téléphone
+            </label>
+            <input id="phone" name="phone" className="input" />
+          </div>
           <SaveButton>Ajouter</SaveButton>
         </form>
       </div>
@@ -64,6 +70,10 @@ export default async function TrainersPage() {
               <div>
                 <label className="label">E-mail</label>
                 <input name="email" type="email" className="input" defaultValue={t.email ?? ""} />
+              </div>
+              <div>
+                <label className="label">Téléphone</label>
+                <input name="phone" className="input" defaultValue={t.phone ?? ""} />
               </div>
               <SaveButton>Enregistrer</SaveButton>
             </form>

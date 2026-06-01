@@ -288,10 +288,11 @@ export async function updateTrainerAsManager(formData: FormData) {
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim() || null;
+  const phone = String(formData.get("phone") ?? "").trim() || null;
   if (!id || (!firstName && !lastName)) return;
   await prisma.trainer.update({
     where: { id },
-    data: { firstName, lastName, email },
+    data: { firstName, lastName, email, phone },
   });
   revalidatePath("/manager/trainers");
 }

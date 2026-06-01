@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function NewCoursePage({
   searchParams,
 }: {
-  searchParams: { error?: string; programmeId?: string };
+  searchParams: { error?: string; programmeId?: string; date?: string };
 }) {
   const partner = await requirePartner();
   const [trainers, programmes] = await Promise.all([
@@ -48,6 +48,7 @@ export default async function NewCoursePage({
         trainers={trainers}
         programmes={programmes}
         initialProgrammeId={searchParams.programmeId ?? ""}
+        initialDate={searchParams.date ?? ""}
       />
     </div>
   );

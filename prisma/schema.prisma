@@ -82,6 +82,7 @@ model Trainer {
   firstName    String
   lastName     String
   email        String?
+  phone        String?
   passwordHash String?
   createdAt    DateTime @default(now())
 

@@ -55,12 +55,14 @@ function SessionBlock({
   trainers,
   onRemove,
   removable,
+  defaultDate,
 }: {
   index: number;
   prefix: string;
   trainers: Trainer[];
   onRemove?: () => void;
   removable: boolean;
+  defaultDate?: string;
 }) {
   const [online, setOnline] = useState(false);
   return (
@@ -78,7 +80,7 @@ function SessionBlock({
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
           <label className="label">Date</label>
-          <input type="date" name={`${prefix}date`} className="input" required />
+          <input type="date" name={`${prefix}date`} className="input" defaultValue={defaultDate} required />
         </div>
         <div className="flex gap-2">
           <div className="flex-1">
@@ -138,10 +140,12 @@ export default function CourseForm({
   trainers,
   programmes,
   initialProgrammeId = "",
+  initialDate = "",
 }: {
   trainers: Trainer[];
   programmes: { id: number; name: string }[];
   initialProgrammeId?: string;
+  initialDate?: string;
 }) {
   const [type, setType] = useState<"SINGLE" | "MULTI" | "RECURRING">("SINGLE");
   const [keys, setKeys] = useState<number[]>([0]);
@@ -225,7 +229,7 @@ export default function CourseForm({
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="label">Date de la première session</label>
-              <input type="date" name="rec_firstDate" className="input" required />
+              <input type="date" name="rec_firstDate" className="input" defaultValue={initialDate} required />
             </div>
             <div className="flex gap-2">
               <div className="flex-1">
@@ -321,6 +325,7 @@ export default function CourseForm({
               trainers={trainers}
               removable={type === "MULTI" && multiKeys.length > 1}
               onRemove={() => setKeys((arr) => arr.filter((x) => x !== k))}
+              defaultDate={i === 0 ? initialDate : undefined}
             />
           ))}
           {type === "MULTI" && (

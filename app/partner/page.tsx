@@ -10,6 +10,7 @@ import {
 } from "@/lib/format";
 import { TaxonomyPills, taxonomyInclude } from "@/app/_components/TaxonomyPills";
 import { PartnerInfo } from "@/app/_components/PartnerInfo";
+import { ActivityCalendar } from "@/app/_components/ActivityCalendar";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,57 @@ export default async function PartnerHome() {
   );
   for (const g of groups) g.items.sort((a, b) => firstDate(a) - firstDate(b));
 
+  // --- Calendar data ---
+  // A stable colour per programme. Fixed colours for the DPI steps, palette otherwise.
+  const STEP_COLORS: Record<string, string> = {
+    DAPA1: "#16a34a", // vert
+    DAPA2: "#2563eb", // bleu
+    DAPA3: "#d97706", // orange
+    DAPA4: "#9333ea", // violet
+    DAPA5: "#dc2626", // rouge
+    BIENV: "#0d9488", // sarcelle
+  };
+  const PALETTE = [
+    "#2563eb", "#16a34a", "#d97706", "#9333ea", "#dc2626",
+    "#0d9488", "#db2777", "#65a30d", "#0891b2", "#b45309",
+  ];
+  const progColor = new Map<number, string>();
+  let pi = 0;
+  function colorFor(c: (typeof courses)[number]): string {
+    if (c.dpiStep && STEP_COLORS[c.dpiStep]) return STEP_COLORS[c.dpiStep];
+    const pid = c.programme?.id ?? -c.id;
+    if (!progColor.has(pid)) progColor.set(pid, PALETTE[pi++ % PALETTE.length]);
+    return progColor.get(pid)!;
+  }
+
+  const calendarEvents = courses.flatMap((c) => {
+    const total = c.sessions.length;
+    const color = colorFor(c);
+    return c.sessions.map((s) => ({
+      date:
+        new Date(s.date).getFullYear() +
+        "-" +
+        String(new Date(s.date).getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(new Date(s.date).getDate()).padStart(2, "0"),
+      courseId: c.id,
+      title: c.title,
+      color,
+      seq: s.sequence,
+      total,
+      time: `${s.startTime}–${s.endTime}`,
+      where: s.isOnline ? "En ligne" : s.location ?? "",
+    }));
+  });
+
+  // legend: one entry per distinct colour/label
+  const legendMap = new Map<string, { label: string; color: string }>();
+  for (const c of courses) {
+    const label = c.programme?.name ?? c.title;
+    if (!legendMap.has(label)) legendMap.set(label, { label, color: colorFor(c) });
+  }
+  const legend = [...legendMap.values()];
+
   // all the partner's programmes (incl. those without any édition yet)
   const programmes = await prisma.programme.findMany({
     where: { partnerId: partner.id },
@@ -62,6 +114,8 @@ export default async function PartnerHome() {
           address: partner.address,
         }}
       />
+
+      <ActivityCalendar events={calendarEvents} legend={legend} />
 
       {/* Résumé des programmes proposés, avec création rapide d'une édition */}
       {programmes.length > 0 && (
