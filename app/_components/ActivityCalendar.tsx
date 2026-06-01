@@ -133,12 +133,12 @@ export function ActivityCalendar({
                       style={{ backgroundColor: e.color }}
                       title={e.title}
                     >
-                      séance {e.seq}
+                      séance {e.seq}/{e.total}
                       {others.length > 0 && (
                         <span className="font-normal">
                           {" ("}
                           {others
-                            .map((o) => `séance ${o.seq} ${dm(o.date)}`)
+                            .map((o) => `séance ${o.seq}/${e.total} ${dm(o.date)}`)
                             .join(", ")}
                           {")"}
                         </span>
