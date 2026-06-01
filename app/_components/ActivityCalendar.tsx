@@ -12,7 +12,14 @@ type Event = {
   total: number;
   time: string;
   where: string;
+  sessions: { seq: number; date: string }[];
 };
+
+// "12/06" from "2026-06-12"
+function dm(iso: string): string {
+  const [, m, d] = iso.split("-");
+  return `${d}/${m}`;
+}
 
 const MONTHS = [
   "janvier", "février", "mars", "avril", "mai", "juin",
@@ -107,24 +114,40 @@ export function ActivityCalendar({
               key={i}
               onClick={() => clickDay(d)}
               title={evs.length ? "Voir les activités" : "Ajouter une activité ce jour"}
-              className={`min-h-[58px] rounded-lg border p-1 text-left align-top transition-colors hover:border-brand ${
-                selected === key ? "border-brand bg-brand-light/40" : "border-slate-200"
+              className={`min-h-[64px] rounded-lg border p-1 text-left align-top transition-colors hover:border-brand ${
+                selected === key
+                  ? "border-brand bg-brand-light/40"
+                  : isToday
+                  ? "border-slate-200 bg-slate-100"
+                  : "border-slate-200"
               }`}
             >
-              <span className={`text-xs ${isToday ? "font-bold text-brand" : "text-slate-500"}`}>
-                {d}
-              </span>
-              <span className="mt-1 flex flex-wrap gap-0.5">
-                {evs.slice(0, 4).map((e, j) => (
-                  <span
-                    key={j}
-                    className="inline-block h-2 w-2 rounded-full"
-                    style={{ backgroundColor: e.color }}
-                    title={`${e.title} — séance ${e.seq}/${e.total}`}
-                  />
-                ))}
-                {evs.length > 4 && (
-                  <span className="text-[10px] text-slate-400">+{evs.length - 4}</span>
+              <span className="text-xs text-slate-500">{d}</span>
+              <span className="mt-1 flex flex-col gap-0.5">
+                {evs.slice(0, 3).map((e, j) => {
+                  const others = e.sessions.filter((x) => x.seq !== e.seq);
+                  return (
+                    <span
+                      key={j}
+                      className="block rounded px-1 py-0.5 text-left text-[10px] font-semibold leading-tight text-white"
+                      style={{ backgroundColor: e.color }}
+                      title={e.title}
+                    >
+                      séance {e.seq}
+                      {others.length > 0 && (
+                        <span className="font-normal">
+                          {" ("}
+                          {others
+                            .map((o) => `séance ${o.seq} ${dm(o.date)}`)
+                            .join(", ")}
+                          {")"}
+                        </span>
+                      )}
+                    </span>
+                  );
+                })}
+                {evs.length > 3 && (
+                  <span className="text-[10px] text-slate-400">+{evs.length - 3}</span>
                 )}
               </span>
             </button>

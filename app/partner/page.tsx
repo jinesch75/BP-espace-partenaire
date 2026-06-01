@@ -68,16 +68,19 @@ export default async function PartnerHome() {
     return progColor.get(pid)!;
   }
 
+  const ymd = (d: Date) =>
+    new Date(d).getFullYear() +
+    "-" +
+    String(new Date(d).getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(new Date(d).getDate()).padStart(2, "0");
+
   const calendarEvents = courses.flatMap((c) => {
     const total = c.sessions.length;
     const color = colorFor(c);
+    const allSessions = c.sessions.map((s) => ({ seq: s.sequence, date: ymd(s.date) }));
     return c.sessions.map((s) => ({
-      date:
-        new Date(s.date).getFullYear() +
-        "-" +
-        String(new Date(s.date).getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(new Date(s.date).getDate()).padStart(2, "0"),
+      date: ymd(s.date),
       courseId: c.id,
       title: c.title,
       color,
@@ -85,6 +88,7 @@ export default async function PartnerHome() {
       total,
       time: `${s.startTime}–${s.endTime}`,
       where: s.isOnline ? "En ligne" : s.location ?? "",
+      sessions: allSessions,
     }));
   });
 
